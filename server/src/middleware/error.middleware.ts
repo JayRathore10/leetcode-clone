@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 
-export const errorMiddleware = async(err : any , req : Request , res : Response)=>{
+export const errorMiddleware = async(err : any , req : Request , res : Response , next : NextFunction)=>{
   try{
     
     let error = {...err};

@@ -39,5 +39,5 @@ const userSchmea = new mongoose.Schema<UserInterface>({
   }
 } , {timestamps : true});
 
-export const userModel = mongoose.model<UserInterface>("user" , userSchmea);
+export const userModel = mongoose.model<UserInterface>("User" , userSchmea);
 

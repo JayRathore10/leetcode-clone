@@ -36,4 +36,4 @@ const questionSchema = new mongoose.Schema<QuestionInterface>({
   }
 }, {timestamps : true});
 
-export const questionModel = mongoose.model<QuestionInterface>("question", questionSchema)
+export const questionModel = mongoose.model<QuestionInterface>("Question", questionSchema)

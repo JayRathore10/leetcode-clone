@@ -1,5 +1,7 @@
 import { Request , Response , NextFunction } from "express";
-import { testCaseModel } from "../models/testCase.model";
+import { TestCaseInterface, testCaseModel } from "../models/testCase.model";
+import createTestCaseSchema from "../validation/testCase.validation";
+import { parse } from "dotenv";
 
 export const getVisibleTestCase = async(req : Request , res : Response , next  : NextFunction)=>{
   try{
@@ -53,3 +55,41 @@ export const getHiddenTestCases  = async (req : Request , res : Response , next 
   }
 }
 
+export const addTestCase = async(req : Request , res : Response , next : NextFunction)=>{
+  try{
+    const parsed = createTestCaseSchema.safeParse(req.body);
+
+    if(!parsed.success){
+      return res.status(400).json({
+        error : parsed.error.format()
+      })
+    };
+
+    const {questionId , input , output , isHidden} = req.body;
+
+    const newTestCase = await testCaseModel.create({
+      questionId ,
+      input , 
+      output, 
+      isHidden
+    });
+
+    if(!newTestCase){
+      return res.status(400).json({
+        success : false , 
+        message: "New Test case is not created"
+      });
+    }
+
+    return res.status(201).json({
+      success : true  , 
+      message : "New Test Case Created" ,
+      data : {
+        newTestCase
+      }
+    })
+
+  }catch(err){
+    next(err);
+  }
+}

@@ -4,7 +4,7 @@ export interface TestCaseInterface{
   questionId : mongoose.Schema.Types.ObjectId, 
   input : string , 
   output : string , 
-  isHidden : boolean 
+  isHidden ?: boolean 
 };
 
 const testCaseSchema = new mongoose.Schema({

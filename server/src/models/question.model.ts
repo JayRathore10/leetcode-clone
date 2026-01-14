@@ -6,7 +6,11 @@ export interface QuestionInterface {
   difficulty  : "Easy" | "Medium" | "Hard" , 
   tags : string[] , 
   constraints : string[] , 
-  example : string 
+  example: {
+    input: string;
+    output: string;
+    explanation: string;
+  };
 }
 
 const questionSchema = new mongoose.Schema<QuestionInterface>({
@@ -23,11 +27,11 @@ const questionSchema = new mongoose.Schema<QuestionInterface>({
     enum : ["Easy" , "Medium" , "Hard"]
   } , 
   tags : {
-    type : Array(String),
+    type : [String],
     default : []
   } ,
   constraints : {
-    type : Array(String)
+    type : [String]
   } , 
   example : {
     input : String  , 

@@ -65,7 +65,7 @@ export const addTestCase = async(req : Request , res : Response , next : NextFun
       })
     };
 
-    const {questionId , input , output , isHidden} = req.body;
+    const {questionId , input , output , isHidden} = parsed.data;
 
     const newTestCase = await testCaseModel.create({
       questionId ,

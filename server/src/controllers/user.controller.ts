@@ -13,9 +13,9 @@ export const test = (req : Request, res: Response, next : NextFunction)=>{
   }
 }
 
-export const getAllUsers = (req : Request , res : Response  , next : NextFunction)=>{
+export const getAllUsers = async (req : Request , res : Response  , next : NextFunction)=>{
   try{
-    const users = userModel.find();
+    const users = await userModel.find();
     if(!users){
       return res.status(404).json({
         success : false , 
@@ -29,6 +29,37 @@ export const getAllUsers = (req : Request , res : Response  , next : NextFunctio
       data : {
         users
       } 
+    });
+
+  }catch(err){
+    next(err);
+  }
+}
+
+export const getByUsername = async (req : Request, res : Response  , next : NextFunction)=>{
+  try{  
+    const {username} = req.params;
+
+    if(!username) {
+      return res.status(404).json({
+        success : false ,
+        message : "Wrong route"
+      })
+    }
+
+    const user = await userModel.findOne({username : username});
+
+    if(!user){
+      return res.status(404).json({
+        success : false ,
+        message : "User not found"
+      })
+    }
+
+    return res.status(200).json({
+      success : true , 
+      message : "User Details" ,
+      data : {user}
     });
 
   }catch(err){

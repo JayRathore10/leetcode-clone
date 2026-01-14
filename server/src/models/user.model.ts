@@ -13,7 +13,8 @@ const userSchmea = new mongoose.Schema<UserInterface>({
     type : String , 
     required : [true , "username is required"] , 
     minLength : 3 , 
-    maxLength : 20
+    maxLength : 20 , 
+    unique : true 
   } , 
   email : {
     type : String , 

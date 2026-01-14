@@ -21,7 +21,10 @@ const testCaseSchema = new mongoose.Schema({
     type : String  ,
     required : true ,
   },
-  isHidden : Boolean
+  isHidden : {
+    type : Boolean , 
+    default : false 
+  }
 });
 
 export const testCaseModel = mongoose.model("TestCase", testCaseSchema);

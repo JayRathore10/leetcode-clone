@@ -82,7 +82,7 @@ export const getAllSubmission = async (req : Request  , res : Response, next : N
       })
     }
 
-    const submissions = await submissionModel.find({userId : user._id});
+    const submissions = await submissionModel.find({userId : user._id}).sort({createdAt : -1});
 
     if(submissions.length === 0){
       return res.status(200).json({

@@ -36,9 +36,37 @@ export const addQuestion = async(req : Request , res : Response ,next : NextFunc
       data : {
         newQuestion
       }
-    });
+    });    
 
-    
+  }catch(err){
+    next(err);
+  }
+}
+
+export const deleteQuestion = async(req : Request, res : Response , next : NextFunction)=>{
+  try{
+    const questionId = req.body;
+
+    if(!questionId){
+      return res.status(404).json({
+        success : false , 
+        message : "Enter the question Id"
+      });
+    }
+
+    const question = await questionModel.findByIdAndDelete(questionId);
+
+    if(!question){
+      return res.status(404).json({
+        success : false , 
+        message : "Question Not found"
+      })
+    }
+
+    return res.status(200).json({
+      success : true , 
+      message : "Question delete successfully"
+    })
 
   }catch(err){
     next(err);

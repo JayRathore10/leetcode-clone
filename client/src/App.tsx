@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
 import './App.css'
+import { CodeEditor } from './components/CodeEditor';
+import LanguageSelect from './components/LanguageSelect';
+import axios from 'axios';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const[code , setCode] = useState("");
+  const [language , setLanguage] = useState("");
+  const [output , setOutput] = useState("");
+  const [input , setInput] = useState("");
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  async function runCode(){
+    try{
+      const res  = await axios.post(
+        "https://emkc.org/api/v2/piston/execute",
+        {
+          language : language  , 
+          version : "*" , 
+          files : [
+            {
+              name : "main" , 
+              content : code 
+            }, 
+          ],
+          stdin: input || "", 
+        } , 
+        {
+          headers : {
+            "Content-Type" : "application/json",
+          }
+        }
+      );
+
+      const {stdout, stderr} = res.data.run ;
+      setOutput(stdout || stderr || "No Output");
+      setInput("");
+    }catch(err){  
+      setOutput("Error Running Code");
+      console.log(err);
+    }
+  }
+
+ return (
+  <>
+
+    <LanguageSelect
+      language= {language}
+      setLanguage={setLanguage}
+    />
+
+    <CodeEditor
+      language={language}
+      code={code} 
+      setCode = {setCode}
+    />
+
+    <button
+      onClick={runCode}
+    >Run</button>
+
+    <pre className="terminal" >{output}</pre>
+
+  </>
+ )
 }
 
 export default App

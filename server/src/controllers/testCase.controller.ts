@@ -93,3 +93,26 @@ export const addTestCase = async(req : Request , res : Response , next : NextFun
     next(err);
   }
 }
+
+export const deleteTestCase = async(req : Request , res : Response , next : NextFunction)=>{
+  try{
+    const testCaseId = req.params.testCaseId;
+
+    const testCase = await testCaseModel.findByIdAndDelete(testCaseId);
+
+    if(!testCase){
+      return res.status(404).json({
+        success : false ,
+        message : "Not Test Case found"
+      })
+    }
+
+    return res.status(200).json({
+      success : true , 
+      message : "This test case deleted"
+    })
+
+  }catch(err){
+    next(err);
+  }
+}

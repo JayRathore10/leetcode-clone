@@ -45,7 +45,7 @@ export const addQuestion = async(req : Request , res : Response ,next : NextFunc
 
 export const deleteQuestion = async(req : Request, res : Response , next : NextFunction)=>{
   try{
-    const questionId = req.body;
+    const questionId = req.params.questionId;
 
     if(!questionId){
       return res.status(404).json({

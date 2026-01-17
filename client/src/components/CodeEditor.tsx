@@ -10,13 +10,18 @@ interface CodeEditorProps {
 const boilerplates: Record<string, string> = {
   javascript: `/**
  * Write your solution here
+ * IMPORTANT:
+ * - Do NOT return the answer
+ * - PRINT the answer using console.log()
  */
 function solution() {
 
+    // Example:
+    // console.log(answer);
 }
 
-// Example call
-console.log(solution());
+// Call the function
+solution();
 `,
 
   cpp: `#include <bits/stdc++.h>
@@ -24,9 +29,14 @@ using namespace std;
 
 /*
  Write your solution here
+ IMPORTANT:
+ - Do NOT return the answer
+ - PRINT the answer using cout
 */
 void solve() {
 
+    // Example:
+    // cout << answer << endl;
 }
 
 int main() {
@@ -36,18 +46,29 @@ int main() {
 `,
 
   python: `# Write your solution here
-def solve():
-    pass
+# IMPORTANT:
+# - Do NOT return the answer
+# - PRINT the answer using print()
 
-# Example call
-# print(solve())
+def solve():
+    # Example:
+    # print(answer)
+    pass  # Remove this line before writing your code
+
+# Call the function
+solve()
 `,
 
   java: `class Solution {
 
     // Write your solution here
+    // IMPORTANT:
+    // - Do NOT return the answer
+    // - PRINT the answer using System.out.println()
     static void solve() {
 
+        // Example:
+        // System.out.println(answer);
     }
 
     public static void main(String[] args) {
@@ -56,6 +77,7 @@ def solve():
 }
 `
 };
+
 
 
 export function CodeEditor({code , setCode , language} : CodeEditorProps){
@@ -89,8 +111,3 @@ export function CodeEditor({code , setCode , language} : CodeEditorProps){
  * 
  */
 
-/**
- * 
- * i give default value as the biolerplate code for all langauges and with a solve fuction then the function take the paramter by user 
- * 
- */

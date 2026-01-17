@@ -5,64 +5,65 @@ import LanguageSelect from './components/LanguageSelect';
 import axios from 'axios';
 
 function App() {
-  const[code , setCode] = useState("");
-  const [language , setLanguage] = useState("");
-  const [output , setOutput] = useState("");
-  const [input , setInput] = useState("");
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("");
+  const [output, setOutput] = useState("");
+  const [input, setInput] = useState("");
 
-  async function runCode(){
-    try{
-      const res  = await axios.post(
+  async function runCode() {
+    try {
+      const res = await axios.post(
         "https://emkc.org/api/v2/piston/execute",
         {
-          language : language  , 
-          version : "*" , 
-          files : [
+          language: language,
+          version: "*",
+          files: [
             {
-              name : "main" , 
-              content : code 
-            }, 
+              name: "main",
+              content: code
+            },
           ],
-          stdin: input || "", 
-        } , 
+          stdin: input || "",
+        },
         {
-          headers : {
-            "Content-Type" : "application/json",
+          headers: {
+            "Content-Type": "application/json",
           }
         }
       );
 
-      const {stdout, stderr} = res.data.run ;
+      const { stdout, stderr } = res.data.run;
       setOutput(stdout || stderr || "No Output");
       setInput("");
-    }catch(err){  
+    } catch (err) {
       setOutput("Error Running Code");
       console.log(err);
     }
   }
 
- return (
-  <>
+  return (
+    <>
 
-    <LanguageSelect
-      language= {language}
-      setLanguage={setLanguage}
-    />
+      <LanguageSelect
+        language={language}
+        setLanguage={setLanguage}
+      />
 
-    <CodeEditor
-      language={language}
-      code={code} 
-      setCode = {setCode}
-    />
+      <button
+        onClick={runCode}
+        className='run-btn'
+      >Run</button>
 
-    <button
-      onClick={runCode}
-    >Run</button>
+      <CodeEditor
+        language={language}
+        code={code}
+        setCode={setCode}
+      />
 
-    <pre className="terminal" >{output}</pre>
+      <pre className="terminal" >{output}</pre>
 
-  </>
- )
+    </>
+  )
 }
 
 export default App

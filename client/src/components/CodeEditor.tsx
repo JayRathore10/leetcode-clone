@@ -79,7 +79,6 @@ solve()
 };
 
 
-
 export function CodeEditor({code , setCode , language} : CodeEditorProps){
 
   useEffect(()=>{
@@ -111,3 +110,9 @@ export function CodeEditor({code , setCode , language} : CodeEditorProps){
  * 
  */
 
+/**
+ * 
+ * for checking 
+ * login print out put to trim kar ke whiout space i have to check with my output with trim and without space   
+ * 
+ */

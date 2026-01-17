@@ -1,6 +1,8 @@
-import {Request, Response , NextFunction} from "express";
+import {Request, Response , NextFunction, text} from "express";
 import { questionSchema } from "../validation/question.validation";
 import { questionModel } from "../models/question.model";
+import { testCaseModel } from "../models/testCase.model";
+import axios from "axios";
 
 export const addQuestion = async(req : Request , res : Response ,next : NextFunction)=>{
   try{  
@@ -67,6 +69,67 @@ export const deleteQuestion = async(req : Request, res : Response , next : NextF
       success : true , 
       message : "Question delete successfully"
     })
+
+  }catch(err){
+    next(err);
+  }
+}
+
+export const run = async(req :Request , res : Response , next : NextFunction)=>{
+  try{  
+    const {questionId , language , code} = req.body;
+
+    if(!questionId){
+      return res.status(404).json({
+        success : false , 
+        message : "Question Id is not mentioned"
+      });
+    }
+
+    const visibleTestCases = await testCaseModel.find({questionId : questionId , isHidden : false});
+
+    if(!visibleTestCases){
+      return res.status(404).json({
+        success : false ,
+        message : "Not Test Case found"
+      })
+    }
+
+    let result = [];
+
+    for(let i= 0 ;  i < visibleTestCases.length ; i++){
+      const tc = visibleTestCases[i];
+
+      const response = await axios.post(
+      "https://emkc.org/api/v2/piston/execute",
+      {
+        language,
+        version: "*",
+        files: [{ name: "main", content: code }],
+        stdin: tc.input
+      }
+    );
+
+    const actual = response.data.run.stdout.trim() ;
+    const expected = tc.output.trim();
+
+    if(actual != expected){
+      return res.status(400).json({
+        status : "Wrong Answer" ,
+        failedTest : i+1  , 
+        expected , 
+        actual 
+      });
+    }
+      result.push({test : i+1 , status : "Passed"});
+    }
+
+    return res.status(200).json({
+      success : true , 
+      data : {
+        result 
+      }
+    });
 
   }catch(err){
     next(err);

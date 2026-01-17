@@ -85,9 +85,9 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
     const { questionId, language, code } = req.body;
 
     if (!questionId || !language || !code) {
-      return res.status(404).json({
+      return res.status(400).json({
         success: false,
-        message: `${!questionId || !language || !code} is not mentioned`
+        message: `Code  , language or questionId is not mentioned`
       });
     }
 
@@ -133,9 +133,7 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
 
     return res.status(200).json({
       success: true,
-      data: {
-        result
-      }
+      result
     });
 
   } catch (err) {
@@ -185,12 +183,10 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
       if (actual !== expected) {
         return res.status(400).json({
-          data: {
             status: "Wronng Answer",
             failedTest: i + 1,
             expected,
             actual
-          }
         })
       }
 
@@ -199,9 +195,9 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
     return res.status(200).json({
       success: true,
-      data : {
-        status : "Accepted" , 
-        totalTest  : allTestCase.length
+      data: {
+        status: "Accepted",
+        totalTest: allTestCase.length
       }
     })
 

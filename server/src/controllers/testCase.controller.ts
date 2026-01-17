@@ -55,44 +55,37 @@ export const getHiddenTestCases  = async (req : Request , res : Response , next 
   }
 }
 
-export const addTestCase = async(req : Request , res : Response , next : NextFunction)=>{
-  try{
-    const parsed = createTestCaseSchema.safeParse(req.body);
+  export const addTestCase = async(req : Request , res : Response , next : NextFunction)=>{
+    try{
+      const parsed = createTestCaseSchema.safeParse(req.body);
 
-    if(!parsed.success){
-      return res.status(400).json({
-        error : parsed.error.format()
-      })
-    };
+      if(!parsed.success){
+        return res.status(400).json({
+          error : parsed.error.format()
+        })
+      };
 
-    const {questionId , input , output , isHidden} = parsed.data;
-
-    const newTestCase = await testCaseModel.create({
-      questionId ,
-      input , 
-      output, 
-      isHidden
-    });
-
-    if(!newTestCase){
-      return res.status(400).json({
-        success : false , 
-        message: "New Test case is not created"
-      });
-    }
-
-    return res.status(201).json({
-      success : true  , 
-      message : "New Test Case Created" ,
-      data : {
-        newTestCase
+      const newTestCases = await testCaseModel.insertMany(parsed.data);
+      
+      if(!newTestCases){
+        return res.status(400).json({
+          success : false , 
+          message: "New Test case is not created"
+        });
       }
-    })
 
-  }catch(err){
-    next(err);
+      return res.status(201).json({
+        success : true  , 
+        message : "New Test Case Created" ,
+        data : {
+          newTestCases
+        }
+      })
+
+    }catch(err){
+      next(err);
+    }
   }
-}
 
 export const deleteTestCase = async(req : Request , res : Response , next : NextFunction)=>{
   try{

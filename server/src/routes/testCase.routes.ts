@@ -10,4 +10,4 @@ testCaseRouter.get("/hidden/:questionId" , getHiddenTestCases);
 
 testCaseRouter.delete("/delete/:testCaseId" , deleteTestCase);
 
-testCaseRouter.post("/" , addTestCase);
+testCaseRouter.post("/add" , addTestCase);

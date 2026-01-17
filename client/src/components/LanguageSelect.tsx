@@ -6,21 +6,16 @@ interface LanguageSelectProps{
 }
 
 const languages = [
-  "javascript",
-  "typescript",
   "cpp",
+  "javascript",
   "python",
   "java",
-  "json",
-  "html",
-  "css",
 ];
 
 
 function LanguageSelect({ language , setLanguage} : LanguageSelectProps) {
   return (
     <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-      <option value="">C++</option>
 
       {languages.map((lang) => (
         <option key={lang} value={lang}>

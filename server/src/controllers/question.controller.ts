@@ -1,137 +1,212 @@
-import {Request, Response , NextFunction, text} from "express";
+import { Request, Response, NextFunction, text } from "express";
 import { questionSchema } from "../validation/question.validation";
 import { questionModel } from "../models/question.model";
 import { testCaseModel } from "../models/testCase.model";
 import axios from "axios";
 
-export const addQuestion = async(req : Request , res : Response ,next : NextFunction)=>{
-  try{  
+interface ResultInterface {
+  test: number,
+  status: string
+};
+
+export const addQuestion = async (req: Request, res: Response, next: NextFunction) => {
+  try {
     const parsed = questionSchema.safeParse(req.body);
 
-    if(!parsed.success){
+    if (!parsed.success) {
       return res.status(400).json({
-        error : parsed.error.format()
+        error: parsed.error.format()
       })
     };
 
-    const {title , description , difficulty , tags , constraints , example} = parsed.data;
+    const { title, description, difficulty, tags, constraints, example } = parsed.data;
 
     const newQuestion = await questionModel.create({
-      title , 
-      description , 
-      difficulty , 
-      tags , 
-      constraints , 
+      title,
+      description,
+      difficulty,
+      tags,
+      constraints,
       example
     });
 
-    if(!newQuestion){
+    if (!newQuestion) {
       return res.status(400).json({
-        success : false, 
-        message : "New Question is not created"
+        success: false,
+        message: "New Question is not created"
       });
     }
 
     return res.status(201).json({
-      success : true  , 
-      message : "New Question Created" , 
-      data : {
+      success: true,
+      message: "New Question Created",
+      data: {
         newQuestion
       }
-    });    
+    });
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const deleteQuestion = async(req : Request, res : Response , next : NextFunction)=>{
-  try{
+export const deleteQuestion = async (req: Request, res: Response, next: NextFunction) => {
+  try {
     const questionId = req.params.questionId;
 
-    if(!questionId){
+    if (!questionId) {
       return res.status(404).json({
-        success : false , 
-        message : "Enter the question Id"
+        success: false,
+        message: "Enter the question Id"
       });
     }
 
     const question = await questionModel.findByIdAndDelete(questionId);
 
-    if(!question){
+    if (!question) {
       return res.status(404).json({
-        success : false , 
-        message : "Question Not found"
+        success: false,
+        message: "Question Not found"
       })
     }
 
     return res.status(200).json({
-      success : true , 
-      message : "Question delete successfully"
+      success: true,
+      message: "Question delete successfully"
     })
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const run = async(req :Request , res : Response , next : NextFunction)=>{
-  try{  
-    const {questionId , language , code} = req.body;
+export const run = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { questionId, language, code } = req.body;
 
-    if(!questionId){
+    if (!questionId || !language || !code) {
       return res.status(404).json({
-        success : false , 
-        message : "Question Id is not mentioned"
+        success: false,
+        message: `${!questionId || !language || !code} is not mentioned`
       });
     }
 
-    const visibleTestCases = await testCaseModel.find({questionId : questionId , isHidden : false});
+    const visibleTestCases = await testCaseModel.find({ questionId: questionId, isHidden: false });
 
-    if(!visibleTestCases){
+    if (!visibleTestCases) {
       return res.status(404).json({
-        success : false ,
-        message : "Not Test Case found"
+        success: false,
+        message: "Not Test Case found"
       })
     }
 
-    let result = [];
+    let result: ResultInterface[] = [];
 
-    for(let i= 0 ;  i < visibleTestCases.length ; i++){
+    for (let i = 0; i < visibleTestCases.length; i++) {
       const tc = visibleTestCases[i];
 
       const response = await axios.post(
-      "https://emkc.org/api/v2/piston/execute",
-      {
-        language,
-        version: "*",
-        files: [{ name: "main", content: code }],
-        stdin: tc.input
+        "https://emkc.org/api/v2/piston/execute",
+        {
+          language,
+          version: "*",
+          files: [{ name: "main", content: code }],
+          stdin: tc.input
+        }
+      );
+
+      const actual = response.data.run.stdout.trim();
+      const expected = tc.output.trim();
+
+      if (actual != expected) {
+        return res.status(400).json({
+          data: {
+            status: "Wrong Answer",
+            failedTest: i + 1,
+            expected,
+            actual
+          }
+        });
       }
-    );
-
-    const actual = response.data.run.stdout.trim() ;
-    const expected = tc.output.trim();
-
-    if(actual != expected){
-      return res.status(400).json({
-        status : "Wrong Answer" ,
-        failedTest : i+1  , 
-        expected , 
-        actual 
-      });
-    }
-      result.push({test : i+1 , status : "Passed"});
+      result.push({ test: i + 1, status: "Passed" });
     }
 
     return res.status(200).json({
-      success : true , 
-      data : {
-        result 
+      success: true,
+      data: {
+        result
       }
     });
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
+
+export const submitCode = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { questionId, code, language } = req.body;
+
+    if (!questionId || !code || !language) {
+      return res.status(404).json({
+        success: false,
+        message: `
+          ${!questionId || !code || !language} is mention in the call
+        `
+      })
+    }
+
+    const allTestCase = await testCaseModel.find({ questionId: questionId });
+
+    if (!allTestCase) {
+      return res.status(404).json({
+        success: false,
+        message: "Test Cases are not present"
+      })
+    }
+
+    let result: ResultInterface[] = [];
+
+    for (let i = 0; i < allTestCase.length; i++) {
+      const tc = allTestCase[i];
+
+      const response = await axios.post(
+        "https://emkc.org/api/v2/piston/execute",
+        {
+          language,
+          version: "*",
+          files: [{ name: "main", content: code }],
+          stdin: tc.input
+        }
+      );
+
+      const actual = response.data.run.stdout.trim();
+      const expected = tc.output.trim();
+
+      if (actual !== expected) {
+        return res.status(400).json({
+          data: {
+            status: "Wronng Answer",
+            failedTest: i + 1,
+            expected,
+            actual
+          }
+        })
+      }
+
+      result.push({ test: i + 1, status: "Passed" })
+    }
+
+    return res.status(200).json({
+      success: true,
+      data : {
+        status : "Accepted" , 
+        totalTest  : allTestCase.length
+      }
+    })
+
+  } catch (err) {
+    next(err);
+  }
+}
+

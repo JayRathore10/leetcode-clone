@@ -119,13 +119,11 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
       const expected = tc.output.trim();
 
       if (actual != expected) {
-        return res.status(400).json({
-          data: {
+        return res.status(422).json({
             status: "Wrong Answer",
             failedTest: i + 1,
             expected,
             actual
-          }
         });
       }
       result.push({ test: i + 1, status: "Passed" });
@@ -182,7 +180,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
       const expected = tc.output.trim();
 
       if (actual !== expected) {
-        return res.status(400).json({
+        return res.status(422).json({
             status: "Wronng Answer",
             failedTest: i + 1,
             expected,
@@ -195,10 +193,8 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
     return res.status(200).json({
       success: true,
-      data: {
         status: "Accepted",
         totalTest: allTestCase.length
-      }
     })
 
   } catch (err) {

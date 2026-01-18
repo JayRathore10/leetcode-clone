@@ -1,9 +1,11 @@
 import express  , {Request , Response} from "express";
 import cors from "cors";
+import { COOKIE_SECRET } from "./configs/env.config";
 import { errorMiddleware } from "./middleware/error.middleware";
 import { userRouter } from "./routes/user.routes";
 import { questionRouter } from "./routes/question.routes";
 import { testCaseRouter } from "./routes/testCase.routes";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -15,6 +17,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
+app.use(cookieParser(COOKIE_SECRET));
 
 app.get("/"  , (req : Request, res : Response)=>{
   res.send("Hi, Jexts here!")

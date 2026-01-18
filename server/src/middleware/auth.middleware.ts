@@ -30,7 +30,7 @@ export const isUserLoggedIn = async(req : authRequest , res : Response , next : 
 }
 
 
-export const isAdminLogged = async(req : authRequest , res : Response , next : NextFunction)=>{
+export const isAdminLoggedIn = async(req : authRequest , res : Response , next : NextFunction)=>{
   try{
     const token = req.cookies.token ;
     

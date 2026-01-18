@@ -5,7 +5,8 @@ export interface UserInterface {
   email : string , 
   password : string  , 
   role : "user" | "admin" ,
-  createdAt : Date 
+  createdAt : Date , 
+  profilePic : string 
 }
 
 const userSchmea = new mongoose.Schema<UserInterface>({
@@ -37,6 +38,10 @@ const userSchmea = new mongoose.Schema<UserInterface>({
   createdAt : {
     type : Date , 
     default : Date.now
+  } ,
+  profilePic : {
+    type : String  , 
+    default : "default.jpg" 
   }
 } , {timestamps : true});
 

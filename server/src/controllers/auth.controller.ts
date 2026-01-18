@@ -107,7 +107,12 @@ export const loginUser = async (req : Request , res : Response , next : NextFunc
 
 export const logoutUser = async(req : Request, res: Response , next : NextFunction)=>{
   try{
-
+    // procted have to make middleware for it 
+    res.clearCookie("token");
+    return res.status(200).json({
+      success : true , 
+      message : "Log out successfully"
+    })
   }catch(err){
     next(err);
   }

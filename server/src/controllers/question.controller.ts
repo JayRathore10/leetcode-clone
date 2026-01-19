@@ -176,6 +176,36 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
         }
       );
 
+      // Compilation Error 
+      if(response.data.compile?.stderr){
+        return res.status(422).json({
+          status : "WA" ,
+          errorType : "Compilation Error" , 
+          message : response.data.compiler.stderr
+        })
+      } 
+
+      // Time Limit Exceeded 
+      const run = response.data.run ;
+      if(run.signal === "SIGXCPU"){
+        return res.status(422).json({
+          status : "TLE" , 
+          failedTest : i + 1 , 
+          message : "Time Limit Exceeded" 
+        })
+      }
+
+      // Runtime Error 
+      if(run.stderr){
+        return res.status(422).json({
+          status : "WA" , 
+          failedTest : i + 1 , 
+          errorType : "Runtime Error"  , 
+          messsage : run.stderr
+        })
+      }
+
+      // For wrong answer 
       const actual = response.data.run.stdout.trim();
       const expected = tc.output.trim();
 

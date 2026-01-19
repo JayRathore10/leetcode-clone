@@ -6,6 +6,7 @@ import { userRouter } from "./routes/user.routes";
 import { questionRouter } from "./routes/question.routes";
 import { testCaseRouter } from "./routes/testCase.routes";
 import cookieParser from "cookie-parser";
+import { submissionRouter } from "./routes/submission.routes";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.get("/"  , (req : Request, res : Response)=>{
 app.use("/api/users" , userRouter);
 app.use("/api/question" , questionRouter);
 app.use("/api/testcase" , testCaseRouter);
+app.use("/api/submission" , submissionRouter);
 
 app.use(errorMiddleware);
 

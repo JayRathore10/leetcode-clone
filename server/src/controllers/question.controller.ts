@@ -115,12 +115,53 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
         }
       );
 
+      // Compilation Error 
+      if(response.data.compile?.stderr){
+        return res.status(422).json({
+          status : "WA"   ,
+          errorType : "Compilation Error" , 
+          message : response.data.compile.stderr
+        })
+      }
+
+      // Time Limit Exceeded  
+      const run = response.data.run ;
+
+      if(run.signal === "SIGXCPU"){
+        return res.status(422).json({
+          status : "TLE" , 
+          failedTest : i + 1 , 
+          message : "Time Limit Exceeded"
+        })
+      }
+
+      // Memory Limit Exceeded 
+      if(run.signal === "SIGSEGV"){
+        return res.status(422).json({
+          status : "MLE" ,
+          failedTest : i + 1 , 
+          message : "Memory Limit Exceeded"
+        });
+      }
+
+      // Runtime Error
+      if(run.stderr){
+        return res.status(422).json({
+          status : "WA" , 
+          failedTest : i + 1 , 
+          errorType : "Runtime Error" , 
+          message : run.stderr
+        })
+      }
+
+      // For Wrong answer 
+      // Test Case expected != actual output 
       const actual = response.data.run.stdout.trim();
       const expected = tc.output.trim();
 
       if (actual != expected) {
         return res.status(422).json({
-            status: "Wrong Answer",
+            status: "WA",
             failedTest: i + 1,
             expected,
             actual
@@ -195,6 +236,15 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
         })
       }
 
+      // Memory Limit Exceeded 
+      if(run.signal === "SIGSEGV"){
+        return res.status(422).json({
+          status : "MLE" ,
+          failedTest : i + 1 , 
+          message  : "Memory Limit Exceeded"
+        })
+      }
+
       // Runtime Error 
       if(run.stderr){
         return res.status(422).json({
@@ -211,7 +261,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
       if (actual !== expected) {
         return res.status(422).json({
-            status: "Wronng Answer",
+            status: "WA",
             failedTest: i + 1,
             expected,
             actual

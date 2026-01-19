@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, text } from "express";
+import { Request, Response, NextFunction  } from "express";
 import { questionSchema } from "../validation/question.validation";
 import { questionModel } from "../models/question.model";
 import { testCaseModel } from "../models/testCase.model";
@@ -69,7 +69,7 @@ export const deleteQuestion = async (req: Request, res: Response, next: NextFunc
         message: "Question Not found"
       })
     }
-
+ 
     return res.status(200).json({
       success: true,
       message: "Question delete successfully"

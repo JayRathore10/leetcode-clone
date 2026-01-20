@@ -2,6 +2,7 @@ import {Request , Response , NextFunction} from "express";
 import { userModel } from "../models/user.model";
 import { success } from "zod";
 import { submissionModel } from "../models/submission.model";
+import { authRequest } from "../types/authRequest.type";
 
 export const test = (req : Request, res: Response, next : NextFunction)=>{
   try{
@@ -100,6 +101,38 @@ export const getAllSubmission = async (req : Request  , res : Response, next : N
       }
     })
 
+  }catch(err){
+    next(err);
+  }
+}
+
+export const getUserProfile = async(req : authRequest , res : Response , next : NextFunction)=>{
+  try{
+
+    if(!req.user){
+      return res.status(400).json({
+        success : false , 
+        message : "Error in getting user detail" 
+      })
+    }
+
+    const userId = req.user?._id;
+
+    const user = await userModel.findById({userId}).select("-password");
+
+    if(!user){
+      return res.status(404).json({
+        success : false , 
+        message : "User not found"
+      })
+    }
+
+    return res.status(200).json({
+      success : true , 
+      message : "User Data" , 
+      user
+    })
+    
   }catch(err){
     next(err);
   }

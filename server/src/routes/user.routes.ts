@@ -4,8 +4,9 @@ import { getAllSubmission, getAllUsers, getByUsername, getUserProfile, test } fr
 export const userRouter = Router();
 
 userRouter.get("/test" , test);
-// Make this route protected for admin 
+// Make this route admin procted  
 userRouter.get("/all", getAllUsers);
+// User protected route 
 userRouter.get("/profile"  , getUserProfile);
 userRouter.get("/:username" , getByUsername);
 userRouter.get("/:username/all-submissions" , getAllSubmission);

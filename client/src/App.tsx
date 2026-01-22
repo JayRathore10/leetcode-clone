@@ -4,6 +4,8 @@ import { Login } from "./components/Login";
 import { SignUp } from "./components/SignUp";
 import { NotFound } from "./components/NotFound";
 import { Home } from "./components/Home";
+import { Problems } from "./components/Problems";
+import { ProblemDetail } from "./components/ProblemDetail";
 
 function App(){
   return(
@@ -12,6 +14,8 @@ function App(){
         <Route path="/" element={<Home/>}   />
         <Route path="/login" element={<Login />} />  
         <Route path="/signup" element={<SignUp />} />  
+        <Route path="/problemset" element={<Problems/>}/>
+        <Route path="/problem-detail" element={<ProblemDetail />} />
         <Route path="*" element = {<NotFound/>} />  
       </Routes>    
     </>
@@ -19,3 +23,9 @@ function App(){
 }
 
 export default App;
+
+/**
+ * 
+ * When Someone open the Start Solving it goes to the Login page if its not login simple 
+ * 
+ */

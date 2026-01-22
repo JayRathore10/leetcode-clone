@@ -1,0 +1,100 @@
+.problems-page {
+  padding: 40px 80px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.problems-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #34435E;
+  background-color: #132E32;
+  color: #FFFFFF;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #9CA3AF;
+}
+
+.filter-select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #34435E;
+  background-color: #132E32;
+  color: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+}
+
+.problems-table {
+  background-color: #34435E;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 140px 120px;
+  align-items: center;
+  padding: 14px 20px;
+}
+
+.table-header {
+  background-color: #0A2239;
+  font-size: 13px;
+  color: #CBD5E1;
+}
+
+.table-row {
+  border-top: 1px solid #0A2239;
+  font-size: 14px;
+}
+
+.table-row:hover {
+  background-color: #132E32;
+}
+
+.problem-title {
+  cursor: pointer;
+}
+
+.problem-title:hover {
+  text-decoration: underline;
+}
+
+.status {
+  color: #9CA3AF;
+}
+
+.status.done {
+  color: #22C55E;
+}
+
+.difficulty {
+  font-weight: 500;
+}
+
+.difficulty.easy {
+  color: #22C55E;
+}
+
+.difficulty.medium {
+  color: #FACC15;
+}
+
+.difficulty.hard {
+  color: #EF4444;
+}

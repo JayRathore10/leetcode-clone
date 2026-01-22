@@ -6,6 +6,7 @@ import { NotFound } from "./components/NotFound";
 import { Home } from "./components/Home";
 import { Problems } from "./components/Problems";
 import { ProblemDetail } from "./components/ProblemDetail";
+import { Profile } from "./components/Profile";
 
 function App(){
   return(
@@ -16,6 +17,7 @@ function App(){
         <Route path="/signup" element={<SignUp />} />  
         <Route path="/problemset" element={<Problems/>}/>
         <Route path="/problem-detail" element={<ProblemDetail />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element = {<NotFound/>} />  
       </Routes>    
     </>

@@ -97,3 +97,22 @@
 .editor-container {
   flex: 1;
 }
+
+.problem-constraints {
+  margin-top: 28px;
+}
+
+.problem-constraints h3 {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.problem-constraints ul {
+  padding-left: 20px;
+}
+
+.problem-constraints li {
+  font-size: 14px;
+  color: #CBD5E1;
+  margin-bottom: 6px;
+}

@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
-  border-bottom: 1px solid #34435E;
+  border-bottom: 2px solid #34435E;
 }
 
 .header-left {
@@ -20,7 +20,7 @@
   color: #FFFFFF;
   cursor: pointer;
 }
-
+  
 .header-nav {
   display: flex;
   gap: 24px;

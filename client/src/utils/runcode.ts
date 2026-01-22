@@ -15,8 +15,8 @@ export async function runCode({setOutput , code , language , questionId} : RunCo
       questionId : questionId
     })  ;
 
-    console.log(res.data.result);
     setOutput(JSON.stringify(res.data.result, null, 2));
+    console.log(res.data.result);
 
   }catch(err){
     console.error(err);

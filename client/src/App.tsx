@@ -3,13 +3,13 @@ import "./App.css";
 import { Login } from "./components/Login";
 import { SignUp } from "./components/SignUp";
 import { NotFound } from "./components/NotFound";
-import { Header } from "./components/Header";
+import { Home } from "./components/Home";
 
 function App(){
   return(
     <>
       <Routes>
-        <Route path="/" element={<Header/>}   />
+        <Route path="/" element={<Home/>}   />
         <Route path="/login" element={<Login />} />  
         <Route path="/signup" element={<SignUp />} />  
         <Route path="*" element = {<NotFound/>} />  

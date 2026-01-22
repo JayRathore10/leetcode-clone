@@ -1,0 +1,66 @@
+import "../styles/Home.css";
+import { Header } from "./Header";
+export function Home() {
+  return (
+    <>
+      <Header />
+      <div className="home">
+        <section className="hero">
+          <h1 className="hero-title">
+            Become a Better Programmer
+          </h1>
+          <p className="hero-subtitle">
+            Practice coding problems, prepare for interviews, and compete with developers worldwide.
+          </p>
+
+          <div className="hero-actions">
+            <button className="primary-btn">Start Solving</button>
+            <button className="secondary-btn">Explore Problems</button>
+          </div>
+        </section>
+
+        <section className="stats">
+          <div className="stat-card">
+            <h2>2,500+</h2>
+            <p>Problems</p>
+          </div>
+          <div className="stat-card">
+            <h2>20+</h2>
+            <p>Topics</p>
+          </div>
+          <div className="stat-card">
+            <h2>Weekly</h2>
+            <p>Contests</p>
+          </div>
+          <div className="stat-card">
+            <h2>Global</h2>
+            <p>Leaderboard</p>
+          </div>
+        </section>
+
+        <section className="features">
+          <div className="feature-card">
+            <h3>Structured Learning</h3>
+            <p>
+              Solve problems by topic and difficulty to build strong fundamentals.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <h3>Interview Preparation</h3>
+            <p>
+              Curated problems asked by top tech companies.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <h3>Compete & Improve</h3>
+            <p>
+              Join contests and track your progress on the leaderboard.
+            </p>
+          </div>
+        </section>
+      </div>
+    </>
+  );
+}

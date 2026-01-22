@@ -41,7 +41,7 @@ export function SignUp() {
             placeholder="Create a password"
             required
           />
-        </div>
+        </div>  
 
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirm Password</label>

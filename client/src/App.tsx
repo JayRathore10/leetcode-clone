@@ -8,6 +8,8 @@ import { Problems } from "./components/Problems";
 import { ProblemDetail } from "./components/ProblemDetail";
 import { Profile } from "./components/Profile";
 import { Contests } from "./components/Contests";
+import { Discuss } from "./components/Discuss";
+import { Leaderboard } from "./components/Leaderboard";
 
 function App(){
   return(
@@ -19,7 +21,9 @@ function App(){
         <Route path="/problemset" element={<Problems/>}/>
         <Route path="/problem-detail" element={<ProblemDetail />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/contests" element={<Contests/>}/> 
+        <Route path="/contests" element={<Contests/>}/>
+        <Route path="/discuss" element={<Discuss/>}/>
+        <Route path="/leaderboard" element={<Leaderboard/>}/> 
         <Route path="*" element = {<NotFound/>} /> 
       </Routes>    
     </>

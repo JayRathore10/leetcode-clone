@@ -67,7 +67,8 @@
   background-color: #132E32;
 }
 
-.problem-title {
+.problem-title { 
+  font-weight: bold;
   cursor: pointer;
 }
 

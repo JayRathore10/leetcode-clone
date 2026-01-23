@@ -11,16 +11,16 @@ export function ProblemDetail() {
     <>
       <Header />
 
-      <div className="problem-detail">
-        <div className="problem-left">
-          <h1 className="problem-title">Two Sum</h1>
+      <div className="pd-problem-detail">
+        <div className="pd-problem-left">
+          <h1 className="pd-problem-title">Two Sum</h1>
 
-          <div className="problem-meta">
-            <span className="difficulty easy">Easy</span>
-            <span className="acceptance">Acceptance: 49%</span>
+          <div className="pd-problem-meta">
+            <span className="pd-difficulty easy">Easy</span>
+            <span className="pd-acceptance">Acceptance: 49%</span>
           </div>
 
-          <div className="problem-description">
+          <div className="pd-problem-description">
             <p>
               Given an array of integers <strong>nums</strong> and an integer
               <strong> target</strong>, return indices of the two numbers such
@@ -33,7 +33,7 @@ export function ProblemDetail() {
             </p>
           </div>
 
-          <div className="problem-example">
+          <div className="pd-problem-example">
             <h3>Example</h3>
             <pre>
 Input: nums = [2,7,11,15], target = 9
@@ -41,7 +41,7 @@ Output: 0 1
             </pre>
           </div>
 
-          <div className="problem-constraints">
+          <div className="pd-problem-constraints">
             <h3>Constraints</h3>
             <ul>
               <li>2 ≤ nums.length ≤ 10⁴</li>
@@ -52,10 +52,10 @@ Output: 0 1
           </div>
         </div>
 
-        <div className="problem-right">
-          <div className="editor-header">
+        <div className="pd-problem-right">
+          <div className="pd-editor-header">
             <select
-              className="language-select"
+              className="pd-language-select"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
             >
@@ -65,13 +65,13 @@ Output: 0 1
               <option value="java">Java</option>
             </select>
 
-            <div className="editor-actions">
-              <button className="secondary-btn">Run</button>
-              <button className="primary-btn">Submit</button>
+            <div className="pd-editor-actions">
+              <button className="pd-secondary-btn">Run</button>
+              <button className="pd-primary-btn">Submit</button>
             </div>
           </div>
 
-          <div className="editor-container">
+          <div className="pd-editor-container">
             <CodeEditor
               code={code}
               setCode={setCode}

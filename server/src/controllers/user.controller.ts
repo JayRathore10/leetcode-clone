@@ -65,6 +65,7 @@ export const getByUsername = async (req : Request, res : Response  , next : Next
       data : {user}
     });
 
+    
   }catch(err){
     next(err);
   }

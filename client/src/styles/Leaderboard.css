@@ -1,0 +1,33 @@
+.leaderboard-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.leaderboard-card {
+  background-color: #34435E;
+  padding: 48px 64px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.leaderboard-card h1 {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.leaderboard-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+}
+
+.leaderboard-text {
+  font-size: 14px;
+  color: #CBD5E1;
+  max-width: 420px;
+}

@@ -7,6 +7,7 @@ import { Home } from "./components/Home";
 import { Problems } from "./components/Problems";
 import { ProblemDetail } from "./components/ProblemDetail";
 import { Profile } from "./components/Profile";
+import { Contests } from "./components/Contests";
 
 function App(){
   return(
@@ -18,7 +19,8 @@ function App(){
         <Route path="/problemset" element={<Problems/>}/>
         <Route path="/problem-detail" element={<ProblemDetail />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="*" element = {<NotFound/>} />  
+        <Route path="/contests" element={<Contests/>}/> 
+        <Route path="*" element = {<NotFound/>} /> 
       </Routes>    
     </>
   );

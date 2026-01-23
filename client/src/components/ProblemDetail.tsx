@@ -17,8 +17,8 @@ export function ProblemDetail() {
           <h1 className="pd-problem-title">Two Sum</h1>
 
           <div className="pd-problem-meta">
-            <span className="pd-difficulty easy">Easy</span>
-            <span className="pd-acceptance">Acceptance: 49%</span>
+            <span className="difficulty easy">Easy</span>
+            <span className="acceptance">Acceptance: 49%</span>
           </div>
 
           <div className="pd-problem-description">

@@ -27,8 +27,9 @@
 }
 
 .nav-link {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
+  text-decoration: none;
   color: #CBD5E1;
   cursor: pointer;
   transition: color 0.2s ease;

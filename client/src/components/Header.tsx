@@ -1,21 +1,42 @@
+import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/Header.css";
 
 export function Header() {
+  const navigate = useNavigate();
+
   return (
     <header className="header">
       <div className="header-left">
-        <span className="logo">CodeChamp</span>
+        <span className="logo" onClick={() => navigate("/")}>
+          CodeChamp
+        </span>
       </div>
 
       <nav className="header-nav">
-        <a className="nav-link">Problems</a>
-        <a className="nav-link">Contests</a>
-        <a className="nav-link">Discuss</a>
-        <a className="nav-link">Leaderboard</a>
+        <NavLink to="/problemset" className="nav-link">
+          Problems
+        </NavLink>
+
+        <NavLink to="/contests" className="nav-link">
+          Contests
+        </NavLink>
+
+        <NavLink to="/discuss" className="nav-link">
+          Discuss
+        </NavLink>
+
+        <NavLink to="/leaderboard" className="nav-link">
+          Leaderboard
+        </NavLink>
       </nav>
 
       <div className="header-right">
-        <button className="header-btn">Login</button>
+        <button
+          className="header-btn"
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </button>
       </div>
     </header>
   );

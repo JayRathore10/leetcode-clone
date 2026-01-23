@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/auth.css";
 
 export function SignUp() {
+  const navigate = useNavigate();
+
   return (
     <div className="login-container">
       <h1 className="login-title">Create an Account</h1>
@@ -60,7 +63,13 @@ export function SignUp() {
       </form>
 
       <p className="signup-text">
-        Already have an account? <span className="signup-link">Login</span>
+        Already have an account?{" "}
+        <span
+          className="signup-link"
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </span>
       </p>
     </div>
   );

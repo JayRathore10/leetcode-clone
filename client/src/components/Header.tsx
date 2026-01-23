@@ -13,7 +13,7 @@ export function Header() {
       </div>
 
       <nav className="header-nav">
-        <NavLink to="/problemset" className="nav-link">
+        <NavLink to="/problems" className="nav-link">
           Problems
         </NavLink>
 

@@ -2,9 +2,9 @@ import { Editor } from "@monaco-editor/react";
 import { useEffect } from "react";
 
 interface CodeEditorProps {
-  code : string  ,
-  setCode : React.Dispatch<React.SetStateAction<string>>;
-  language : string 
+  code: string,
+  setCode: React.Dispatch<React.SetStateAction<string>>;
+  language: string
 }
 
 const boilerplates: Record<string, string> = {
@@ -79,22 +79,30 @@ solve()
 };
 
 
-export function CodeEditor({code , setCode , language} : CodeEditorProps){
+export function CodeEditor({ code, setCode, language }: CodeEditorProps) {
 
-  useEffect(()=>{
+  useEffect(() => {
     setCode(boilerplates[language || "cpp"]);
-  } , [language , setCode])
+  }, [language, setCode])
 
-  return(
+  return (
     <>
       <Editor
-        height = "90vh"
-        width= "90vw"
+        height="90vh"
+        width="90vw"
         language={language || "cpp"}
         theme="vs-dark"
         value={code}
         onChange={(value) => setCode(value || "")}
-      /> 
+        options={{
+          fontSize: 16,         
+          fontFamily: "Fira Code, monospace",
+          lineHeight: 22,
+          minimap: { enabled: false },
+          wordWrap: "on",
+          automaticLayout: true
+        }}
+      />
     </>
   )
 }

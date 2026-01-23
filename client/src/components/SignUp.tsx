@@ -4,6 +4,15 @@ import "../styles/auth.css";
 export function SignUp() {
   const navigate = useNavigate();
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // ❌ stop page reload
+
+    // TODO: call signup API here
+
+    // temporary success redirect
+    navigate("/login");
+  };
+
   return (
     <div className="login-container">
       <h1 className="login-title">Create an Account</h1>
@@ -12,7 +21,7 @@ export function SignUp() {
         Enter your information to get started
       </p>
 
-      <form className="login-form">
+      <form className="login-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
           <input

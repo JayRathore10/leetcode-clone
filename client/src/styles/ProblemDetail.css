@@ -84,14 +84,35 @@
 }
 
 .pd-secondary-btn{
-  padding-top: 2px ;
-  padding-bottom: 2px
+  padding: 2px 24px;
+  background-color: #34435E;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
+.pd-secondary-btn:hover {
+  background-color: #1F3B4D;
+}
 
 .pd-primary-btn{
-  padding-top: 2px ;
-  padding-bottom: 2px
+  padding: 2px 24px;
+  background-color: #34435E;
+  color: #07e60f;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pd-primary-btn:hover {
+  background-color: #1F3B4D;
 }
 
 .pd-editor-container {

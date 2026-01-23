@@ -1,6 +1,9 @@
 import "../styles/Home.css";
 import { Header } from "./Header";
+import {useNavigate } from "react-router-dom";
+
 export function Home() {
+  const navigate = useNavigate();
   return (
     <>
       <Header />
@@ -14,8 +17,12 @@ export function Home() {
           </p>
 
           <div className="hero-actions">
-            <button className="primary-btn">Start Solving</button>
-            <button className="secondary-btn">Explore Problems</button>
+            <button className="primary-btn"
+              onClick={()=> navigate("/problems") }
+            >Start Solving</button>
+            <button className="secondary-btn"
+              onClick={()=> navigate("/problems")}
+            >Explore Problems</button>
           </div>
         </section>
 

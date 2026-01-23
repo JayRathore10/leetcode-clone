@@ -1,6 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/Leaderboard.css";
 
 export function Leaderboard() {
+
+  const navigate = useNavigate();
+
   return (
     <div className="leaderboard-page">
       <div className="leaderboard-card">
@@ -10,7 +14,13 @@ export function Leaderboard() {
           Global rankings, ratings, and competitive statistics
           will be introduced shortly.
         </p>
-      </div>
+        <button
+          className="back-home-btn"
+          onClick={() => navigate("/")}
+        >
+          ← Back to Home
+        </button>
+      </div>  
     </div>
   );
 }

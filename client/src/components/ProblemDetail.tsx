@@ -13,6 +13,7 @@ export function ProblemDetail() {
 
       <div className="pd-problem-detail">
         <div className="pd-problem-left">
+          <h1 className="pd-problem-title-number">1. </h1>
           <h1 className="pd-problem-title">Two Sum</h1>
 
           <div className="pd-problem-meta">

@@ -18,10 +18,11 @@
   border-left: 1px solid #34435E;
 }
 
-.pd-problem-title {
+.pd-problem-title , .pd-problem-title-number {
   font-size: 28px;
   font-weight: 600;
   margin-bottom: 12px;
+  display: inline;
 }
 
 .pd-problem-meta {

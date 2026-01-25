@@ -1,7 +1,3 @@
-import dotenv from "dotenv";
-
-dotenv.config({path : `.env.${process.env.NODE_ENV || 'development'}.local`});
-
-export const {
-  BACKEND_URL
-} = process.env;
+export const env  = {
+  backendUrl : import.meta.env.VITE_BACKEND_URL
+} 

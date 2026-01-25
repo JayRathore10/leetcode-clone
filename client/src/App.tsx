@@ -10,8 +10,19 @@ import { Profile } from "./components/Profile";
 import { Contests } from "./components/Contests";
 import { Discuss } from "./components/Discuss";
 import { Leaderboard } from "./components/Leaderboard";
-
+import { useEffect } from "react";
+import axios from "axios";
+import { env } from "./configs/env.config";
 function App(){
+
+  useEffect(()=>{
+    const call = async()=>{
+      const res = await axios.get(`${env.backendUrl}`);
+      console.log(res);
+    }
+    call();
+  })
+
   return(
     <>
       <Routes>

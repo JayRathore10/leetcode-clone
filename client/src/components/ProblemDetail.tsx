@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CodeEditor } from "../components/CodeEditor";
 import "../styles/ProblemDetail.css";
 import { Header } from "./Header";
-import { useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
+import axios from "axios";
+import { env } from "../configs/env.config";
 
 export function ProblemDetail() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
 
   const {id} = useParams<{id : string}>();
-  const[question , setQuestion] = useState<[]>([]);
+  // const[question , setQuestion] = useState<[]>([]);
+
+  useEffect(()=>{
+    const fetchQuestion = async()=>{
+      const response = await axios.get(`${env.backendUrl}/api/question/${id}`);
+      console.log(response.data);
+    }
+
+    fetchQuestion();
+  }, [id]);
 
   return (
     <>

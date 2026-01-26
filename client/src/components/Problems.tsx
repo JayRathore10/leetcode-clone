@@ -80,7 +80,12 @@ export function Problems() {
           {questions.length !== 0 &&
             questions.map((question, index) => (
               <div className="table-row" key={index}
-                onClick={() => navigate(`/problems/${question._id}`)}
+                onClick={() => navigate(`/problems/${question._id}` , {
+                  state : {
+                    successRate : question.successRate ,
+                    questionNumber : index + 1
+                  } , 
+                })}
               >
                 <span className="status done">{index + 1}</span>
                 <span className="problem-title">{question.title}</span>

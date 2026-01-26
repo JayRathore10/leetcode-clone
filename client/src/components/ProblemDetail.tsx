@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CodeEditor } from "../components/CodeEditor";
 import "../styles/ProblemDetail.css";
 import { Header } from "./Header";
-import { useParams } from "react-router-dom";
+import { useParams , useLocation } from "react-router-dom";
 import axios from "axios";
 import { env } from "../configs/env.config";
 
@@ -25,6 +25,10 @@ export function ProblemDetail() {
   const { id } = useParams<{ id: string }>();
   const [question, setQuestion] = useState<Question>();
 
+  const location = useLocation();
+  const successRate = location.state?.successRate ;
+  const questionNumber = location.state?.questionNumber;
+
   useEffect(() => {
     const fetchQuestion = async () => {
       const response = await axios.get(`${env.backendUrl}/api/question/${id}`);
@@ -41,12 +45,12 @@ export function ProblemDetail() {
 
       <div className="pd-problem-detail">
         <div className="pd-problem-left">
-          <h1 className="pd-problem-title-number">1. </h1>
+          <h1 className="pd-problem-title-number">{questionNumber}. </h1>
           <h1 className="pd-problem-title">{question?.title}</h1>
 
           <div className="pd-problem-meta">
             <span className={`difficulty ${question?.difficulty.toLowerCase()}`}>{question?.difficulty}</span>
-            <span className="acceptance">Acceptance: 49%</span>
+            <span className="acceptance">Acceptance: {successRate}%</span>
           </div>
 
           <div className="pd-problem-description">

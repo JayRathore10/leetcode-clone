@@ -3,6 +3,7 @@ import { questionSchema } from "../validation/question.validation";
 import { questionModel } from "../models/question.model";
 import { testCaseModel } from "../models/testCase.model";
 import axios from "axios";
+import { authRequest } from "../types/authRequest.type";
 
 interface ResultInterface {
   test: number,
@@ -282,3 +283,25 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
   }
 }
 
+export const getAllQuestions = async(req : authRequest , res : Response  , next : NextFunction)=>{
+  try{
+    // for question(problem Table)
+    const allQuestions = await questionModel.find();
+
+    if(allQuestions.length === 0){
+      return res.status(404).json({
+        success : false , 
+        message : "There is not question in database"
+      });
+    }
+
+    return res.status(200).json({
+      success : false , 
+      message : "This are all questions" , 
+      questions : allQuestions, 
+    });
+
+  }catch(err){
+    next(err);
+  }
+}

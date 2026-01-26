@@ -296,7 +296,7 @@ export const getAllQuestions = async(req : authRequest , res : Response  , next 
     }
 
     return res.status(200).json({
-      success : false , 
+      success : true , 
       message : "This are all questions" , 
       questions : allQuestions, 
     });

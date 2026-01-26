@@ -1,7 +1,43 @@
+import { useEffect, useState } from "react";
 import "../styles/Problems.css";
 import { Header } from "./Header";
+import { env } from "../configs/env.config";
+import axios from "axios";
+
+type Question  = {
+  _id : string ;
+  title : string  ;
+  difficulty : string ;
+  successRate : number
+}
 
 export function Problems() {
+
+  const [questions , setQuestions] = useState<Question[]>([]);
+
+  const random = (min : number , max : number)=>
+    Math.floor(Math.random() * (max - min + 1)) + min ;
+  
+
+  useEffect(()=>{
+    const fetchAllQuestions = async()=>{
+      const response = await axios.get(`${env.backendUrl}/api/question/all`);
+      console.log(response.data);
+      setQuestions(
+        response.data.questions.map((q : Question)=>({
+          ...q , 
+          successRate :
+           q.difficulty === "Easy" 
+            ? random(65 , 90) 
+            : q.difficulty === "Medium" 
+            ? random(40 , 65) 
+            : random(15 , 40) 
+        }))
+      );
+    } 
+    fetchAllQuestions() ; 
+  } , []);
+
   return (
     <>
     <Header />
@@ -33,32 +69,22 @@ export function Problems() {
 
       <div className="problems-table">
         <div className="table-header">
-          <span>Status</span>
+          <span>S.No</span>
           <span>Title</span>
           <span>Difficulty</span>
           <span>Acceptance</span>
         </div>
 
-        <div className="table-row">
-          <span className="status done">✔</span>
-          <span className="problem-title">Two Sum</span>
-          <span className="difficulty easy">Easy</span>
-          <span>49%</span>
-        </div>
-
-        <div className="table-row">
-          <span className="status">•</span>
-          <span className="problem-title">Longest Substring Without Repeating Characters</span>
-          <span className="difficulty medium">Medium</span>
-          <span>34%</span>
-        </div>
-
-        <div className="table-row">
-          <span className="status">•</span>
-          <span className="problem-title">Merge K Sorted Lists</span>
-          <span className="difficulty hard">Hard</span>
-          <span>29%</span>
-        </div>
+        {questions.length !== 0 && 
+          questions.map((question , index)=>(
+            <div className="table-row"  key={index}>
+            <span className="status done">{index + 1}</span>
+            <span className="problem-title">{question.title}</span>
+            <span className={`difficulty ${question.difficulty.toLowerCase()}`}>{question.difficulty}</span>
+            <span>{question.successRate}%</span>
+          </div>
+          ))
+        }
       </div>
     </div>
   </>

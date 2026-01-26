@@ -3,6 +3,7 @@ import "../styles/Problems.css";
 import { Header } from "./Header";
 import { env } from "../configs/env.config";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 type Question  = {
   _id : string ;
@@ -18,6 +19,7 @@ export function Problems() {
   const random = (min : number , max : number)=>
     Math.floor(Math.random() * (max - min + 1)) + min ;
   
+  const navigate = useNavigate();
 
   useEffect(()=>{
     const fetchAllQuestions = async()=>{
@@ -77,7 +79,9 @@ export function Problems() {
 
         {questions.length !== 0 && 
           questions.map((question , index)=>(
-            <div className="table-row"  key={index}>
+            <div className="table-row"  key={index}
+              onClick={()=> navigate(`/problems/${question._id}`)}
+            >
             <span className="status done">{index + 1}</span>
             <span className="problem-title">{question.title}</span>
             <span className={`difficulty ${question.difficulty.toLowerCase()}`}>{question.difficulty}</span>

@@ -2,21 +2,34 @@ import { useEffect, useState } from "react";
 import { CodeEditor } from "../components/CodeEditor";
 import "../styles/ProblemDetail.css";
 import { Header } from "./Header";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { env } from "../configs/env.config";
 
+type Question =  {
+  title : string, 
+  description : string , 
+  difficulty  : "Easy" | "Medium" | "Hard" , 
+  tags : string[] , 
+  constraints : string[] , 
+  example: {
+    input: string;
+    output: string;
+    explanation: string;
+  };
+}
 export function ProblemDetail() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
 
-  const {id} = useParams<{id : string}>();
-  // const[question , setQuestion] = useState<[]>([]);
+  const { id } = useParams<{ id: string }>();
+  const [question, setQuestion] = useState<Question>();
 
-  useEffect(()=>{
-    const fetchQuestion = async()=>{
+  useEffect(() => {
+    const fetchQuestion = async () => {
       const response = await axios.get(`${env.backendUrl}/api/question/${id}`);
       console.log(response.data);
+      setQuestion(response.data.question);
     }
 
     fetchQuestion();
@@ -29,44 +42,43 @@ export function ProblemDetail() {
       <div className="pd-problem-detail">
         <div className="pd-problem-left">
           <h1 className="pd-problem-title-number">1. </h1>
-          <h1 className="pd-problem-title">Two Sum</h1>
+          <h1 className="pd-problem-title">{question?.title}</h1>
 
           <div className="pd-problem-meta">
-            <span className="difficulty easy">Easy</span>
+            <span className={`difficulty ${question?.difficulty.toLowerCase()}`}>{question?.difficulty}</span>
             <span className="acceptance">Acceptance: 49%</span>
           </div>
 
           <div className="pd-problem-description">
             <p>
-              Given an array of integers <strong>nums</strong> and an integer
-              <strong> target</strong>, return indices of the two numbers such
-              that they add up to target.
-            </p>
-
-            <p>
-              You may assume that each input would have exactly one solution,
-              and you may not use the same element twice.
+              {question?.description}
             </p>
           </div>
 
           <div className="pd-problem-example">
             <h3>Example</h3>
             <pre>
-Input: nums = [2,7,11,15], target = 9
-Output: 0 1
+              Input: {question?.example.input} &nbsp;
+              Output: {question?.example.output}
+              <p>
+                <br></br>
+                Explanation: {question?.example.explanation}
+              </p>
             </pre>
           </div>
 
           <div className="pd-problem-constraints">
             <h3>Constraints</h3>
             <ul>
-              <li>2 ≤ nums.length ≤ 10⁴</li>
-              <li>-10⁹ ≤ nums[i] ≤ 10⁹</li>
-              <li>-10⁹ ≤ target ≤ 10⁹</li>
-              <li>Only one valid answer exists</li>
+             <li>{question?.constraints.map((con , index)=>(
+              <li key={index}>
+                {con}
+              </li>
+             ) )}</li>
             </ul>
           </div>
         </div>
+
 
         <div className="pd-problem-right">
           <div className="pd-editor-header">

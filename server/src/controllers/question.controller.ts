@@ -305,3 +305,27 @@ export const getAllQuestions = async(req : authRequest , res : Response  , next 
     next(err);
   }
 }
+
+export const getQuestion = async(req : authRequest  , res: Response , next : NextFunction)=>{
+  try{
+    const id = req.params.id;
+
+    const question = await questionModel.findById(id);
+
+    if(!question){
+      return res.status(404).json({
+        success : false  , 
+        message : "Question not found"
+      })
+    }
+
+    return res.status(200).json({
+      success : true , 
+      message : "This is Question" , 
+      question 
+    })
+
+  }catch(err){
+    next(err);
+  }
+}

@@ -2,10 +2,14 @@ import { useState } from "react";
 import { CodeEditor } from "../components/CodeEditor";
 import "../styles/ProblemDetail.css";
 import { Header } from "./Header";
+import { useParams } from "react-router-dom";
 
 export function ProblemDetail() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
+
+  const {id} = useParams<{id : string}>();
+  const[question , setQuestion] = useState<[]>([]);
 
   return (
     <>

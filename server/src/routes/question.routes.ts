@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { addQuestion, deleteQuestion, getAllQuestions, run, submitCode } from "../controllers/question.controller";
+import { addQuestion, deleteQuestion, getAllQuestions, getQuestion, run, submitCode } from "../controllers/question.controller";
 
 export const questionRouter = Router();
 
@@ -9,6 +9,7 @@ questionRouter.post("/add" , addQuestion);
 
 // not protected right now 
 questionRouter.get("/all" , getAllQuestions);
+questionRouter.get("/:id" , getQuestion);;
 
 // needed to be user Protected 
 questionRouter.post("/run", run);

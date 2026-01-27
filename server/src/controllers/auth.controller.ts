@@ -24,7 +24,7 @@ export const registerNewUser = async(req :Request , res : Response , next : Next
     if(isUserExist){
       return res.status(400).json({
         success: false , 
-        messaeg : "User Already exist"
+        message : "User Already Exists"
       })
     }
 

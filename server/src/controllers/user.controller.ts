@@ -1,6 +1,5 @@
 import {Request , Response , NextFunction} from "express";
 import { userModel } from "../models/user.model";
-import { success } from "zod";
 import { submissionModel } from "../models/submission.model";
 import { authRequest } from "../types/authRequest.type";
 
@@ -50,7 +49,7 @@ export const getByUsername = async (req : Request, res : Response  , next : Next
       })
     }
 
-    const user = await userModel.findOne({username : username});
+    const user = await userModel.findOne({username : username}).select("-password");
 
     if(!user){
       return res.status(404).json({
@@ -62,7 +61,7 @@ export const getByUsername = async (req : Request, res : Response  , next : Next
     return res.status(200).json({
       success : true , 
       message : "User Details" ,
-      data : {user}
+      user 
     });
 
     

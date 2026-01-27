@@ -7,6 +7,7 @@ import { questionRouter } from "./routes/question.routes";
 import { testCaseRouter } from "./routes/testCase.routes";
 import cookieParser from "cookie-parser";
 import { submissionRouter } from "./routes/submission.routes";
+import { authRouter } from "./routes/auth.routes";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/users" , userRouter);
 app.use("/api/question" , questionRouter);
 app.use("/api/testcase" , testCaseRouter);
 app.use("/api/submission" , submissionRouter);
+app.use("/api/auth" , authRouter);
 
 app.use(errorMiddleware);
 

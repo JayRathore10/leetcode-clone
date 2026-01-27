@@ -1,6 +1,24 @@
+import { useEffect, useState } from "react";
 import "../styles/Profile.css";
 import { Header } from "./Header";
+import axios from "axios";
+import { env } from "../configs/env.config";
+
 export function Profile() {
+
+  const [username , setUserName] = useState<string>("");
+  useEffect(()=>{
+    const fetchUserData = async()=>{
+      /*
+        we have to use /api/users/profile to get the user detail but we dont have user middleware connection so we use /api/users/:username to the info about the user  
+      */
+      setUserName("Jay_Rathore1");
+      const response = await axios.get(`${env.backendUrl}/api/users/${username}`);
+      console.log(response.data);
+    }
+    fetchUserData();
+  } , [username]);
+
   return (
     <>
     <Header />

@@ -17,8 +17,12 @@ function App(){
 
   useEffect(()=>{
     const call = async()=>{
-      const res = await axios.get(`${env.backendUrl}`);
-      console.log(res);
+      try{
+        const res = await axios.get(`${env.backendUrl}`);
+        console.log(res);
+      }catch(error){
+        console.log(error);
+      }
     }
     call();
   })

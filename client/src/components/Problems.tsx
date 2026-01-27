@@ -23,19 +23,23 @@ export function Problems() {
 
   useEffect(() => {
     const fetchAllQuestions = async () => {
-      const response = await axios.get(`${env.backendUrl}/api/question/all`);
-      console.log(response.data);
-      setQuestions(
-        response.data.questions.map((q: Question) => ({
-          ...q,
-          successRate:
-            q.difficulty === "Easy"
-              ? random(65, 90)
-              : q.difficulty === "Medium"
-                ? random(40, 65)
-                : random(15, 40)
-        }))
-      );
+      try {
+        const response = await axios.get(`${env.backendUrl}/api/question/all`);
+        console.log(response.data);
+        setQuestions(
+          response.data.questions.map((q: Question) => ({
+            ...q,
+            successRate:
+              q.difficulty === "Easy"
+                ? random(65, 90)
+                : q.difficulty === "Medium"
+                  ? random(40, 65)
+                  : random(15, 40)
+          }))
+        );
+      } catch (error) {
+        console.log(error)
+      }
     }
     fetchAllQuestions();
   }, []);
@@ -80,11 +84,11 @@ export function Problems() {
           {questions.length !== 0 &&
             questions.map((question, index) => (
               <div className="table-row" key={index}
-                onClick={() => navigate(`/problems/${question._id}` , {
-                  state : {
-                    successRate : question.successRate ,
-                    questionNumber : index + 1
-                  } , 
+                onClick={() => navigate(`/problems/${question._id}`, {
+                  state: {
+                    successRate: question.successRate,
+                    questionNumber: index + 1
+                  },
                 })}
               >
                 <span className="status done">{index + 1}</span>

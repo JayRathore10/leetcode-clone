@@ -31,11 +31,15 @@ export function ProblemDetail() {
 
   useEffect(() => {
     const fetchQuestion = async () => {
-      const response = await axios.get(`${env.backendUrl}/api/question/${id}`);
-      console.log(response.data);
-      setQuestion(response.data.question);
-    }
 
+      try{
+        const response = await axios.get(`${env.backendUrl}/api/question/${id}`);
+        console.log(response.data);
+        setQuestion(response.data.question);
+      }catch(error){
+        console.log(error);
+      }
+    }
     fetchQuestion();
   }, [id]);
 

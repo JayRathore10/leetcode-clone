@@ -1,15 +1,26 @@
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styles/auth.css";
+import { useState } from "react";
+import { env } from "../configs/env.config";
 
 export function Login() {
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // stop page reload
+  const [email , setEmail] = useState<string>("");
+  const [password , setPassword] = useState<string>("");
 
-    // TODO: call login API here
-
-    // temporary success redirect
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); 
+    try{
+      const response = await axios.post(`${env.backendUrl}/api/auth/login` , {
+        email ,
+        password
+      })
+      console.log(response.data);
+    }catch(error){
+      console.log(error);
+    }
     navigate("/problemset");
   };
 
@@ -23,13 +34,14 @@ export function Login() {
 
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="email">Email or Username</label>
+          <label htmlFor="email">Email</label>
           <input
             type="text"
             id="email"
             name="email"
-            placeholder="Enter your email or username"
+            placeholder="Enter your email"
             required
+            onChange={(e)=> setEmail(e.target.value)}
           />
         </div>
 
@@ -41,6 +53,7 @@ export function Login() {
             name="password"
             placeholder="Enter your password"
             required
+            onChange={(e)=> setPassword(e.target.value)}
           />
         </div>
 

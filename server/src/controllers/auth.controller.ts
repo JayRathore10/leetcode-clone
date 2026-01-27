@@ -17,7 +17,7 @@ export const registerNewUser = async(req :Request , res : Response , next : Next
       })
     }
 
-    const {username , email , password} = parsed.data;
+    const {username , email , password , name} = parsed.data;
 
     const isUserExist = await userModel.findOne({email});
 
@@ -34,7 +34,8 @@ export const registerNewUser = async(req :Request , res : Response , next : Next
     const user = await userModel.create({
       username , 
       email , 
-      password : hashedPassword
+      password : hashedPassword ,
+      name 
     });
 
     if(!user){

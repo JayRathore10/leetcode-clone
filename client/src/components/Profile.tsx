@@ -13,7 +13,7 @@ type User = {
 export function Profile() {
 
   const [username , setUserName] = useState<string>("");
-  const [user , setUser] = useState<>();
+  const [user , setUser] = useState<User>();
 
   useEffect(()=>{
     const fetchUserData = async()=>{
@@ -22,7 +22,7 @@ export function Profile() {
       */
       setUserName("Jay_Rathore1");
       const response = await axios.get(`${env.backendUrl}/api/users/${username}`);
-      console.log(response.data);
+      setUser(response.data.user);
     }
     fetchUserData();
   } , [username]);
@@ -35,8 +35,8 @@ export function Profile() {
         <div className="profile-left">
           <div className="avatar">JR</div>
           <div className="profile-info">
-            <h1>Jay Rathore</h1>
-            <p className="username">@jayrathore</p>
+            <h1>{user?.name}</h1>
+            <p className="username">@{user?.username}</p>
           </div>
         </div>
 

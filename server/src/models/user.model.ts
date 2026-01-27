@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 import {Types} from "mongoose";
+import { maxLength, minLength } from "zod";
 
 export interface UserInterface {
   _id : Types.ObjectId;
   username : string , 
+  name : string , 
   email : string , 
   password : string  , 
   role : "user" | "admin" ,
@@ -19,6 +21,12 @@ const userSchmea = new mongoose.Schema<UserInterface>({
     maxLength : 20 , 
     unique : true 
   } , 
+  name : {
+    type : String , 
+    required : [true , "name is required"]  , 
+    minLength : 2 , 
+    maxLength : 20 
+  }, 
   email : {
     type : String , 
     required : [true, "Email is required"] , 

@@ -4,9 +4,17 @@ import { Header } from "./Header";
 import axios from "axios";
 import { env } from "../configs/env.config";
 
+type User = {
+  username : string ;
+  email : string ;
+  name : string
+}
+
 export function Profile() {
 
   const [username , setUserName] = useState<string>("");
+  const [user , setUser] = useState<>();
+
   useEffect(()=>{
     const fetchUserData = async()=>{
       /*

@@ -86,8 +86,8 @@ export function ProblemDetail() {
              ) )}</li>
             </ul>
           </div>
-        </div>
-
+          <TestCasePanel questionId={id!} />     
+        </div>        
 
         <div className="pd-problem-right">
           <div className="pd-editor-header">
@@ -115,7 +115,6 @@ export function ProblemDetail() {
               language={language}
             />
           </div>
-          <TestCasePanel questionId={id!} />
         </div>
       </div>
     </>

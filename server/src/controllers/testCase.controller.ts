@@ -19,9 +19,7 @@ export const getVisibleTestCase = async(req : Request , res : Response , next  :
   return res.status(200).json({
     success : true , 
     message : "These are the test cases" , 
-    data : {
-      testCases
-    }
+    testCases 
   })
 
   }catch(err){
@@ -45,9 +43,7 @@ export const getHiddenTestCases  = async (req : Request , res : Response , next 
     return res.status(200).json({
       success : true , 
       message : "These are all hidden test cases" ,
-      data :  {
-        testCases
-      } 
+      testCases 
     });
 
   }catch(error){
@@ -77,9 +73,7 @@ export const getHiddenTestCases  = async (req : Request , res : Response , next 
       return res.status(201).json({
         success : true  , 
         message : "New Test Case Created" ,
-        data : {
-          newTestCases
-        }
+        newTestCases
       })
 
     }catch(err){

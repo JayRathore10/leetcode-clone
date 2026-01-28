@@ -1,0 +1,47 @@
+.tc-panel {
+  background: #0a2239;
+  border-top: 1px solid #34435e;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.tc-header {
+  font-size: 15px;
+  font-weight: 600;
+  color: #90caf9;
+  margin-bottom: 12px;
+}
+
+.tc-case {
+  margin-bottom: 16px;
+}
+
+.tc-case-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #cfd8dc;
+  margin-bottom: 6px;
+}
+
+.tc-block {
+  margin-bottom: 8px;
+}
+
+.tc-block h4 {
+  font-size: 13px;
+  color: #9fbcd1;
+  margin-bottom: 4px;
+}
+
+.tc-block pre {
+  background: #020d18;
+  padding: 10px;
+  border-radius: 6px;
+  color: #e0e0e0;
+}
+
+.tc-loading,
+.tc-empty {
+  color: #90caf9;
+  padding: 12px;
+}

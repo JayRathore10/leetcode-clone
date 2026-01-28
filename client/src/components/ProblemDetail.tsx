@@ -5,6 +5,7 @@ import { Header } from "./Header";
 import { useParams , useLocation } from "react-router-dom";
 import axios from "axios";
 import { env } from "../configs/env.config";
+import { TestCasePanel } from "./TestCasePanel";
 
 type Question =  {
   title : string, 
@@ -114,6 +115,7 @@ export function ProblemDetail() {
               language={language}
             />
           </div>
+          <TestCasePanel questionId={id!} />
         </div>
       </div>
     </>

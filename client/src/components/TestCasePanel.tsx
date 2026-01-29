@@ -12,7 +12,7 @@ interface TestCase {
 
 interface TestCasePanelProps {
   questionId: string;
-  output : testCaseFields[]
+  output : testCaseFields
 }
 
 export function TestCasePanel({ questionId , output }: TestCasePanelProps) {

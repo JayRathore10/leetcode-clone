@@ -24,7 +24,7 @@ type Question =  {
 export function ProblemDetail() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
-  const [output , setOutput] = useState<testCaseFields[]>([]);
+  const [output , setOutput] = useState<testCaseFields>({});
 
   const { id } = useParams<{ id: string }>();
   const [question, setQuestion] = useState<Question>();
@@ -89,7 +89,7 @@ export function ProblemDetail() {
              ) )}</li>
             </ul>
           </div>
-          <TestCasePanel questionId={id!} output={output} />     
+          <TestCasePanel questionId={id!} output={output!} />     
         </div>        
 
         <div className="pd-problem-right">

@@ -2,19 +2,21 @@ import axios from "axios";
 import { env } from "../configs/env.config";
 
 export interface testCaseFields  {
-  test : number , 
-  status : string , 
-  failedTest : number , 
-  expected : string , 
-  actual : string  , 
-  errorType : string
+  success ?:number
+  test ?: number , 
+  status ?: string , 
+  failedTest ?: number , 
+  expected ?: string , 
+  actual ?: string  , 
+  errorType ?: string ,
+  message ?: string
 };
 
 export interface RunCodeInterface {
   code : string , 
   language : string , 
   questionNumber : string 
-  setOutput : React.Dispatch<React.SetStateAction<testCaseFields[]>>;
+  setOutput : React.Dispatch<React.SetStateAction<testCaseFields>>;
 } 
 
 export async function runCode({ setOutput, code , language , questionNumber} : RunCodeInterface){
@@ -31,6 +33,6 @@ export async function runCode({ setOutput, code , language , questionNumber} : R
 
   }catch(err){
     console.error(err);
-    setOutput([]);
+    setOutput({});
   }
 }

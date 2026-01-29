@@ -225,7 +225,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
       // Compilation Error 
       if(response.data.compile?.stderr){
-        return res.status(422).json({
+        return res.status(200).json({
           status : "WA" ,
           errorType : "Compilation Error" , 
           message : response.data.compiler.stderr
@@ -235,7 +235,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
       // Time Limit Exceeded 
       const run = response.data.run ;
       if(run.signal === "SIGXCPU"){
-        return res.status(422).json({
+        return res.status(200).json({
           status : "TLE" , 
           failedTest : i + 1 , 
           message : "Time Limit Exceeded" 
@@ -244,7 +244,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
       // Memory Limit Exceeded 
       if(run.signal === "SIGSEGV"){
-        return res.status(422).json({
+        return res.status(200).json({
           status : "MLE" ,
           failedTest : i + 1 , 
           message  : "Memory Limit Exceeded"
@@ -253,7 +253,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
       // Runtime Error 
       if(run.stderr){
-        return res.status(422).json({
+        return res.status(200).json({
           status : "WA" , 
           failedTest : i + 1 , 
           errorType : "Runtime Error"  , 
@@ -266,7 +266,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
       const expected = tc.output.trim();
 
       if (actual !== expected) {
-        return res.status(422).json({
+        return res.status(200).json({
             status: "WA",
             failedTest: i + 1,
             expected,

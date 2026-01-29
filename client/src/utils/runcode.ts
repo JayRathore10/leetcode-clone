@@ -2,14 +2,10 @@ import axios from "axios";
 import { env } from "../configs/env.config";
 
 export interface testCaseFields  {
-  success ?:number
-  test ?: number , 
-  status ?: string , 
+  success ?: boolean
+  status ?: "Accepted" | "WA" | "TLE" | "MLE" , 
   failedTest ?: number , 
   expected ?: string , 
-  actual ?: string  , 
-  errorType ?: string ,
-  message ?: string
 };
 
 export interface RunCodeInterface {
@@ -28,7 +24,7 @@ export async function runCode({ setOutput, code , language , questionNumber} : R
     })  ;
 
     // setOutput(JSON.stringify(res.data.result, null, 2));
-    setOutput(res.data.result);
+    setOutput(res.data);
     console.log(res.data.result);
 
   }catch(err){

@@ -12,10 +12,10 @@ interface TestCase {
 
 interface TestCasePanelProps {
   questionId: string;
-  output : testCaseFields
+  output: testCaseFields
 }
 
-export function TestCasePanel({ questionId , output }: TestCasePanelProps) {
+export function TestCasePanel({ questionId, output }: TestCasePanelProps) {
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,25 +47,36 @@ export function TestCasePanel({ questionId , output }: TestCasePanelProps) {
 
   return (
     <div className="tc-panel">
-      <div className="tc-header">Test Cases</div>
+      {testCases.map((tc, index) => {
+        const testIndex = index + 1;
 
-      {testCases.map((tc, index) => (
-        <div key={tc._id} className="tc-case">
-          <div className="tc-case-title">
-            Example {index + 1}
-          </div>
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const isIdle = !output;
+        const isFailed = output?.failedTest === testIndex || output?.success === false;
+        const isPassed = output?.success === true && !isFailed;
 
-          <div className="tc-block">
-            <h4>Input</h4>
-            <pre>{tc.input}</pre>
-          </div>
+        let caseClass = "tc-case-idle";
+        if (isPassed) caseClass = "tc-case-passed";
+        if (isFailed) caseClass = "tc-case-failed";
 
-          <div className="tc-block">
-            <h4>Expected Output</h4>
-            <pre>{tc.output}</pre>
+        return (
+          <div key={tc._id} className={`tc-case ${caseClass}`}>
+            <div className={`tc-case-title ${caseClass}`}>
+              Example {testIndex}
+            </div>
+
+            <div className="tc-block">
+              <h4>Input</h4>
+              <pre>{tc.input}</pre>
+            </div>
+
+            <div className="tc-block">
+              <h4>Output</h4>
+              <pre>{tc.output}</pre>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

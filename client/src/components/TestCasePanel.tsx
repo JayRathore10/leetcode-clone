@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { env } from "../configs/env.config";
+import { testCaseFields } from "../utils/runcode";
 import "../styles/TestCasePanel.css";
 
 interface TestCase {
@@ -11,9 +12,10 @@ interface TestCase {
 
 interface TestCasePanelProps {
   questionId: string;
+  output : testCaseFields[]
 }
 
-export function TestCasePanel({ questionId }: TestCasePanelProps) {
+export function TestCasePanel({ questionId , output }: TestCasePanelProps) {
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [loading, setLoading] = useState(true);
 

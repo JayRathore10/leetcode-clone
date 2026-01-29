@@ -7,7 +7,7 @@ import axios from "axios";
 import { env } from "../configs/env.config";
 import { TestCasePanel } from "./TestCasePanel";
 import { runCode } from '../utils/runcode';
-
+import { testCaseFields } from "../utils/runcode";
 
 type Question =  {
   title : string, 
@@ -24,6 +24,7 @@ type Question =  {
 export function ProblemDetail() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
+  const [output , setOutput] = useState<testCaseFields[]>([]);
 
   const { id } = useParams<{ id: string }>();
   const [question, setQuestion] = useState<Question>();
@@ -88,7 +89,7 @@ export function ProblemDetail() {
              ) )}</li>
             </ul>
           </div>
-          <TestCasePanel questionId={id!} />     
+          <TestCasePanel questionId={id!} output={output} />     
         </div>        
 
         <div className="pd-problem-right">
@@ -106,7 +107,7 @@ export function ProblemDetail() {
 
             <div className="pd-editor-actions">
               <button className="pd-secondary-btn"
-                onClick={()=> runCode({code , language , questionNumber : id!})}
+                onClick={()=> runCode({ setOutput , code , language , questionNumber : id!})}
               >Run</button>
               <button className="pd-primary-btn">Submit</button>
             </div>

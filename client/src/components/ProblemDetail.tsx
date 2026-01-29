@@ -6,6 +6,8 @@ import { useParams , useLocation } from "react-router-dom";
 import axios from "axios";
 import { env } from "../configs/env.config";
 import { TestCasePanel } from "./TestCasePanel";
+import { runCode } from '../utils/runcode';
+
 
 type Question =  {
   title : string, 
@@ -28,7 +30,7 @@ export function ProblemDetail() {
 
   const location = useLocation();
   const successRate = location.state?.successRate ;
-  const questionNumber = location.state?.questionNumber;
+  const questionNumber : string = location.state?.questionNumber;
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -103,7 +105,9 @@ export function ProblemDetail() {
             </select>
 
             <div className="pd-editor-actions">
-              <button className="pd-secondary-btn">Run</button>
+              <button className="pd-secondary-btn"
+                onClick={()=> runCode({code , language , questionNumber : id!})}
+              >Run</button>
               <button className="pd-primary-btn">Submit</button>
             </div>
           </div>

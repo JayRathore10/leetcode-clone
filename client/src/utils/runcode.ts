@@ -7,6 +7,7 @@ export interface testCaseFields  {
   failedTest ?: number , 
   expected ?: string , 
   actual ?: string
+  message ?: string
 };
 
 export interface RunCodeInterface {

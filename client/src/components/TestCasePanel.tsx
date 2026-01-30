@@ -12,7 +12,7 @@ interface TestCase {
 
 interface TestCasePanelProps {
   questionId: string;
-  output: testCaseFields ,
+  output: testCaseFields,
   isRunning: boolean
 }
 
@@ -41,19 +41,19 @@ export function TestCasePanel({ questionId, output, isRunning }: TestCasePanelPr
   if (loading) {
     return <div className="tc-loading">Loading test cases...</div>;
   }
-  
-    const isPending = isRunning  ;
-    // console.log(isRunning);
-    if (isRunning) {
-      return (
-        <div className="tc-panel">
-          <div className="tc-pending">
-            <span className="spinner" />
-            Running your code...
-          </div>
+
+  const isPending = isRunning;
+  // console.log(isRunning);
+  if (isRunning) {
+    return (
+      <div className="tc-panel">
+        <div className="tc-pending">
+          <span className="spinner" />
+          Running your code...
         </div>
-      );
-    }
+      </div>
+    );
+  }
 
   if (testCases.length === 0) {
     return <div className="tc-empty">No test cases available</div>;
@@ -89,14 +89,24 @@ export function TestCasePanel({ questionId, output, isRunning }: TestCasePanelPr
             {
               isFailed ?
                 <>
-                  <div className="tc-block">
-                    <h4>Expected</h4>
-                    <pre>{output?.expected}</pre>
-                  </div>
-                  <div className="tc-block">
-                    <h4>Actual Output</h4>
-                    <pre>{output?.actual}</pre>
-                  </div>
+                  {
+                    output?.message ?
+                      <div className="tc-block">
+                        <h4>Error Happens</h4>
+                        <pre>{output?.message}</pre>
+                      </div>
+                      :
+                      <>
+                        <div className="tc-block">
+                          <h4>Expected</h4>
+                          <pre>{output?.expected}</pre>
+                        </div>
+                        <div className="tc-block">
+                          <h4>Actual Output</h4>
+                          <pre>{output?.actual}</pre>
+                        </div>
+                      </>
+                  }
                 </>
                 :
                 <div className="tc-block">

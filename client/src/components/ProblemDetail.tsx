@@ -25,6 +25,7 @@ export function ProblemDetail() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
   const [output , setOutput] = useState<testCaseFields>({});
+  const [isRunning , setIsRunning] = useState<boolean>(false);
 
   const { id } = useParams<{ id: string }>();
   const [question, setQuestion] = useState<Question>();
@@ -89,7 +90,7 @@ export function ProblemDetail() {
              ) )}</li>
             </ul>
           </div>
-          <TestCasePanel questionId={id!} output={output!} />     
+          <TestCasePanel questionId={id!} output={output!} isRunning= {isRunning} />     
         </div>        
 
         <div className="pd-problem-right">
@@ -107,7 +108,7 @@ export function ProblemDetail() {
 
             <div className="pd-editor-actions">
               <button className="pd-secondary-btn"
-                onClick={()=> runCode({ setOutput , code , language , questionNumber : id!})}
+                onClick={()=> runCode({ setOutput , code , language , questionNumber : id! , setIsRunning})}
               >Run</button>
               <button className="pd-primary-btn">Submit</button>
             </div>

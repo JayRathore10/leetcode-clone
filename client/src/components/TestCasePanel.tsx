@@ -12,10 +12,11 @@ interface TestCase {
 
 interface TestCasePanelProps {
   questionId: string;
-  output: testCaseFields
+  output: testCaseFields ,
+  isRunning: boolean
 }
 
-export function TestCasePanel({ questionId, output }: TestCasePanelProps) {
+export function TestCasePanel({ questionId, output, isRunning }: TestCasePanelProps) {
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -40,10 +41,24 @@ export function TestCasePanel({ questionId, output }: TestCasePanelProps) {
   if (loading) {
     return <div className="tc-loading">Loading test cases...</div>;
   }
+  
+    const isPending = isRunning  ;
+    // console.log(isRunning);
+    if (isRunning) {
+      return (
+        <div className="tc-panel">
+          <div className="tc-pending">
+            <span className="spinner" />
+            Running your code...
+          </div>
+        </div>
+      );
+    }
 
   if (testCases.length === 0) {
     return <div className="tc-empty">No test cases available</div>;
   }
+
 
   return (
     <div className="tc-panel">
@@ -58,6 +73,7 @@ export function TestCasePanel({ questionId, output }: TestCasePanelProps) {
         let caseClass = "tc-case-idle";
         if (isPassed) caseClass = "tc-case-passed";
         if (isFailed) caseClass = "tc-case-failed";
+        if (isPending) caseClass = "tc-case-pending";
 
         return (
           <div key={tc._id} className={`tc-case ${caseClass}`}>

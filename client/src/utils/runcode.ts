@@ -13,11 +13,15 @@ export interface RunCodeInterface {
   code : string , 
   language : string , 
   questionNumber : string 
-  setOutput : React.Dispatch<React.SetStateAction<testCaseFields>>;
+  setOutput : React.Dispatch<React.SetStateAction<testCaseFields >>;
+  setIsRunning : React.Dispatch<React.SetStateAction<boolean>>;
 } 
 
-export async function runCode({ setOutput, code , language , questionNumber} : RunCodeInterface){
+export async function runCode({ setOutput, code , language , questionNumber , setIsRunning} : RunCodeInterface){
   try{
+
+    setIsRunning(true);
+
     const res = await axios.post(`${env.backendUrl}/api/question/run` , {
       code , 
       language , 
@@ -31,5 +35,7 @@ export async function runCode({ setOutput, code , language , questionNumber} : R
   }catch(err){
     console.error(err);
     setOutput({});
+  }finally{
+    setIsRunning(false);
   }
 }

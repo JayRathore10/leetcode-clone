@@ -75,11 +75,11 @@ export function TestCasePanel({ questionId, output }: TestCasePanelProps) {
                 <>
                   <div className="tc-block">
                     <h4>Expected</h4>
-                    <pre>{output.expected}</pre>
+                    <pre>{output?.expected}</pre>
                   </div>
                   <div className="tc-block">
                     <h4>Actual Output</h4>
-                    <pre>{output.actual}</pre>
+                    <pre>{output?.actual}</pre>
                   </div>
                 </>
                 :

@@ -8,6 +8,7 @@ import { env } from "../configs/env.config";
 import { TestCasePanel } from "./TestCasePanel";
 import { runCode } from '../utils/runcode';
 import { testCaseFields } from "../utils/runcode";
+import { SubmitPanel } from "./SubmitPanel";
 
 type Question =  {
   title : string, 
@@ -21,11 +22,17 @@ type Question =  {
     explanation: string;
   };
 }
+
+type panelModeType = "testcase" | "submit" ;
+
 export function ProblemDetail() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
   const [output , setOutput] = useState<testCaseFields>({});
   const [isRunning , setIsRunning] = useState<boolean>(false);
+  const [panelMode , setPanelMode] = useState<panelModeType>("testcase");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [submitResult , setSubmitResult] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
   const [question, setQuestion] = useState<Question>();
@@ -47,6 +54,28 @@ export function ProblemDetail() {
     }
     fetchQuestion();
   }, [id]);
+
+  const submitCodeHandler = async()=>{
+    setIsRunning(true);
+    setPanelMode("testcase");
+
+    try{
+      const response = await axios.post(`${env.backendUrl}/api/question/submit`  , {
+        questionId : id ,
+        code , 
+        language
+      });
+
+      setPanelMode("submit");
+      setSubmitResult(response.data);
+
+    }catch(err){
+      console.log(err);
+    }finally{
+      setIsRunning(false);
+    }
+
+  }
 
   return (
     <>
@@ -90,7 +119,17 @@ export function ProblemDetail() {
              ) )}</li>
             </ul>
           </div>
-          <TestCasePanel questionId={id!} output={output!} isRunning= {isRunning} />     
+          {panelMode === "testcase" && (
+            <TestCasePanel questionId={id!} output={output!} isRunning= {isRunning} />     
+          )}
+
+          {panelMode === "submit" && (
+            <SubmitPanel 
+              result={submitResult}
+              onClose={()=> setPanelMode("testcase")}
+            />
+          )}
+
         </div>        
 
         <div className="pd-problem-right">
@@ -110,7 +149,10 @@ export function ProblemDetail() {
               <button className="pd-secondary-btn"
                 onClick={()=> runCode({ setOutput , code , language , questionNumber : id! , setIsRunning})}
               >Run</button>
-              <button className="pd-primary-btn">Submit</button>
+              <button className="pd-primary-btn"
+                onClick={submitCodeHandler}
+                disabled= {isRunning}
+              >Submit</button>
             </div>
           </div>
 

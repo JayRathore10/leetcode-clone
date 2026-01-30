@@ -1,0 +1,64 @@
+.submit-panel {
+  background: #0a2239;
+  border-top: 2px solid #34435e;
+  padding: 16px;
+  animation: slideDown 0.35s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.submit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submit-close {
+  background: none;
+  border: none;
+  color: #cfd8dc;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.submit-status {
+  margin: 12px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.submit-status.Accepted {
+  color: #22c55e;
+}
+
+.submit-status.WA,
+.submit-status.TLE,
+.submit-status.MLE {
+  color: #ef4444;
+}
+
+.submit-message {
+  margin: 10px;
+  background: #020d18;
+  padding: 10px;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-weight: bolder;
+}
+
+.outputs-gap{
+  margin-bottom: 10px;
+}
+
+.failed-test-cases , .total-test-cases{
+  font-weight: bolder;
+}

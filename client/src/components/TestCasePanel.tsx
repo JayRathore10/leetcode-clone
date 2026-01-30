@@ -43,7 +43,6 @@ export function TestCasePanel({ questionId, output, isRunning }: TestCasePanelPr
   }
 
   const isPending = isRunning;
-  // console.log(isRunning);
   if (isRunning) {
     return (
       <div className="tc-panel">

@@ -270,7 +270,8 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
             status: "WA",
             failedTest: i + 1,
             expected,
-            actual
+            actual,
+            totalTest : allTestCase.length
         })
       }
 

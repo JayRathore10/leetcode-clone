@@ -6,6 +6,7 @@ export interface testCaseFields  {
   status ?: "Accepted" | "WA" | "TLE" | "MLE" , 
   failedTest ?: number , 
   expected ?: string , 
+  actual ?: string
 };
 
 export interface RunCodeInterface {

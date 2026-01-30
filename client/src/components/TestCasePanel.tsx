@@ -51,7 +51,7 @@ export function TestCasePanel({ questionId, output }: TestCasePanelProps) {
         const testIndex = index + 1;
 
         const isIdle = !output;
-        if(isIdle){/* pass eslint */}
+        if (isIdle) {/* pass eslint */ }
         const isFailed = output?.failedTest === testIndex || output?.success === false;
         const isPassed = output?.success === true && !isFailed;
 
@@ -70,10 +70,25 @@ export function TestCasePanel({ questionId, output }: TestCasePanelProps) {
               <pre>{tc.input}</pre>
             </div>
 
-            <div className="tc-block">
-              <h4>Output</h4>
-              <pre>{tc.output}</pre>
-            </div>
+            {
+              isFailed ?
+                <>
+                  <div className="tc-block">
+                    <h4>Expected</h4>
+                    <pre>{output.expected}</pre>
+                  </div>
+                  <div className="tc-block">
+                    <h4>Actual Output</h4>
+                    <pre>{output.actual}</pre>
+                  </div>
+                </>
+                :
+                <div className="tc-block">
+                  <h4>Output</h4>
+                  <pre>{tc.output}</pre>
+                </div>
+            }
+
           </div>
         );
       })}

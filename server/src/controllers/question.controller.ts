@@ -338,7 +338,7 @@ export const getQuestion = async(req : authRequest  , res: Response , next : Nex
 
 export const totalQuestion = async(req : authRequest , res : Response , next : NextFunction)=>{
   try{
-    const totalQuestios = await questionModel.find();
+    const totalQuestion = await questionModel.find();
 
     if(totalQuestion.length === 0 ){
       return res.status(400).json({

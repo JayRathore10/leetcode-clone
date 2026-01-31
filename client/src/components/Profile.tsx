@@ -98,14 +98,24 @@ export function Profile() {
 
     const fetchAllQuestions = async()=>{
       try{
-        const response = axios.
+        const response = await axios.get(`${env.backendUrl}/api/question/total`);
+        const totalQuestions = response.data.totalQuestion;
+
+        /**
+         * 
+         * total unique solve questions / total number of questions 
+         * 
+         */
+
+        setRating(Math.floor(totalQuestions / totalSolved)*100);
       }catch(error){
         console.log(error);
       }
     }
 
+    fetchAllQuestions();
     fetchUserSubmissions();
-  }, []);
+  }, [totalSolved]);
 
   return (
     <>
@@ -123,7 +133,7 @@ export function Profile() {
           <div className="profile-right">
             <div className="rating-card">
               <span className="rating-title">Rating</span>
-              <span className="rating-value">1540</span>
+              <span className="rating-value">{rating}</span>
             </div>
           </div>
         </div>

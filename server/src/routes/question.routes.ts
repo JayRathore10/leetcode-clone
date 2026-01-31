@@ -9,13 +9,13 @@ questionRouter.post("/add" , addQuestion);
 
 // not protected right now 
 questionRouter.get("/all" , getAllQuestions);
-questionRouter.get("/:id" , getQuestion);;
 
 // needed to be user Protected 
 questionRouter.post("/run", run);
 questionRouter.post("/submit" , submitCode );
 questionRouter.get("/total" , totalQuestion);
 
+questionRouter.get("/:id" , getQuestion);;
 
 /**
  * Task : 

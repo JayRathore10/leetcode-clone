@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { addQuestion, deleteQuestion, getAllQuestions, getQuestion, run, submitCode } from "../controllers/question.controller";
+import { addQuestion, deleteQuestion, getAllQuestions, getQuestion, run, submitCode, totalQuestion } from "../controllers/question.controller";
 
 export const questionRouter = Router();
 
@@ -14,6 +14,7 @@ questionRouter.get("/:id" , getQuestion);;
 // needed to be user Protected 
 questionRouter.post("/run", run);
 questionRouter.post("/submit" , submitCode );
+questionRouter.get("/total" , totalQuestion);
 
 
 /**

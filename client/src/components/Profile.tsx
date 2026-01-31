@@ -32,6 +32,7 @@ export function Profile() {
   const [hard , setHard] = useState<number>(0);
   const [medium , setMedium] = useState<number>(0);
   const [totalSolved , setTotalSolved] = useState<number>(0);
+  const [rating , setRating] = useState<number>(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -52,7 +53,8 @@ export function Profile() {
   }, [username]);
 
   useEffect(() => {
-    const userSubmissions = async () => {
+
+    const fetchUserSubmissions = async () => {
       try {
         const response = await axios.get(`${env.backendUrl}/api/submission/`);
         console.log(response.data);
@@ -94,7 +96,15 @@ export function Profile() {
       }
     }
 
-    userSubmissions();
+    const fetchAllQuestions = async()=>{
+      try{
+        const response = axios.
+      }catch(error){
+        console.log(error);
+      }
+    }
+
+    fetchUserSubmissions();
   }, []);
 
   return (

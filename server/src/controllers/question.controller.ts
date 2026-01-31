@@ -335,3 +335,25 @@ export const getQuestion = async(req : authRequest  , res: Response , next : Nex
     next(err);
   }
 }
+
+export const totalQuestion = async(req : authRequest , res : Response , next : NextFunction)=>{
+  try{
+    const totalQuestios = await questionModel.find();
+
+    if(totalQuestion.length === 0 ){
+      return res.status(400).json({
+        success : false   , 
+        message : "There are no questions in database"
+      })
+    }
+
+    return res.status(200).json({
+      success : true ,  
+      message : "Total Number of Questions" , 
+      totalQuestion : totalQuestion.length
+    })
+
+  }catch(error){
+    next(error);
+  }
+}

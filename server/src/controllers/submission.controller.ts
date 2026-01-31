@@ -16,7 +16,7 @@ export const addSubmission = async(req : authRequest,  res : Response , next : N
       })
     }
 
-    const {questionId , code ,language , status} = parsed.data;
+    const {questionId , code ,language , status , title} = parsed.data;
 
     const newSubmission = await submissionModel.create({
       userId , 
@@ -24,6 +24,7 @@ export const addSubmission = async(req : authRequest,  res : Response , next : N
       code , 
       language , 
       status ,
+      title 
     });
 
     if(!newSubmission){
@@ -48,7 +49,11 @@ export const userAllSubmission = async(req : authRequest , res : Response , next
   try{
     const userId = req.user?._id.toString();
 
-    const userSubmissions = await submissionModel.find({userId});
+    const userSubmissions = await submissionModel.
+    find({userId}).
+    sort({createdAt : -1}). 
+    limit(12).
+    lean();
 
     if(userSubmissions.length === 0){
       /**

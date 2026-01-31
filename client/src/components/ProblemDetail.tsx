@@ -74,7 +74,8 @@ export function ProblemDetail() {
         code , 
         language , 
         userId : `6978bfac5ba09e71d7453352` ,
-        status : response.data.status
+        status : response.data.status , 
+        title : question?.title
       });
 
       console.log(submissionResponse.data);

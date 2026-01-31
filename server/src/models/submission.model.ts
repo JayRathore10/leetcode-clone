@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 export interface SubmissionInterface {
   userId : mongoose.Schema.Types.ObjectId, 
   questionId : mongoose.Schema.Types.ObjectId , 
+  title : string , 
   code : string   , 
   language : string ,
   status : "Accepted" | "WA" | "TLE" | "MLE" , 
@@ -20,6 +21,10 @@ const submissionSchema = new mongoose.Schema({
     ref : "Question"  , 
     required : true ,
   } , 
+  title : {
+    type: String, 
+    required : true 
+  } ,
   code : {
     type : String , 
     required : true ,

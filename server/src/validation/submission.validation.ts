@@ -5,4 +5,5 @@ export const submissionSchema = z.object({
   code : z.string() , 
   language : z.string() ,
   status : z.string() ,
+  title : z.string()
 })

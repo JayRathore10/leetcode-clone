@@ -10,10 +10,21 @@ type User = {
   name: string
 }
 
+type Submission = {
+  _id: string;
+  status: "Accepted" | "WA" | "TLE" | "MLE";
+  language: string;
+  createdAt: string;
+  questionId: string,
+  title: string,
+};
+
+
 export function Profile() {
 
   const [username, setUserName] = useState<string>("");
   const [user, setUser] = useState<User>();
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,6 +49,7 @@ export function Profile() {
       try {
         const response = await axios.get(`${env.backendUrl}/api/submission/`);
         console.log(response.data);
+        setSubmissions(response.data.submissions);
       } catch (error) {
         console.log(error);
       }
@@ -87,22 +99,44 @@ export function Profile() {
         </div>
 
         <div className="profile-sections">
-          <div className="profile-card">
-            <h2>About</h2>
-            <p>
-              Passionate competitive programmer focused on data structures,
-              algorithms, and problem solving.
-            </p>
+          <div className="profile-card submissions-card">
+            <h2>Recent Submissions</h2>
+
+            <table className="submission-table">
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>Status</th>
+                  <th>Language</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {submissions.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} style={{ textAlign: "center" }}>
+                      No submissions yet
+                    </td>
+                  </tr>
+                ) : (
+                  submissions.map((sub) => (
+                    <tr key={sub._id}>
+                      <td>{sub.title}</td>
+                      <td className={`status ${sub.status.toLowerCase()}`}>
+                        {sub.status}
+                      </td>
+                      <td>{sub.language}</td>
+                      <td>
+                        {new Date(sub.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
 
-          <div className="profile-card">
-            <h2>Recent Activity</h2>
-            <ul className="activity-list">
-              <li>Solved <strong>Two Sum</strong></li>
-              <li>Solved <strong>Binary Search</strong></li>
-              <li>Participated in Weekly Contest</li>
-            </ul>
-          </div>
         </div>
       </div>
     </>

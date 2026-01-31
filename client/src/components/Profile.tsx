@@ -28,8 +28,23 @@ export function Profile() {
         console.log(error);
       }
     }
+
+
     fetchUserData();
   }, [username]);
+
+  useEffect(() => {
+    const userSubmissions = async () => {
+      try {
+        const response = await axios.get(`${env.backendUrl}/api/submission/`);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    userSubmissions();
+  }, []);
 
   return (
     <>

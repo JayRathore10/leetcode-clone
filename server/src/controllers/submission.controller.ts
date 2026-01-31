@@ -43,3 +43,30 @@ export const addSubmission = async(req : authRequest,  res : Response , next : N
     next(err);
   }
 }
+
+export const userAllSubmission = async(req : authRequest , res : Response , next : NextFunction)=>{
+  try{
+    const userId = req.user?._id.toString();
+
+    const userSubmissions = await submissionModel.find({userId});
+
+    if(userSubmissions.length === 0){
+      /**
+       * if there is no submission no issue user is new to the app
+       */
+      return res.status(200).json({
+        success : false , 
+        message : "User don't have any submissions"
+      });
+    }
+
+    return res.status(200).json({
+      success : true , 
+      message : "User's All Submissions" , 
+      submissions : userSubmissions 
+    });
+
+  }catch(error){
+    next(error);
+  }
+}

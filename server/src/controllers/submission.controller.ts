@@ -51,8 +51,8 @@ export const userAllSubmission = async(req : authRequest , res : Response , next
 
     const userSubmissions = await submissionModel.
     find({userId}).
+    populate("questionId").
     sort({createdAt : -1}). 
-    limit(12).
     lean();
 
     if(userSubmissions.length === 0){

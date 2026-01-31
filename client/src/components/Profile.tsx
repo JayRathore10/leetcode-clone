@@ -15,7 +15,10 @@ type Submission = {
   status: "Accepted" | "WA" | "TLE" | "MLE";
   language: string;
   createdAt: string;
-  questionId: string,
+  questionId: {
+    _id : string , 
+    difficulty : string 
+  }
   title: string,
 };
 
@@ -25,6 +28,10 @@ export function Profile() {
   const [username, setUserName] = useState<string>("");
   const [user, setUser] = useState<User>();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [easy , setEasy] = useState<number>(0);
+  const [hard , setHard] = useState<number>(0);
+  const [medium , setMedium] = useState<number>(0);
+  const [totalSolved , setTotalSolved] = useState<number>(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -50,6 +57,38 @@ export function Profile() {
         const response = await axios.get(`${env.backendUrl}/api/submission/`);
         console.log(response.data);
         setSubmissions(response.data.submissions);
+
+        const uniqueQuestion = new Set<string>();
+
+        let easy = 0;
+        let med = 0;
+        let hard = 0;
+        let total = 0;
+
+        response.data.submissions.map((sub : Submission)=>{
+          const diff = sub.questionId.difficulty;
+          const qId = sub.questionId._id;
+
+          if(uniqueQuestion.has(qId)) return ;
+
+          uniqueQuestion.add(qId);
+          total++;
+
+          if( diff === "Easy"){
+            easy++;
+          }else if (diff === "Medium"){
+            med++;
+          }else if (diff === "Hard"){
+            hard++;
+          }
+
+        })
+
+        setEasy(easy);
+        setMedium(med);
+        setHard(hard);
+        setTotalSolved(total);
+
       } catch (error) {
         console.log(error);
       }
@@ -82,19 +121,19 @@ export function Profile() {
         <div className="profile-stats">
           <div className="stat-box">
             <h3>Problems Solved</h3>
-            <p>312</p>
+            <p>{totalSolved}</p>
           </div>
           <div className="stat-box">
             <h3>Easy</h3>
-            <p>180</p>
+            <p>{easy}</p>
           </div>
           <div className="stat-box">
             <h3>Medium</h3>
-            <p>102</p>
+            <p>{medium}</p>
           </div>
           <div className="stat-box">
             <h3>Hard</h3>
-            <p>30</p>
+            <p>{hard}</p>
           </div>
         </div>
 

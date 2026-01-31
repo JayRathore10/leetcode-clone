@@ -1,8 +1,8 @@
 import {Router} from "express";
 import { addSubmission } from "../controllers/submission.controller";
-import { isUserLoggedIn } from "../middleware/auth.middleware";
+import { mockAuth } from "../middleware/mock.middleware";
 
 export const submissionRouter = Router();
 
 // User protected route 
-submissionRouter.post("/" , isUserLoggedIn , addSubmission);
+submissionRouter.post("/" , mockAuth , addSubmission);

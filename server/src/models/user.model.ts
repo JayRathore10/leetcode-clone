@@ -3,14 +3,14 @@ import {Types} from "mongoose";
 import { maxLength, minLength } from "zod";
 
 export interface UserInterface {
-  _id : Types.ObjectId;
-  username : string , 
-  name : string , 
-  email : string , 
+  _id : Types.ObjectId | string;
+  username ?: string , 
+  name ?: string , 
+  email ?: string , 
   password : string  , 
-  role : "user" | "admin" ,
-  createdAt : Date , 
-  profilePic : string 
+  role ?: "user" | "admin" ,
+  createdAt ?: Date , 
+  profilePic ?: string 
 }
 
 const userSchmea = new mongoose.Schema<UserInterface>({

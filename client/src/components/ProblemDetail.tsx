@@ -69,6 +69,16 @@ export function ProblemDetail() {
       setPanelMode("submit");
       setSubmitResult(response.data);
 
+      const submissionResponse = await axios.post(`${env.backendUrl}/api/submission/`, {
+        questionId : id , 
+        code , 
+        language , 
+        userId : `6978bfac5ba09e71d7453352` ,
+        status : response.data.status
+      });
+
+      console.log(submissionResponse.data);
+
     }catch(err){
       console.log(err);
     }finally{

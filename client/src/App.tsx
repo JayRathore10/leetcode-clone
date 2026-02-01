@@ -54,5 +54,12 @@ export default App;
  */
 
 /**
+ * 
+ * Make the discuss section for each question(solution also)
+ * Add some more things to the profile page 
+ * and connect sign up login to the profile with there middleware
+ */
+
+/**
  * make things working 
  */

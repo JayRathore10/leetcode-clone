@@ -7,4 +7,4 @@ export const authRouter = Router();
 authRouter.post("/register" , registerNewUser);
 authRouter.post("/login" , loginUser);
 // protected route
-authRouter.get("/logout", isUserLoggedIn , logoutUser);
+authRouter.post("/logout", isUserLoggedIn , logoutUser);

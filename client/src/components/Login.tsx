@@ -22,7 +22,7 @@ export function Login({setIsloggedIn , isloggedIn} : LoginProps) {
       const response = await axios.post(`${env.backendUrl}/api/auth/login`, {
         email,
         password
-      })
+      } ,   { withCredentials: true })
       console.log(response.data);
       if (response.data.success === true) {
         setIsloggedIn?.(true);

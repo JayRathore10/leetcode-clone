@@ -27,7 +27,7 @@ export function SignUp({ isloggedIn }: LoginProps) {
         name,
         password,
         username
-      });
+      } ,   { withCredentials: true });
       console.log(response.data);
       navigate("/login");
     } catch (error: unknown) {

@@ -74,7 +74,7 @@ export default App;
  */
 
 /**
- * 
+ * complete 
  * Make the discuss section for each question(solution also)
  * Add some more things to the profile page 
  * and connect sign up login to the profile with there middleware
@@ -82,4 +82,7 @@ export default App;
 
 /**
  * make things working 
+ * pop window of explain how to write code in this website and 
+ * add more questions 
+ * and testing on diff ideas 
  */

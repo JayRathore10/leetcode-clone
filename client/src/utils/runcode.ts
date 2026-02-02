@@ -16,9 +16,16 @@ export interface RunCodeInterface {
   questionNumber : string 
   setOutput : React.Dispatch<React.SetStateAction<testCaseFields >>;
   setIsRunning : React.Dispatch<React.SetStateAction<boolean>>;
+  isloggedIn : boolean |undefined ;
 } 
 
-export async function runCode({ setOutput, code , language , questionNumber , setIsRunning} : RunCodeInterface){
+export async function runCode({ setOutput, code , language , questionNumber , setIsRunning,  isloggedIn} : RunCodeInterface){
+
+  if(isloggedIn === false){
+    alert("Login First");
+    return ;
+  }
+
   try{
 
     setIsRunning(true);

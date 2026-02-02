@@ -57,6 +57,12 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
   }, [id]);
 
   const submitCodeHandler = async()=>{
+
+    if(isloggedIn === false){
+      alert("Login First");
+      return ;
+    }
+
     setIsRunning(true);
     setPanelMode("testcase");
 
@@ -158,7 +164,7 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
 
             <div className="pd-editor-actions">
               <button className="pd-secondary-btn"
-                onClick={()=> runCode({ setOutput , code , language , questionNumber : id! , setIsRunning})}
+                onClick={()=> runCode({ setOutput , code , language , questionNumber : id! , setIsRunning , isloggedIn})}
               >Run</button>
               <button className="pd-primary-btn"
                 onClick={submitCodeHandler}

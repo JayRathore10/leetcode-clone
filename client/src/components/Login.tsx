@@ -26,11 +26,11 @@ export function Login({setIsloggedIn , isloggedIn} : LoginProps) {
       console.log(response.data);
       if (response.data.success === true) {
         setIsloggedIn?.(true);
+        navigate("/problems");
       }
     } catch (error) {
       console.log(error);
     }
-    navigate("/problems");
   };
 
   return (

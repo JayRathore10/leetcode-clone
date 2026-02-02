@@ -16,7 +16,7 @@ import { env } from "./configs/env.config";
 import { Logout } from "./components/Logout";
 function App(){
 
-  const [isloggedIn, setIsloggedIn] = useState<boolean>(true);
+  const [isloggedIn, setIsloggedIn] = useState<boolean>(false);
 
   useEffect(()=>{
     const call = async()=>{

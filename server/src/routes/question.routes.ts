@@ -1,5 +1,6 @@
 import {Router} from "express";
 import { addQuestion, deleteQuestion, getAllQuestions, getQuestion, run, submitCode, totalQuestion } from "../controllers/question.controller";
+import { isUserLoggedIn } from "../middleware/auth.middleware";
 
 export const questionRouter = Router();
 
@@ -11,9 +12,9 @@ questionRouter.post("/add" , addQuestion);
 questionRouter.get("/all" , getAllQuestions);
 
 // needed to be user Protected 
-questionRouter.post("/run", run);
-questionRouter.post("/submit" , submitCode );
-questionRouter.get("/total" , totalQuestion);
+questionRouter.post("/run", isUserLoggedIn ,  run);
+questionRouter.post("/submit"  , isUserLoggedIn , submitCode );
+questionRouter.get("/total"  , totalQuestion);
 
 questionRouter.get("/:id" , getQuestion);;
 

@@ -13,6 +13,7 @@ import { Leaderboard } from "./components/Leaderboard";
 import { useEffect , useState } from "react";
 import axios from "axios";
 import { env } from "./configs/env.config";
+import { Logout } from "./components/Logout";
 function App(){
 
   const [isloggedIn, setIsloggedIn] = useState<boolean>(true);
@@ -52,6 +53,9 @@ function App(){
         <Route path="/profile" element={<Profile
           isloggedIn={isloggedIn}
         />} />
+        <Route path="/logout" element={<Logout 
+          setIsloggedIn={setIsloggedIn}
+        />}/>
         <Route path="/contests" element={<Contests/>}/>
         <Route path="/discuss" element={<Discuss/>}/>
         <Route path="/leaderboard" element={<Leaderboard/>}/> 

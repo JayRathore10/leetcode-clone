@@ -1,9 +1,12 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate  , useLocation} from "react-router-dom";
 import "../styles/Header.css";
 import { LoginProps } from "./Login";
 
 export function Header({isloggedIn} : LoginProps) {
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const isOnProfilePage = location.pathname === "/profile";
 
   return (
     <header className="header">
@@ -42,9 +45,14 @@ export function Header({isloggedIn} : LoginProps) {
             }
           }}
         >
-         {isloggedIn ?
-          `Profile` :
-            'Login'}
+         {
+          isloggedIn ? 
+            isOnProfilePage ? 
+              `Logout` :
+              'Profile'
+            : 
+            `Login` 
+         }
         </button>
       </div>
     </header>

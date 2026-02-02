@@ -49,7 +49,9 @@ function App(){
         <Route path="/problems/:id" element={<ProblemDetail
            isloggedIn={isloggedIn}
         />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile
+          isloggedIn={isloggedIn}
+        />} />
         <Route path="/contests" element={<Contests/>}/>
         <Route path="/discuss" element={<Discuss/>}/>
         <Route path="/leaderboard" element={<Leaderboard/>}/> 

@@ -12,7 +12,7 @@ export const isUserLoggedIn = async(req : authRequest , res : Response , next : 
       return res.status(401).json({
         success : false , 
         message : "Token not Found"
-      })
+    })
     }
 
     const decodeData = jwt.verify(token , JWT_SECRET as string) as userPlayLoad;

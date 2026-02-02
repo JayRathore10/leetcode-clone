@@ -228,7 +228,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
         return res.status(200).json({
           status : "WA" ,
           errorType : "Compilation Error" , 
-          message : response.data.compiler.stderr
+          message : response.data.compiler
         })
       } 
 
@@ -252,14 +252,14 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
       }
 
       // Runtime Error 
-      if(run.stderr){
-        return res.status(200).json({
-          status : "WA" , 
-          failedTest : i + 1 , 
-          errorType : "Runtime Error"  , 
-          messsage : run.stderr
-        })
-      }
+      // if(run.stderr){
+      //   return res.status(200).json({
+      //     status : "WA" , 
+      //     failedTest : i + 1 , 
+      //     errorType : "Runtime Error"  , 
+      //     messsage : run.stderr
+      //   })
+      // }
 
       // For wrong answer 
       const actual = response.data.run.stdout.trim();

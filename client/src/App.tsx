@@ -15,7 +15,7 @@ import axios from "axios";
 import { env } from "./configs/env.config";
 function App(){
 
-  const [isloggedIn, setIsloggedIn] = useState<boolean>(false);
+  const [isloggedIn, setIsloggedIn] = useState<boolean>(true);
 
   useEffect(()=>{
     const call = async()=>{

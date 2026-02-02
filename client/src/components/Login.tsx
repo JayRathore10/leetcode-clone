@@ -26,6 +26,7 @@ export function Login({setIsloggedIn , isloggedIn} : LoginProps) {
       console.log(response.data);
       if (response.data.success === true) {
         setIsloggedIn?.(true);
+        console.log(isloggedIn);
         navigate("/problems");
       }
     } catch (error) {

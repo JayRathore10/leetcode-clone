@@ -10,10 +10,12 @@ import { Profile } from "./components/Profile";
 import { Contests } from "./components/Contests";
 import { Discuss } from "./components/Discuss";
 import { Leaderboard } from "./components/Leaderboard";
-import { useEffect } from "react";
+import { useEffect , useState } from "react";
 import axios from "axios";
 import { env } from "./configs/env.config";
 function App(){
+
+  const [isloggedIn, setIsloggedIn] = useState<boolean>(false);
 
   useEffect(()=>{
     const call = async()=>{
@@ -30,11 +32,23 @@ function App(){
   return(
     <>
       <Routes>
-        <Route path="/" element={<Home/>}   />
-        <Route path="/login" element={<Login />} />  
-        <Route path="/signup" element={<SignUp />} />  
-        <Route path="/problems" element={<Problems/>}/>
-        <Route path="/problems/:id" element={<ProblemDetail />} />
+        <Route path="/" element={<Home
+           isloggedIn={isloggedIn}
+        />}   />
+        <Route path="/login" element={<Login 
+          setIsloggedIn={setIsloggedIn}
+          isloggedIn={isloggedIn}
+        />} />  
+        <Route path="/signup" element={<SignUp 
+          setIsloggedIn={setIsloggedIn}
+          isloggedIn={isloggedIn}
+        />} />  
+        <Route path="/problems" element={<Problems
+           isloggedIn={isloggedIn}
+        />}/>
+        <Route path="/problems/:id" element={<ProblemDetail
+           isloggedIn={isloggedIn}
+        />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/contests" element={<Contests/>}/>
         <Route path="/discuss" element={<Discuss/>}/>

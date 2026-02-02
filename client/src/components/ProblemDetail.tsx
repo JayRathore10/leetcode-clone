@@ -9,6 +9,7 @@ import { TestCasePanel } from "./TestCasePanel";
 import { runCode } from '../utils/runcode';
 import { testCaseFields } from "../utils/runcode";
 import { SubmitPanel } from "./SubmitPanel";
+import { LoginProps } from "./Login";
 
 type Question =  {
   title : string, 
@@ -25,7 +26,7 @@ type Question =  {
 
 type panelModeType = "testcase" | "submit" ;
 
-export function ProblemDetail() {
+export function ProblemDetail({isloggedIn} : LoginProps) {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
   const [output , setOutput] = useState<testCaseFields>({});
@@ -90,7 +91,7 @@ export function ProblemDetail() {
 
   return (
     <>
-      <Header />
+      <Header isloggedIn={isloggedIn!} />
 
       <div className="pd-problem-detail">
         <div className="pd-problem-left">

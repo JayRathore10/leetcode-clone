@@ -1,12 +1,13 @@
 import "../styles/Home.css";
 import { Header } from "./Header";
 import {useNavigate } from "react-router-dom";
+import { LoginProps } from "./Login";
 
-export function Home() {
+export function Home({isloggedIn} : LoginProps) {
   const navigate = useNavigate();
   return (
     <>
-      <Header />
+      <Header isloggedIn={isloggedIn!} />
       <div className="home">
         <section className="hero">
           <h1 className="hero-title">

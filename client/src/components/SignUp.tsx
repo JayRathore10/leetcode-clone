@@ -3,8 +3,10 @@ import axios from "axios";
 import "../styles/auth.css";
 import { useState } from "react";
 import { env } from "../configs/env.config";
+import { LoginProps } from "./Login";
+import { Header } from "./Header";
 
-export function SignUp() {
+export function SignUp({ isloggedIn }: LoginProps) {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
@@ -28,8 +30,8 @@ export function SignUp() {
       });
       console.log(response.data);
       navigate("/login");
-    } catch (error : unknown) {
-      if(axios.isAxiosError(error)){
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
         if (error.response?.data?.message === "User Already Exists") {
           alert("User Already Exist");
         } else {
@@ -40,89 +42,96 @@ export function SignUp() {
   };
 
   return (
-    <div className="login-container">
-      <h1 className="login-title">Create an Account</h1>
+    <>
 
-      <p className="login-subtitle">
-        Enter your information to get started
-      </p>
+      <Header 
+        isloggedIn={isloggedIn!}
+      />
 
-      <form className="login-form" onSubmit={handleSubmit}>
+      <div className="login-container">
+        <h1 className="login-title">Create an Account</h1>
 
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="username"
-            name="name"
-            placeholder="Enter your Name"
-            required
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+        <p className="login-subtitle">
+          Enter your information to get started
+        </p>
 
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your username"
-            required
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+        <form className="login-form" onSubmit={handleSubmit}>
 
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="name">Name</label>
+            <input
+              type="text"
+              id="username"
+              name="name"
+              placeholder="Enter your Name"
+              required
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Create a password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              required
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Confirm your password"
-            required
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-        <button type="submit" className="login-button">
-          Sign Up
-        </button>
-      </form>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Create a password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-      <p className="signup-text">
-        Already have an account?{" "}
-        <span
-          className="signup-link"
-          onClick={() => navigate("/login")}
-        >
-          Login
-        </span>
-      </p>
-    </div>
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className="login-button">
+            Sign Up
+          </button>
+        </form>
+
+        <p className="signup-text">
+          Already have an account?{" "}
+          <span
+            className="signup-link"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </span>
+        </p>
+      </div>
+    </>
   );
 }

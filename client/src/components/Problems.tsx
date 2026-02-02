@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import "../styles/Problems.css";
 import { Header } from "./Header";
 import { env } from "../configs/env.config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { LoginProps } from "./Login";
 
 type Question = {
   _id: string;
@@ -12,7 +13,7 @@ type Question = {
   successRate: number
 }
 
-export function Problems() {
+export function Problems({isloggedIn} : LoginProps) {
 
   const [questions, setQuestions] = useState<Question[]>([]);
 
@@ -46,7 +47,7 @@ export function Problems() {
 
   return (
     <>
-      <Header />
+      <Header isloggedIn={isloggedIn!} />
       <div className="problems-page">
         <h1 className="page-title">Problems</h1>
 

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import "../styles/Profile.css";
 import { Header } from "./Header";
 import axios from "axios";
 import { env } from "../configs/env.config";
+import { LoginProps } from "./Login";
 
 type User = {
   username: string;
@@ -23,7 +24,7 @@ type Submission = {
 };
 
 
-export function Profile() {
+export function Profile({isloggedIn} : LoginProps) {
 
   const [username, setUserName] = useState<string>("");
   const [user, setUser] = useState<User>();
@@ -119,7 +120,7 @@ export function Profile() {
 
   return (
     <>
-      <Header />
+      <Header isloggedIn={isloggedIn!} />
       <div className="profile-page">
         <div className="profile-header">
           <div className="profile-left">

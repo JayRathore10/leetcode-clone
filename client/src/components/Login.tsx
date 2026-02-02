@@ -30,7 +30,7 @@ export function Login({setIsloggedIn , isloggedIn} : LoginProps) {
     } catch (error) {
       console.log(error);
     }
-    navigate("/problemset");
+    navigate("/problems");
   };
 
   return (

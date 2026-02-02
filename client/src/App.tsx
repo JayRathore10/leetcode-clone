@@ -33,13 +33,13 @@ function App(){
   return(
     <>
       <Routes>
-        <Route path="/" element={<Home
-           isloggedIn={isloggedIn}
-        />}   />
-        <Route path="/login" element={<Login 
+        <Route path="/" element={<Login 
           setIsloggedIn={setIsloggedIn}
           isloggedIn={isloggedIn}
         />} />  
+        <Route path="/home" element={<Home
+           isloggedIn={isloggedIn}
+        />}   />
         <Route path="/signup" element={<SignUp 
           setIsloggedIn={setIsloggedIn}
           isloggedIn={isloggedIn}

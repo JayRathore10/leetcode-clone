@@ -1,11 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/Header.css";
+import { LoginProps } from "./Login";
 
-interface headerProps {
-  isloggedIn : boolean
-}
-
-export function Header({isloggedIn} : headerProps) {
+export function Header({isloggedIn} : LoginProps) {
   const navigate = useNavigate();
 
   return (
@@ -37,7 +34,13 @@ export function Header({isloggedIn} : headerProps) {
       <div className="header-right">
         <button
           className="header-btn"
-          onClick={() => navigate("/login")}
+          onClick={() => {
+            if(isloggedIn){
+              navigate("/");
+            }else {
+              navigate("/login");
+            }
+          }}
         >
          {isloggedIn ?
           `Profile` :

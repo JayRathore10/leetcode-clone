@@ -189,11 +189,7 @@ export function Profile({isloggedIn} : LoginProps) {
                   submissions.map((sub) => (
                     <tr key={sub._id}>
                       <td
-                      onClick={()=>navigate(`/submission/${sub._id}`, {
-                        state: {
-                          submissionId : sub._id
-                        }
-                      }  )}
+                      onClick={()=>navigate(`/submission/${sub._id}` )}
                       >
                         {sub.title}
                       </td>

@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/Problems.css";
 import { Header } from "./Header";
 import { env } from "../configs/env.config";
@@ -13,10 +13,11 @@ type Question = {
   successRate: number
 }
 
-export function Problems({isloggedIn} : LoginProps) {
+export function Problems({ isloggedIn }: LoginProps) {
 
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [searchItem , setSearchItem] = useState<string>("");
+  const [searchItem, setSearchItem] = useState<string>("");
+  const [selectDiff, setSelectDiff] = useState<string>("All Difficulties");
 
   const random = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
@@ -46,9 +47,11 @@ export function Problems({isloggedIn} : LoginProps) {
     fetchAllQuestions();
   }, []);
 
-  const filterQuestions = questions.filter((question)=>(
-    question.title.toLowerCase().includes(searchItem.toLowerCase())
-  ));
+  const filterQuestions = questions.filter((question) => {
+    const matchedSearch = question.title.toLowerCase().includes(searchItem.toLowerCase());
+    const matchedDiff = selectDiff === "All Difficulties" || question.difficulty === selectDiff ;
+    return matchedDiff && matchedSearch;  
+  });
 
   return (
     <>
@@ -61,10 +64,12 @@ export function Problems({isloggedIn} : LoginProps) {
             type="text"
             placeholder="Search problems"
             className="search-input"
-            onChange= {(e)=> setSearchItem(e.target.value)}
+            onChange={(e) => setSearchItem(e.target.value)}
           />
 
-          <select className="filter-select">
+          <select className="filter-select"
+            onChange={(e)=> setSelectDiff(e.target.value)}
+          >
             <option>All Difficulties</option>
             <option>Easy</option>
             <option>Medium</option>
@@ -90,25 +95,25 @@ export function Problems({isloggedIn} : LoginProps) {
 
           {filterQuestions.length !== 0 &&
             filterQuestions.map((question, index) => {
-              
-              const originalIndex = questions.findIndex((q)=> q._id === question._id);
+
+              const originalIndex = questions.findIndex((q) => q._id === question._id);
 
               return (
-              <div className="table-row" key={index}
-                onClick={() => navigate(`/problems/${question._id}`, {
-                  state: {
-                    successRate: question.successRate,
-                    questionNumber: originalIndex + 1
-                  },
-                })}
-              >
-                <span className="status done">{originalIndex + 1}</span>
-                <span className="problem-title">{question.title}</span>
-                <span className={`difficulty ${question.difficulty.toLowerCase()}`}>{question.difficulty}</span>
-                <span>{question.successRate}%</span>
-              </div>
+                <div className="table-row" key={index}
+                  onClick={() => navigate(`/problems/${question._id}`, {
+                    state: {
+                      successRate: question.successRate,
+                      questionNumber: originalIndex + 1
+                    },
+                  })}
+                >
+                  <span className="status done">{originalIndex + 1}</span>
+                  <span className="problem-title">{question.title}</span>
+                  <span className={`difficulty ${question.difficulty.toLowerCase()}`}>{question.difficulty}</span>
+                  <span>{question.successRate}%</span>
+                </div>
               )
-})
+            })
           }
         </div>
       </div>

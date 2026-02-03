@@ -10,7 +10,8 @@ type Question = {
   _id: string;
   title: string;
   difficulty: string;
-  successRate: number
+  successRate: number;
+  tags : [string]
 }
 
 export function Problems({ isloggedIn }: LoginProps) {
@@ -18,6 +19,7 @@ export function Problems({ isloggedIn }: LoginProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [searchItem, setSearchItem] = useState<string>("");
   const [selectDiff, setSelectDiff] = useState<string>("All Difficulties");
+  const [selectTags , setSelectTags] = useState<string>("All Topics");
 
   const random = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
@@ -50,7 +52,11 @@ export function Problems({ isloggedIn }: LoginProps) {
   const filterQuestions = questions.filter((question) => {
     const matchedSearch = question.title.toLowerCase().includes(searchItem.toLowerCase());
     const matchedDiff = selectDiff === "All Difficulties" || question.difficulty === selectDiff ;
-    return matchedDiff && matchedSearch;  
+    const matchedTags = selectTags === "All Topics" || question.tags.some((t)=>(
+      t.toLowerCase() === selectTags.toLowerCase()
+    ));
+
+    return matchedDiff && matchedSearch && matchedTags;  
   });
 
   return (
@@ -76,12 +82,14 @@ export function Problems({ isloggedIn }: LoginProps) {
             <option>Hard</option>
           </select>
 
-          <select className="filter-select">
+          <select className="filter-select"
+            onChange={(e)=> setSelectTags(e.target.value)}
+          >
             <option>All Topics</option>
-            <option>Arrays</option>
-            <option>Strings</option>
-            <option>Dynamic Programming</option>
-            <option>Graphs</option>
+            <option>Array</option>
+            <option>String</option>
+            <option>Math</option>
+            <option>Graph</option>
           </select>
         </div>
 

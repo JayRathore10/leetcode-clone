@@ -5,7 +5,6 @@
   color: #E5E7EB;
 }
 
-/* Header */
 .sd-header {
   margin-bottom: 24px;
 }
@@ -16,7 +15,6 @@
   margin-bottom: 12px;
 }
 
-/* Badges */
 .sd-badges {
   display: flex;
   gap: 12px;
@@ -29,7 +27,6 @@
   font-weight: 600;
 }
 
-/* Difficulty colors */
 .difficulty.easy {
   background-color: rgba(7, 230, 15, 0.15);
   color: #07e60f;
@@ -56,7 +53,6 @@
   color: #ef4444;
 }
 
-/* Code container */
 .sd-code-container {
   background-color: #132E32;
   border: 1px solid #34435E;
@@ -65,7 +61,7 @@
   overflow-x: auto;
 }
 
-/* Code formatting */
+
 .sd-code {
   font-family: "JetBrains Mono", monospace;
   font-size: 14px;

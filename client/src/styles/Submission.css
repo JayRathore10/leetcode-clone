@@ -1,3 +1,75 @@
-p{
-  color : white ;
+.sd-container {
+  min-height: calc(100vh - 64px);
+  background-color: #0A2239;
+  padding: 32px;
+  color: #E5E7EB;
+}
+
+/* Header */
+.sd-header {
+  margin-bottom: 24px;
+}
+
+.sd-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Badges */
+.sd-badges {
+  display: flex;
+  gap: 12px;
+}
+
+.sd-badge {
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Difficulty colors */
+.difficulty.easy {
+  background-color: rgba(7, 230, 15, 0.15);
+  color: #07e60f;
+}
+
+.difficulty.medium {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.difficulty.hard {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* Status colors */
+.status.accepted {
+  background-color: rgba(7, 230, 15, 0.15);
+  color: #07e60f;
+}
+
+.status.wrong {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* Code container */
+.sd-code-container {
+  background-color: #132E32;
+  border: 1px solid #34435E;
+  border-radius: 12px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+/* Code formatting */
+.sd-code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #FFFFFF;
+  white-space: pre-wrap;
+  line-height: 1.6;
 }

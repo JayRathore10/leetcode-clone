@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import axios from "axios";
 import { env } from "../configs/env.config";
 import { LoginProps } from "./Login";
+import { useNavigate } from "react-router-dom";
 
 type User = {
   username: string;
@@ -35,6 +36,8 @@ export function Profile({isloggedIn} : LoginProps) {
   const [medium , setMedium] = useState<number>(0);
   const [totalSolved , setTotalSolved] = useState<number>(0);
   const [rating , setRating] = useState<number>(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -185,7 +188,15 @@ export function Profile({isloggedIn} : LoginProps) {
                 ) : (
                   submissions.map((sub) => (
                     <tr key={sub._id}>
-                      <td>{sub.title}</td>
+                      <td
+                      onClick={()=>navigate(`/submission/${sub._id}`, {
+                        state: {
+                          submissionId : sub._id
+                        }
+                      }  )}
+                      >
+                        {sub.title}
+                      </td>
                       <td className={`status ${sub.status.toLowerCase()}`}>
                         {sub.status}
                       </td>

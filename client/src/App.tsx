@@ -14,6 +14,7 @@ import { useEffect , useState } from "react";
 import axios from "axios";
 import { env } from "./configs/env.config";
 import { Logout } from "./components/Logout";
+import { Submission } from "./components/Submission";
 function App(){
 
   const [isloggedIn, setIsloggedIn] = useState<boolean>(false);
@@ -50,6 +51,7 @@ function App(){
         <Route path="/problems/:id" element={<ProblemDetail
            isloggedIn={isloggedIn}
         />} />
+        <Route path="/submission/:id" element={<Submission/>}/>
         <Route path="/profile" element={<Profile
           isloggedIn={isloggedIn}
         />} />

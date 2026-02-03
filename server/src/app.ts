@@ -19,6 +19,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
+app.use("/images", express.static("public/images"));
 app.use(cookieParser());
 
 app.get("/"  , (req : Request, res : Response)=>{

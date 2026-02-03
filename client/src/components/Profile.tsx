@@ -8,7 +8,8 @@ import { LoginProps } from "./Login";
 type User = {
   username: string;
   email: string;
-  name: string
+  name: string;
+  profilePic : string 
 }
 
 type Submission = {
@@ -124,7 +125,9 @@ export function Profile({isloggedIn} : LoginProps) {
       <div className="profile-page">
         <div className="profile-header">
           <div className="profile-left">
-            <div className="avatar">JR</div>
+            <img src={`${env.backendUrl}/images/${user?.profilePic}` } 
+            className="avatar"
+            alt="JR" />
             <div className="profile-info">
               <h1>{user?.name}</h1>
               <p className="username">@{user?.username}</p>

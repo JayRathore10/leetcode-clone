@@ -75,3 +75,28 @@ export const userAllSubmission = async(req : authRequest , res : Response , next
     next(error);
   }
 }
+
+export const getSubmissionDetail = async(req : authRequest , res : Response , next : NextFunction)=>{
+  try{
+    const submissionId = req.params.id;
+
+    const submission = submissionModel.findById({submissionId});
+    
+    if(!submission){
+      return res.status(404).json({
+        success : false , 
+        message : "Submission not found" , 
+      });
+    }
+
+    return res.status(200).json({
+      success : true , 
+      messaage : "Submission", 
+      submission
+    });
+
+  }catch(error){
+    next(error);
+  }
+  
+}

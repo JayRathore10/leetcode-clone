@@ -3,6 +3,8 @@ import "../styles/Submission.css";
 import { useEffect } from "react";
 import axios from "axios";
 import { env } from "../configs/env.config";
+import { Submission } from "./Profile";
+
 export function Submission(){
 
   const {id} = useParams<{id : string}>();
@@ -18,7 +20,7 @@ export function Submission(){
   return(
     <>
       <p>
-        {id}
+        {}
       </p>
     </>
   );

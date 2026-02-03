@@ -13,11 +13,12 @@ type User = {
   profilePic : string 
 }
 
-type Submission = {
+export type Submission = {
   _id: string;
   status: "Accepted" | "WA" | "TLE" | "MLE";
   language: string;
   createdAt: string;
+  code : string ;
   questionId: {
     _id : string , 
     difficulty : string 

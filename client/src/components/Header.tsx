@@ -11,7 +11,7 @@ export function Header({isloggedIn} : LoginProps) {
   return (
     <header className="header">
       <div className="header-left">
-        <span className="logo" onClick={() => navigate("/")}>
+        <span className="logo" onClick={() => navigate("/home")}>
           CodeChamp
         </span>
       </div>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { CodeEditor } from "../components/CodeEditor";
-import "../styles/ProblemDetail.css";
 import { Header } from "./Header";
 import { useParams , useLocation } from "react-router-dom";
 import axios from "axios";
@@ -10,6 +9,7 @@ import { runCode } from '../utils/runcode';
 import { testCaseFields } from "../utils/runcode";
 import { SubmitPanel } from "./SubmitPanel";
 import { LoginProps } from "./Login";
+import "../styles/ProblemDetail.css";
 
 type Question =  {
   title : string, 

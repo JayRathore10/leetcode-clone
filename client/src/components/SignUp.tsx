@@ -126,7 +126,7 @@ export function SignUp({ isloggedIn }: LoginProps) {
           Already have an account?{" "}
           <span
             className="signup-link"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/")}
           >
             Login
           </span>

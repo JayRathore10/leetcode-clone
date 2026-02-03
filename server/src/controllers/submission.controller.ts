@@ -80,7 +80,7 @@ export const getSubmissionDetail = async(req : authRequest , res : Response , ne
   try{
     const submissionId = req.params.id;
 
-    const submission = submissionModel.findById({submissionId});
+    const submission = await submissionModel.findOne({_id : submissionId});
     
     if(!submission){
       return res.status(404).json({

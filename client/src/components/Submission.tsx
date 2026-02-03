@@ -25,7 +25,6 @@ export function Submission({ isloggedIn }: LoginProps) {
 
   return (
     <>
-
       <Header
         isloggedIn={isloggedIn}
       />
@@ -35,13 +34,13 @@ export function Submission({ isloggedIn }: LoginProps) {
 
           <div className="sd-badges">
             <span
-              className={`sd-badge difficulty ${submission.questionId.difficulty.toLowerCase()}`}
+              className={`sd-badge sub-difficulty ${submission.questionId.difficulty.toLowerCase()}`}
             >
               {submission.questionId.difficulty}
             </span>
 
             <span
-              className={`sd-badge status ${submission.status === "Accepted" ? "accepted" : "wrong"
+              className={`sd-badge sd-status ${submission.status === "Accepted" ? "accepted" : "wrong"
                 }`}
             >
               {submission.status}

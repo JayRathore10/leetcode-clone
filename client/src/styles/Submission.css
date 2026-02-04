@@ -47,13 +47,14 @@
   color: #07e60f;
 }
 
-.status.wrong {
+.sd-status.wrong {
   background-color: rgba(239, 68, 68, 0.15);
   color: #ef4444;
 }
 
 .sd-code-container {
-  background-color: #34435E;
+  /* background-color: #34435E; */
+  background-color: black ;
   border: 1px solid #34435E;
   border-radius: 12px;
   padding: 20px;
@@ -67,4 +68,8 @@
   color: #FFFFFF;
   white-space: pre-wrap;
   line-height: 1.6;
+}
+
+.submitted-code{
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
 }

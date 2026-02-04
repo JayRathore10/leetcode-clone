@@ -43,14 +43,19 @@ export function Submission({ isloggedIn }: LoginProps) {
               className={`sd-badge sd-status ${submission.status === "Accepted" ? "accepted" : "wrong"
                 }`}
             >
-              {submission.status}
+              {submission.status === "WA" ?
+              `Wrong Answer` :
+              submission.status  
+            }
             </span>
           </div>
         </div>
 
         <div className="sd-code-container">
           <pre className="sd-code">
-            <code>{submission.code}</code>
+            <code
+              className="submitted-code"
+            >{submission.code}</code>
           </pre>
         </div>
       </div>

@@ -150,7 +150,6 @@
   background-color: #132E32;
 }
 
-/* Status colors */
 .status.accepted {
   color: #22c55e;
   font-weight: 600;
@@ -158,9 +157,15 @@
 
 .status.wa {
   color: #ef4444;
+  font-weight: 600;
 }
 
 .status.tle,
 .status.mle {
   color: #f59e0b;
+}
+
+.submission-title {
+  cursor: pointer;
+  font-weight: 600;
 }

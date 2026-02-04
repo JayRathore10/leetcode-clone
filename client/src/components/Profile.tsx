@@ -189,13 +189,16 @@ export function Profile({isloggedIn} : LoginProps) {
                 ) : (
                   submissions.map((sub) => (
                     <tr key={sub._id}>
-                      <td
+                      <td className="submission-title"
                       onClick={()=>navigate(`/submission/${sub._id}` )}
                       >
                         {sub.title}
                       </td>
                       <td className={`status ${sub.status.toLowerCase()}`}>
-                        {sub.status}
+                        {sub.status === "WA" ? 
+                          `Wrong Answer` :
+                          sub.status  
+                        }
                       </td>
                       <td>{sub.language}</td>
                       <td>

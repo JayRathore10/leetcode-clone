@@ -16,6 +16,10 @@
   margin-bottom: 12px;
 }
 
+.sd-title:hover{
+  text-decoration: underline;
+}
+
 .sd-badges {
   display: flex;
   gap: 12px;

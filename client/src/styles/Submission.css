@@ -53,23 +53,16 @@
 }
 
 .sd-code-container {
-  /* background-color: #34435E; */
-  background-color: black ;
+  background-color: #34435E;
   border: 1px solid #34435E;
   border-radius: 12px;
   padding: 20px;
   overflow-x: auto;
 }
 
-
 .sd-code {
   font-family: "JetBrains Mono", monospace;
   font-size: 14px;
-  color: #FFFFFF;
-  white-space: pre-wrap;
+  white-space: pre;
   line-height: 1.6;
-}
-
-.submitted-code{
-  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
 }

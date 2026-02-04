@@ -1,15 +1,31 @@
 import { useParams } from "react-router-dom";
 import "../styles/Submission.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { env } from "../configs/env.config";
 import { Submission as SubmissionType } from "./Profile";
 import { LoginProps } from "./Login";
 import { Header } from "./Header";
 
+import Prism from "prismjs";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-c"; 
+import "prismjs/components/prism-cpp"; 
+
+
 export function Submission({ isloggedIn }: LoginProps) {
   const { id } = useParams<{ id: string }>();
   const [submission, setSubmission] = useState<SubmissionType | null>(null);
+
+  const codeRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (codeRef.current) {
+      Prism.highlightElement(codeRef.current);
+    }
+  }, [submission]);
 
   useEffect(() => {
     const fetchSubmissionDetails = async () => {
@@ -44,9 +60,9 @@ export function Submission({ isloggedIn }: LoginProps) {
                 }`}
             >
               {submission.status === "WA" ?
-              `Wrong Answer` :
-              submission.status  
-            }
+                `Wrong Answer` :
+                submission.status
+              }
             </span>
           </div>
         </div>
@@ -54,7 +70,8 @@ export function Submission({ isloggedIn }: LoginProps) {
         <div className="sd-code-container">
           <pre className="sd-code">
             <code
-              className="submitted-code"
+              ref={codeRef}
+              className={`language-${submission?.language}`}
             >{submission.code}</code>
           </pre>
         </div>

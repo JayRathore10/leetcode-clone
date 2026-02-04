@@ -6,6 +6,7 @@ import { env } from "../configs/env.config";
 import { Submission as SubmissionType } from "./Profile";
 import { LoginProps } from "./Login";
 import { Header } from "./Header";
+import { useNavigate } from "react-router-dom";
 
 import Prism from "prismjs";
 import "prismjs/components/prism-javascript";
@@ -20,6 +21,8 @@ export function Submission({ isloggedIn }: LoginProps) {
   const [submission, setSubmission] = useState<SubmissionType | null>(null);
 
   const codeRef = useRef<HTMLElement | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (codeRef.current) {
@@ -46,7 +49,9 @@ export function Submission({ isloggedIn }: LoginProps) {
       />
       <div className="sd-container">
         <div className="sd-header">
-          <h1 className="sd-title">{submission.title}</h1>
+          <h1 className="sd-title"
+            onClick={()=> navigate(`/problems/${submission.questionId._id}`) }
+          >{submission.title}</h1>
 
           <div className="sd-badges">
             <span

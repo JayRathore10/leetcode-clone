@@ -10,6 +10,7 @@
 }
 
 .sd-title {
+  cursor: pointer;
   font-size: 28px;
   font-weight: 600;
   margin-bottom: 12px;

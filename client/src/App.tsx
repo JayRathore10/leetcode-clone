@@ -81,7 +81,7 @@ export default App;
  * complete 
  * Make the discuss section for each question(solution also)
  * Add some more things to the profile page 
- * and connect sign up login to the profile with there middleware
+ * Add the edit profile button and also solve the reload issue when reload the page the islogged is out so i have to make islogged is connected to the cookies (token) not to the state 
  */
 
 /**

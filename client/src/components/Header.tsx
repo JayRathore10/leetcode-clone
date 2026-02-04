@@ -38,7 +38,7 @@ export function Header({isloggedIn} : LoginProps) {
         <button
           className="header-btn"
           onClick={() => {
-            if(!isloggedIn){
+            if(isloggedIn === false ){
               navigate("/");
             }else if(isOnProfilePage) {
               navigate("/logout");

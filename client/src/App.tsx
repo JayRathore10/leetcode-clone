@@ -51,7 +51,9 @@ function App(){
         <Route path="/problems/:id" element={<ProblemDetail
            isloggedIn={isloggedIn}
         />} />
-        <Route path="/submission/:id" element={<Submission/>}/>
+        <Route path="/submission/:id" element={<Submission
+            isloggedIn={isloggedIn}
+        />}/>
         <Route path="/profile" element={<Profile
           isloggedIn={isloggedIn}
         />} />

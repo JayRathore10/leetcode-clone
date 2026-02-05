@@ -9,7 +9,7 @@
 .run-btn{
   margin-left: 20px;
 }
-.loading-container {
+.ap-loading-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
   gap: 12px;
 }
 
-.spinner {
+.ap-spinner {
   width: 48px;
   height: 48px;
   border: 4px solid rgba(0, 0, 0, 0.15);
@@ -27,7 +27,7 @@
   animation: spin 0.9s linear infinite;
 }
 
-.loading-text {
+.ap-loading-text {
   font-size: 14px;
   color: #6b7280;
   letter-spacing: 0.4px;

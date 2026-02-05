@@ -22,9 +22,9 @@ const ProtectedNavigate = ({ isLoading, isloggedIn, children }: any) => {
 
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <div className="loading-text">Loading app...</div>
+      <div className="ap-loading-container">
+        <div className="ap-spinner"></div>
+        <div className="ap-loading-text">Loading app...</div>
       </div>
     )
   }
@@ -88,9 +88,9 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <div className="loading-text">Loading app...</div>
+      <div className="ap-loading-container">
+        <div className="ap-spinner"></div>
+        <div className="ap-loading-text">Loading app...</div>
       </div>
 
     );

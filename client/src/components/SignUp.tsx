@@ -29,7 +29,7 @@ export function SignUp({ isloggedIn }: LoginProps) {
         username
       } ,   { withCredentials: true });
       console.log(response.data);
-      navigate("/login");
+      navigate("/");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response?.data?.message === "User Already Exists") {

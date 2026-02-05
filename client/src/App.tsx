@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
 import { Login } from "./components/Login";
 import { SignUp } from "./components/SignUp";
 import { NotFound } from "./components/NotFound";
@@ -16,6 +15,7 @@ import { env } from "./configs/env.config";
 import { Logout } from "./components/Logout";
 import { Submission } from "./components/Submission";
 import { Navigate } from "react-router-dom";
+import "./App.css";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ProtectedNavigate = ({ isLoading, isloggedIn, children }: any) => {

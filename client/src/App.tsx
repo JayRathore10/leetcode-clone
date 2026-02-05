@@ -18,15 +18,27 @@ import { Submission } from "./components/Submission";
 import { Navigate } from "react-router-dom";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ProtectedNavigate = ({ isloggedIn, children }: any) => {
+const ProtectedNavigate = ({ isLoading, isloggedIn, children }: any) => {
+
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <div className="loading-text">Loading app...</div>
+      </div>
+    )
+  }
+
   if (!isloggedIn) {
     return <Navigate to="/" replace />;
   }
   return children;
 }
+
 function App() {
 
   const [isloggedIn, setIsloggedIn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const call = async () => {
@@ -38,8 +50,8 @@ function App() {
       }
     }
     call();
-  });
-  
+  }, []);
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -47,6 +59,7 @@ function App() {
 
         if (!token) {
           setIsloggedIn(false);
+          setIsLoading(false);
           return;
         }
 
@@ -64,6 +77,8 @@ function App() {
       } catch (error) {
         setIsloggedIn(false);
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -71,16 +86,29 @@ function App() {
 
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <div className="loading-text">Loading app...</div>
+      </div>
+
+    );
+  }
+
+
   return (
     <>
       <Routes>
         <Route
           path="/"
           element={
-            <Login
-              setIsloggedIn={setIsloggedIn}
-              isloggedIn={isloggedIn}
-            />
+            isloggedIn ? <Navigate to="/home" replace /> : (
+              <Login
+                setIsloggedIn={setIsloggedIn}
+                isloggedIn={isloggedIn}
+              />
+            )
           }
         />
 
@@ -97,7 +125,7 @@ function App() {
         <Route
           path="/home"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Home isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -106,7 +134,7 @@ function App() {
         <Route
           path="/problems"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Problems isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -115,7 +143,7 @@ function App() {
         <Route
           path="/problems/:id"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <ProblemDetail isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -124,7 +152,7 @@ function App() {
         <Route
           path="/submission/:id"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Submission isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -133,7 +161,7 @@ function App() {
         <Route
           path="/profile"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Profile isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -142,7 +170,7 @@ function App() {
         <Route
           path="/logout"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Logout setIsloggedIn={setIsloggedIn} />
             </ProtectedNavigate>
           }
@@ -151,7 +179,7 @@ function App() {
         <Route
           path="/contests"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Contests />
             </ProtectedNavigate>
           }
@@ -160,7 +188,7 @@ function App() {
         <Route
           path="/discuss"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Discuss />
             </ProtectedNavigate>
           }
@@ -169,7 +197,7 @@ function App() {
         <Route
           path="/leaderboard"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn}>
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Leaderboard />
             </ProtectedNavigate>
           }
@@ -177,7 +205,6 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-
     </>
   );
 }

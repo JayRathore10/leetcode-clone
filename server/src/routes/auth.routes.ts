@@ -8,4 +8,4 @@ authRouter.post("/register" , registerNewUser);
 authRouter.post("/login" , loginUser);
 // protected route
 authRouter.post("/logout", isUserLoggedIn , logoutUser);
-authRouter.get("/me" , me);
+authRouter.get("/me" , me); 

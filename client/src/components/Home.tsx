@@ -2,9 +2,27 @@ import "../styles/Home.css";
 import { Header } from "./Header";
 import {useNavigate } from "react-router-dom";
 import { LoginProps } from "./Login";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { env } from "../configs/env.config";
 
 export function Home({isloggedIn} : LoginProps) {
   const navigate = useNavigate();
+
+  const [totalQuestions , setTotalQuestions] = useState<number>(0);
+
+  useEffect(()=>{
+    const fetchQuestionLen = async()=>{
+      try{  
+        const response = await axios.get(`${env.backendUrl}/api/question/total`);
+        setTotalQuestions(response.data.totalQuestion);
+      }catch(error){
+        console.log(error);
+      }
+    }
+    fetchQuestionLen();
+  } , []);
+
   return (
     <>
       <Header isloggedIn={isloggedIn!} />
@@ -29,7 +47,7 @@ export function Home({isloggedIn} : LoginProps) {
 
         <section className="stats">
           <div className="stat-card">
-            <h2>2,500+</h2>
+            <h2>{totalQuestions}+</h2>
             <p>Problems</p>
           </div>
           <div className="stat-card">

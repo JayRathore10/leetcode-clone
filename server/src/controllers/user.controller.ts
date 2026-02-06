@@ -2,6 +2,7 @@ import {Request , Response , NextFunction} from "express";
 import { userModel } from "../models/user.model";
 import { submissionModel } from "../models/submission.model";
 import { authRequest } from "../types/authRequest.type";
+import multer from "multer";
 
 export const test = (req : Request, res: Response, next : NextFunction)=>{
   try{
@@ -135,5 +136,32 @@ export const getUserProfile = async(req : authRequest , res : Response , next : 
     
   }catch(err){
     next(err);
+  }
+}
+
+export const editProfile = async(req : authRequest , res : Response , next : NextFunction)=>{
+  try{
+    const {name} = req.body;
+
+    if(!req.user){
+      return res.status(400).json({
+        message : "Can not find Error" , 
+        success : false 
+      });
+    }
+
+    if(name) req.user.name = name;
+
+    if(req.file) req.user.profilePic = req.file.filename;
+
+    await req.user?.save();
+
+    return res.status(200).json({
+      success : true , 
+      message : "Profile Updated"
+    })
+
+  }catch(error){
+    next(error);
   }
 }

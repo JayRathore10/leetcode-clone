@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import {Types} from "mongoose";
 import { maxLength, minLength } from "zod";
+import { Document } from "mongoose";
 
-export interface UserInterface {
+export interface UserInterface extends Document{
   _id : Types.ObjectId | string;
   username ?: string , 
   name ?: string , 

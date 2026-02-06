@@ -169,3 +169,28 @@
   cursor: pointer;
   font-weight: 600;
 }
+
+.avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-profile-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #132E32;
+  color: #CBD5E1;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  margin-left: 28px;
+}
+
+.edit-profile-btn:hover {
+  background-color: #0A2239;
+  transform: translateY(-1px);
+}

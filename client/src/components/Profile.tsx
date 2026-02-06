@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/Profile.css";
 import { Header } from "./Header";
 import axios from "axios";
@@ -10,7 +10,7 @@ type User = {
   username: string;
   email: string;
   name: string;
-  profilePic : string 
+  profilePic: string
 }
 
 export type Submission = {
@@ -18,25 +18,25 @@ export type Submission = {
   status: "Accepted" | "WA" | "TLE" | "MLE";
   language: string;
   createdAt: string;
-  code : string ;
+  code: string;
   questionId: {
-    _id : string , 
-    difficulty : string 
+    _id: string,
+    difficulty: string
   }
   title: string,
 };
 
 
-export function Profile({isloggedIn} : LoginProps) {
+export function Profile({ isloggedIn }: LoginProps) {
 
   const [username, setUserName] = useState<string>("");
   const [user, setUser] = useState<User>();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [easy , setEasy] = useState<number>(0);
-  const [hard , setHard] = useState<number>(0);
-  const [medium , setMedium] = useState<number>(0);
-  const [totalSolved , setTotalSolved] = useState<number>(0);
-  const [rating , setRating] = useState<number>(0);
+  const [easy, setEasy] = useState<number>(0);
+  const [hard, setHard] = useState<number>(0);
+  const [medium, setMedium] = useState<number>(0);
+  const [totalSolved, setTotalSolved] = useState<number>(0);
+  const [rating, setRating] = useState<number>(0);
 
   const navigate = useNavigate();
 
@@ -73,20 +73,20 @@ export function Profile({isloggedIn} : LoginProps) {
         let hard = 0;
         let total = 0;
 
-        response.data.submissions.map((sub : Submission)=>{
+        response.data.submissions.map((sub: Submission) => {
           const diff = sub.questionId.difficulty;
           const qId = sub.questionId._id;
 
-          if(uniqueQuestion.has(qId)) return ;
+          if (uniqueQuestion.has(qId)) return;
 
           uniqueQuestion.add(qId);
           total++;
 
-          if( diff === "Easy"){
+          if (diff === "Easy") {
             easy++;
-          }else if (diff === "Medium"){
+          } else if (diff === "Medium") {
             med++;
-          }else if (diff === "Hard"){
+          } else if (diff === "Hard") {
             hard++;
           }
 
@@ -102,8 +102,8 @@ export function Profile({isloggedIn} : LoginProps) {
       }
     }
 
-    const fetchAllQuestions = async()=>{
-      try{
+    const fetchAllQuestions = async () => {
+      try {
         const response = await axios.get(`${env.backendUrl}/api/question/total`);
         const totalQuestions = response.data.totalQuestion;
 
@@ -113,8 +113,8 @@ export function Profile({isloggedIn} : LoginProps) {
          * 
          */
 
-        setRating(Math.floor(totalQuestions / totalSolved)*100);
-      }catch(error){
+        setRating(Math.floor(totalQuestions / totalSolved) * 100);
+      } catch (error) {
         console.log(error);
       }
     }
@@ -129,9 +129,19 @@ export function Profile({isloggedIn} : LoginProps) {
       <div className="profile-page">
         <div className="profile-header">
           <div className="profile-left">
-            <img src={`${env.backendUrl}/images/${user?.profilePic}` } 
-            className="avatar"
-            alt="JR" />
+            <div className="avatar-wrapper">
+              <img
+                src={`${env.backendUrl}/images/${user?.profilePic}`}
+                className="avatar"
+                alt="JR"
+              />
+              <button
+                className="edit-profile-btn"
+                onClick={() => navigate("/profile/edit")}
+              >
+                Edit Profile
+              </button>
+            </div>
             <div className="profile-info">
               <h1>{user?.name}</h1>
               <p className="username">@{user?.username}</p>
@@ -190,14 +200,14 @@ export function Profile({isloggedIn} : LoginProps) {
                   submissions.map((sub) => (
                     <tr key={sub._id}>
                       <td className="submission-title"
-                      onClick={()=>navigate(`/submission/${sub._id}` )}
+                        onClick={() => navigate(`/submission/${sub._id}`)}
                       >
                         {sub.title}
                       </td>
                       <td className={`status ${sub.status.toLowerCase()}`}>
-                        {sub.status === "WA" ? 
+                        {sub.status === "WA" ?
                           `Wrong Answer` :
-                          sub.status  
+                          sub.status
                         }
                       </td>
                       <td>{sub.language}</td>

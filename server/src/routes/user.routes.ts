@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { editProfile, getAllSubmission, getAllUsers, getByUsername, getUserProfile, test } from "../controllers/user.controller";
 import { isUserLoggedIn } from "../middleware/auth.middleware";
-import multer from "multer";
+import { upload } from "../utils/upload.utility";
 
 export const userRouter = Router();
-const upload = multer({dest: "uploads/"});
+
 
 userRouter.get("/test" , test);
 // Make this route admin procted  

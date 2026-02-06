@@ -36,7 +36,7 @@ export function EditProfile({isloggedIn}: LoginProps){
     if(profilePic) formData.append("profilePic" , profilePic);
 
     await axios.put(
-      `${env.backendUrl}/api/user/profile` , 
+      `${env.backendUrl}/api/users/profile` , 
       formData ,
       {headers : {"Content-Type" : "multipart/form-data"}}
     );
@@ -65,11 +65,12 @@ export function EditProfile({isloggedIn}: LoginProps){
         </div>
 
         <div className="ep-input-group">
-          <label>Name</label>
+          <label>Edit Name</label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            className='ep-input'
           />
         </div>
 

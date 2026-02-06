@@ -60,7 +60,7 @@ export function EditProfile({isloggedIn}: LoginProps){
 
       <form onSubmit={handleSubmit} className="ep-edit-profile-form">
         <div className="ep-image-section">
-          <img src={preview} className="ep-avatar large" />
+          <img src={preview} className="ep-avatar-large" />
           <input type="file" accept="image/*" onChange={handleImageChange} />
         </div>
 
@@ -69,7 +69,6 @@ export function EditProfile({isloggedIn}: LoginProps){
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required
             className='ep-input'
           />
         </div>

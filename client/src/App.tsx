@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { env } from "./configs/env.config";
 import { Logout } from "./components/Logout";
+import { EditProfile } from "./components/EditProfile";
 import { Submission } from "./components/Submission";
 import { Navigate } from "react-router-dom";
 import "./App.css";
@@ -167,6 +168,15 @@ function App() {
           }
         />
 
+        <Route 
+          path="/profile/edit" 
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn} isloading = {isLoading} >
+              <EditProfile isloggedIn = {isloggedIn} />
+            </ProtectedNavigate>
+          }
+          />
+
         <Route
           path="/logout"
           element={
@@ -202,7 +212,6 @@ function App() {
             </ProtectedNavigate>
           }
         />
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

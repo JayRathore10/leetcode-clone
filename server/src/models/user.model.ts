@@ -4,7 +4,7 @@ import { maxLength, minLength } from "zod";
 import { Document } from "mongoose";
 
 export interface UserInterface extends Document{
-  _id : Types.ObjectId | string;
+  _id : Types.ObjectId;
   username ?: string , 
   name ?: string , 
   email ?: string , 

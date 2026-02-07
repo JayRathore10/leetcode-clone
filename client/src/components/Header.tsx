@@ -4,7 +4,7 @@ import { LoginProps } from "./Login";
 import { motion } from "framer-motion";
 
 const fadeup = {
-  hidden : {opacity : 0 , y : -10},
+  hidden : {opacity : 0 , y : -15},
   visible : {opacity : 1 ,  y : 0}
 }
 
@@ -19,7 +19,7 @@ export function Header({isloggedIn} : LoginProps) {
       initial="hidden"
       animate="visible"
       variants={fadeup} 
-      transition={{duration : 0.3}}
+      transition={{duration : 0.4}}
     >
       <div className="header-left">
         <span className="logo" onClick={() => navigate("/home")}>

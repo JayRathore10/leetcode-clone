@@ -9,6 +9,7 @@ import { runCode } from '../utils/runcode';
 import { testCaseFields } from "../utils/runcode";
 import { SubmitPanel } from "./SubmitPanel";
 import { LoginProps } from "./Login";
+import {motion} from "framer-motion";
 import "../styles/ProblemDetail.css";
 
 type Question =  {
@@ -25,6 +26,11 @@ type Question =  {
 }
 
 type panelModeType = "testcase" | "submit" ;
+
+const fade = {
+  hidden : {opacity : 0, y : 20} , 
+  visible: {opacity : 1 , y : 0}
+}
 
 export function ProblemDetail({isloggedIn} : LoginProps) {
   const [code, setCode] = useState("");
@@ -98,7 +104,14 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
     <>
       <Header isloggedIn={isloggedIn!} />
 
-      <div className="pd-problem-detail">
+      <motion.div className="pd-problem-detail"
+        initial="hidden"
+        animate="visible" 
+        variants={fade}
+        transition={{
+          duration :1
+        }}
+      >
         <div className="pd-problem-left">
           <h1 className="pd-problem-title-number">{questionNumber}. </h1>
           <h1 className="pd-problem-title">{question?.title}</h1>
@@ -181,7 +194,7 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

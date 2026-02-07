@@ -1,91 +1,131 @@
 import "../styles/Home.css";
 import { Header } from "./Header";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LoginProps } from "./Login";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { env } from "../configs/env.config";
+import { motion } from "framer-motion";
 
-export function Home({isloggedIn} : LoginProps) {
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
+
+export function Home({ isloggedIn }: LoginProps) {
   const navigate = useNavigate();
+  const [totalQuestions, setTotalQuestions] = useState<number>(0);
 
-  const [totalQuestions , setTotalQuestions] = useState<number>(0);
-
-  useEffect(()=>{
-    const fetchQuestionLen = async()=>{
-      try{  
+  useEffect(() => {
+    const fetchQuestionLen = async () => {
+      try {
         const response = await axios.get(`${env.backendUrl}/api/question/total`);
         setTotalQuestions(response.data.totalQuestion);
-      }catch(error){
+      } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchQuestionLen();
-  } , []);
+  }, []);
 
   return (
     <>
       <Header isloggedIn={isloggedIn!} />
+
       <div className="home">
-        <section className="hero">
-          <h1 className="hero-title">
-            Become a Better Programmer
-          </h1>
+        <motion.section
+          className="hero"
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="hero-title">Become a Better Programmer</h1>
           <p className="hero-subtitle">
             Practice coding problems, prepare for interviews, and compete with developers worldwide.
           </p>
 
           <div className="hero-actions">
-            <button className="primary-btn"
-              onClick={()=> navigate("/problems") }
-            >Start Solving</button>
-            <button className="secondary-btn"
-              onClick={()=> navigate("/problems")}
-            >Explore Problems</button>
+            <button className="primary-btn" onClick={() => navigate("/problems")}>
+              Start Solving
+            </button>
+            <button className="secondary-btn" onClick={() => navigate("/problems")}>
+              Explore Problems
+            </button>
           </div>
-        </section>
+        </motion.section>
 
-        <section className="stats">
-          <div className="stat-card">
-            <h2>{totalQuestions}+</h2>
-            <p>Problems</p>
-          </div>
-          <div className="stat-card">
-            <h2>20+</h2>
-            <p>Topics</p>
-          </div>
-          <div className="stat-card">
-            <h2>Weekly</h2>
-            <p>Contests</p>
-          </div>
-          <div className="stat-card">
-            <h2>Global</h2>
-            <p>Leaderboard</p>
-          </div>
-        </section>
+        <motion.section
+          className="stats"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          transition={{ staggerChildren: 0.15 }}
+        >
+          {[`${totalQuestions}+ Problems`, "20+ Topics", "Weekly Contests", "Global Leaderboard"].map(
+            (item, i) => (
+              <motion.div key={i} className="stat-card" variants={fadeUp}>
+                <h2>{item.split(" ")[0]}</h2>
+                <p>{item.split(" ").slice(1).join(" ")}</p>
+              </motion.div>
+            )
+          )}
+        </motion.section>
 
-        <section className="features">
-          <div className="feature-card">
+        <motion.section
+          className="features"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          transition={{ staggerChildren: 0.15 }}
+        >
+          <motion.div className="feature-card" variants={fadeUp}>
             <h3>Structured Learning</h3>
-            <p>
-              Solve problems by topic and difficulty to build strong fundamentals.
-            </p>
-          </div>
+            <p>Solve problems by topic and difficulty to build strong fundamentals.</p>
+          </motion.div>
 
-          <div className="feature-card">
+          <motion.div className="feature-card" variants={fadeUp}>
             <h3>Interview Preparation</h3>
-            <p>
-              Curated problems asked by top tech companies.
-            </p>
-          </div>
+            <p>Curated problems frequently asked by top tech companies.</p>
+          </motion.div>
 
-          <div className="feature-card">
+          <motion.div className="feature-card" variants={fadeUp}>
             <h3>Compete & Improve</h3>
-            <p>
-              Join contests and track your progress on the leaderboard.
-            </p>
+            <p>Join contests, climb leaderboards, and track your growth.</p>
+          </motion.div>
+        </motion.section>
+
+        <motion.section
+          className="how-it-works"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.h2 variants={fadeUp}>How It Works</motion.h2>
+          <div className="steps">
+            {["Choose a problem", "Write & submit code", "Analyze & improve"].map(
+              (step, i) => (
+                <motion.div key={i} className="step-card" variants={fadeUp}>
+                  <span>0{i + 1}</span>
+                  <p>{step}</p>
+                </motion.div>
+              )
+            )}
           </div>
-        </section>
+        </motion.section>
+
+        <motion.section
+          className="cta"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+        >
+          <h2>Ready to level up your coding skills?</h2>
+          <button className="primary-btn" onClick={() => navigate("/problems")}>
+            Start Practicing Now
+          </button>
+        </motion.section>
       </div>
     </>
   );

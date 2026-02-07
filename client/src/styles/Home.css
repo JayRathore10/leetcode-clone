@@ -100,3 +100,62 @@
   font-size: 14px;
   color: #CBD5E1;
 }
+
+.stat-card,
+.feature-card,
+.step-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-card:hover,
+.feature-card:hover,
+.step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.how-it-works {
+  margin: 100px 0;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 28px;
+  margin-bottom: 32px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.step-card {
+  background-color: #0A2239;
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.step-card span {
+  font-size: 24px;
+  font-weight: 600;
+  color: #34435E;
+}
+
+.step-card p {
+  margin-top: 8px;
+  color: #CBD5E1;
+}
+
+.cta {
+  margin-top: 120px;
+  padding: 60px;
+  text-align: center;
+  background: linear-gradient(135deg, #0A2239, #132E32);
+  border-radius: 16px;
+}
+
+.cta h2 {
+  font-size: 30px;
+  margin-bottom: 24px;
+}

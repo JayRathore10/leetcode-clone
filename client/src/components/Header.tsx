@@ -1,6 +1,12 @@
 import { NavLink, useNavigate  , useLocation} from "react-router-dom";
 import "../styles/Header.css";
 import { LoginProps } from "./Login";
+import { motion } from "framer-motion";
+
+const fadeup = {
+  hidden : {opacity : 0 , y : -10},
+  visible : {opacity : 1 ,  y : 0}
+}
 
 export function Header({isloggedIn} : LoginProps) {
   const navigate = useNavigate();
@@ -9,7 +15,12 @@ export function Header({isloggedIn} : LoginProps) {
   const isOnProfilePage = location.pathname === "/profile";
 
   return (
-    <header className="header">
+    <motion.header className="header"
+      initial="hidden"
+      animate="visible"
+      variants={fadeup} 
+      transition={{duration : 0.3}}
+    >
       <div className="header-left">
         <span className="logo" onClick={() => navigate("/home")}>
           CodeChamp
@@ -57,7 +68,7 @@ export function Header({isloggedIn} : LoginProps) {
          }
         </button>
       </div>
-    </header>
+    </motion.header>
   );
 }
 

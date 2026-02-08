@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import axios from "axios";
 import { env } from "../configs/env.config";
 import { LoginProps } from "./Login";
+import {motion} from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 type User = {
@@ -26,6 +27,10 @@ export type Submission = {
   title: string,
 };
 
+const fade = {
+  hidden : {opacity : 0, y : 20} , 
+  visible: {opacity : 1 , y : 0}
+}
 
 export function Profile({ isloggedIn }: LoginProps) {
 
@@ -108,9 +113,7 @@ export function Profile({ isloggedIn }: LoginProps) {
         const totalQuestions = response.data.totalQuestion;
 
         /**
-         * 
          * total unique solve questions / total number of questions 
-         * 
          */
 
         setRating(Math.floor(totalQuestions / totalSolved) * 100);
@@ -175,7 +178,12 @@ export function Profile({ isloggedIn }: LoginProps) {
           </div>
         </div>
 
-        <div className="profile-sections">
+        <motion.div className="profile-sections"
+          initial="hidden" 
+          animate="visible" 
+          variants={fade}
+          transition={{duration : 0.5}}
+        >
           <div className="profile-card submissions-card">
             <h2>Recent Submissions</h2>
 
@@ -221,7 +229,7 @@ export function Profile({ isloggedIn }: LoginProps) {
             </table>
           </div>
 
-        </div>
+        </motion.div>
       </div>
     </>
   );

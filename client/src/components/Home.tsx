@@ -6,11 +6,20 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { env } from "../configs/env.config";
 import { motion } from "framer-motion";
+import { MdOutlineFindInPage, MdTrendingUp } from "react-icons/md";
+import { FaCode } from "react-icons/fa";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 }
 };
+
+const stepIcons = [
+  <MdOutlineFindInPage />,
+  <FaCode />,
+  <MdTrendingUp />
+];
+
 
 export function Home({ isloggedIn }: LoginProps) {
   const navigate = useNavigate();
@@ -102,16 +111,30 @@ export function Home({ isloggedIn }: LoginProps) {
           viewport={{ once: true }}
         >
           <motion.h2 variants={fadeUp}>How It Works</motion.h2>
+
           <div className="steps">
             {["Choose a problem", "Write & submit code", "Analyze & improve"].map(
               (step, i) => (
-                <motion.div key={i} className="step-card" variants={fadeUp}>
-                  <span>0{i + 1}</span>
+                <motion.div
+                  key={i}
+                  className="step-card"
+                  variants={fadeUp}
+                >
+                  <motion.div
+                    className="icon"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: i * 0.2 }}
+                  >
+                    {stepIcons[i]}
+                  </motion.div>
+
                   <p>{step}</p>
                 </motion.div>
               )
             )}
           </div>
+
         </motion.section>
 
         <motion.section

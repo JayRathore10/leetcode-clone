@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 type User = {
   username: string;
-  email: string;
+email: string;
   name: string;
   profilePic: string
 }

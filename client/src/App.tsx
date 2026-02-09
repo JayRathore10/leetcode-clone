@@ -17,6 +17,7 @@ import { EditProfile } from "./components/EditProfile";
 import { Submission } from "./components/Submission";
 import { Navigate } from "react-router-dom";
 import "./App.css";
+import { Analyze } from "./components/Analyze";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ProtectedNavigate = ({ isLoading, isloggedIn, children }: any) => {
@@ -155,6 +156,15 @@ function App() {
           element={
             <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
               <Submission isloggedIn={isloggedIn} />
+            </ProtectedNavigate>
+          }
+        />
+
+        <Route 
+          path="/analysis/:id"
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+              <Analyze isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
         />

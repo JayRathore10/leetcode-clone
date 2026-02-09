@@ -25,6 +25,28 @@ export function Analyze({isloggedIn} : LoginProps){
     fetchSubmissionDetail();
   } , [id]);
 
+  const code = submission?.code ;
+  const problem = submission?.questionId.description ;
+  const language = submission?.language;
+
+  useEffect(()=>{
+    const fetchAnalysisOutput = async()=>{
+      try{
+        const response = await axios.post(`${env.backendUrl}/api/analyze` , {
+          code  , 
+          problem, 
+          language
+        });
+
+        setAnalyze(response.data.analysis);
+
+      }catch(error){
+        console.log(error);
+      }
+    }
+    fetchAnalysisOutput();
+  } , [code  , language , problem]);
+
   return(
     <>
       <Header isloggedIn={isloggedIn} />

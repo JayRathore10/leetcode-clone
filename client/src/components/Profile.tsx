@@ -22,7 +22,8 @@ export type Submission = {
   code: string;
   questionId: {
     _id: string,
-    difficulty: string
+    difficulty: string,
+    description : string 
   }
   title: string,
 };

@@ -1,4 +1,5 @@
 import "../styles/SubmitPanel.css";
+import { useNavigate } from "react-router-dom";
 
 interface SubmitPanelProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -6,7 +7,10 @@ interface SubmitPanelProps {
   onClose: () => void;
 }
 
-export function SubmitPanel({ result, onClose }: SubmitPanelProps) {
+export function SubmitPanel({ result, onClose}: SubmitPanelProps) {
+  
+  const naviagte = useNavigate();
+
   return (
     <div className="submit-panel">
       <div className="submit-header">
@@ -22,22 +26,35 @@ export function SubmitPanel({ result, onClose }: SubmitPanelProps) {
 
       {result.failedTest && (
         <>
-          <p className="failed-test-cases" >Failed Test Case: {result.failedTest}</p>
-          <pre  className="submit-message">
+          <p className="failed-test-cases">
+            Failed Test Case: {result.failedTest}
+          </p>
+          <pre className="submit-message">
             Expected Output : {result.expected}
-            <br className="outputs-gap" ></br>
+            <br className="outputs-gap" />
             Actual Output : {result.actual}
           </pre>
         </>
       )}
 
       {result.totalTest && (
-        <p className="total-test-cases">Total Test Cases: {result.totalTest}</p>
+        <p className="total-test-cases">
+          Total Test Cases: {result.totalTest}
+        </p>
       )}
 
       {result.message && (
         <pre className="submit-message">{result.message}</pre>
       )}
+
+      <div className="submit-actions">
+        <button
+          className="analyze-btn"
+          onClick={() => naviagte("/analysis")}
+        >
+           Analyze Code
+        </button>
+      </div>
     </div>
   );
 }

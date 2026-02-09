@@ -62,3 +62,26 @@
 .failed-test-cases , .total-test-cases{
   font-weight: bolder;
 }
+
+.submit-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.analyze-btn {
+  background: #34435e;
+  color: #ffffff;
+  border: 1px solid #132e32;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.analyze-btn:hover {
+  background: #0a2239;
+  border-color: #22c55e;
+}
+

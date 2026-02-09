@@ -7,5 +7,6 @@ export const {
   NODE_ENV , 
   COOKIE_SECRET , 
   SALT_ROUND , 
-  JWT_SECRET
+  JWT_SECRET, 
+  GEMINI_API_KEY
 } = process.env;

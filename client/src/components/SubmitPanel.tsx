@@ -5,9 +5,10 @@ interface SubmitPanelProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result: any;
   onClose: () => void;
+  submissionId : string 
 }
 
-export function SubmitPanel({ result, onClose}: SubmitPanelProps) {
+export function SubmitPanel({ result, onClose , submissionId}: SubmitPanelProps) {
   
   const naviagte = useNavigate();
 
@@ -50,7 +51,7 @@ export function SubmitPanel({ result, onClose}: SubmitPanelProps) {
       <div className="submit-actions">
         <button
           className="analyze-btn"
-          onClick={() => naviagte("/analysis")}
+          onClick={() => naviagte(`/analysis/${submissionId}`)}
         >
            Analyze Code
         </button>

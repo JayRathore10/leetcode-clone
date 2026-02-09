@@ -40,6 +40,7 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
   const [panelMode , setPanelMode] = useState<panelModeType>("testcase");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [submitResult , setSubmitResult] = useState<any>(null);
+  const [submissionId , setSubmissionId] = useState<string>("");
 
   const { id } = useParams<{ id: string }>();
   const [question, setQuestion] = useState<Question>();
@@ -91,6 +92,7 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
       } ,   { withCredentials: true });
 
       console.log(submissionResponse.data);
+      setSubmissionId(submissionResponse.data._id as string);
 
     }catch(err){
       console.log(err);
@@ -156,6 +158,7 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
           {panelMode === "submit" && (
             <SubmitPanel 
               result={submitResult}
+              submissionId={submissionId}
               onClose={()=> setPanelMode("testcase")}
             />
           )}

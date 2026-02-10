@@ -85,3 +85,8 @@
   border-color: #22c55e;
 }
 
+.analyze-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+

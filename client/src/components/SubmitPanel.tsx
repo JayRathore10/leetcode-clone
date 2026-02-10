@@ -10,7 +10,7 @@ interface SubmitPanelProps {
 
 export function SubmitPanel({ result, onClose , submissionId}: SubmitPanelProps) {
   
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="submit-panel">
@@ -51,7 +51,8 @@ export function SubmitPanel({ result, onClose , submissionId}: SubmitPanelProps)
       <div className="submit-actions">
         <button
           className="analyze-btn"
-          onClick={() => naviagte(`/analysis/${submissionId}`)}
+          disabled={!submissionId}
+          onClick={() => navigate(`/analysis/${submissionId}`)}
         >
            Analyze Code
         </button>

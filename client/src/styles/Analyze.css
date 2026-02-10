@@ -1,0 +1,35 @@
+.analyze-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #0a2239;
+  border-radius: 10px;
+  border: 1px solid #34435e;
+}
+
+.analyze-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.analyze-loading {
+  color: #cfd8dc;
+  font-style: italic;
+  padding: 16px;
+  background: #020d18;
+  border-radius: 8px;
+}
+
+.analyze-output {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #e0e0e0;
+  background: #020d18;
+  padding: 18px;
+  border-radius: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  border-left: 4px solid #22c55e;
+}

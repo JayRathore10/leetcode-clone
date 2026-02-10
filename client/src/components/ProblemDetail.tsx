@@ -92,7 +92,7 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
       } ,   { withCredentials: true });
 
       console.log(submissionResponse.data);
-      setSubmissionId(submissionResponse.data._id as string);
+      setSubmissionId(submissionResponse.data.submission._id);
 
     }catch(err){
       console.log(err);

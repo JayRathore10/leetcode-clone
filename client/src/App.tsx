@@ -241,8 +241,7 @@ export default App;
  * Make the discuss section for each question(solution also)
  * Add some more things to the profile page 
  * Add the edit profile button and also solve the reload issue when reload the page the islogged is out so i have to make islogged is connected to the cookies (token) not to the state 
- * Add more things to the Home page
- * aslo add some animation to the header and page loading
+ * 
  */
 
 /**

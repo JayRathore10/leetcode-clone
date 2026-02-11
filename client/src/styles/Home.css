@@ -107,8 +107,8 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.step-card{
-  box-shadow: 0 10px 30px rgba(0 , 0, 0, 0.25);
+.step-card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 .stat-card:hover,
@@ -117,9 +117,9 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
-.step-card:hover{
+.step-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 10px 30px rgba(130, 114, 114, 0.25);  
+  box-shadow: 0 10px 30px rgba(130, 114, 114, 0.25);
 }
 
 .how-it-works {

@@ -108,7 +108,8 @@ export function Home({ isloggedIn }: LoginProps) {
           className="how-it-works"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ staggerChildren: 0.2 }}
         >
           <motion.h2 variants={fadeUp}>How It Works</motion.h2>
 

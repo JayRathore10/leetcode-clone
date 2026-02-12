@@ -54,7 +54,6 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
 
       try{
         const response = await axios.get(`${env.backendUrl}/api/question/${id}`);
-        console.log(response.data);
         setQuestion(response.data.question);
       }catch(error){
         console.log(error);
@@ -91,7 +90,6 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
         title : question?.title
       } ,   { withCredentials: true });
 
-      console.log(submissionResponse.data);
       setSubmissionId(submissionResponse.data.submission._id);
 
     }catch(err){

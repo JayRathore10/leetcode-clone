@@ -30,7 +30,6 @@ export function Problems({ isloggedIn }: LoginProps) {
     const fetchAllQuestions = async () => {
       try {
         const response = await axios.get(`${env.backendUrl}/api/question/all`);
-        console.log(response.data);
         setQuestions(
           response.data.questions.map((q: Question) => ({
             ...q,

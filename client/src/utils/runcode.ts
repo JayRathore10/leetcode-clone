@@ -38,7 +38,6 @@ export async function runCode({ setOutput, code , language , questionNumber , se
 
     // setOutput(JSON.stringify(res.data.result, null, 2));
     setOutput(res.data);
-    console.log(res.data.result);
 
   }catch(err){
     console.error(err);

@@ -8,5 +8,6 @@ export const {
   COOKIE_SECRET , 
   SALT_ROUND , 
   JWT_SECRET, 
-  GEMINI_API_KEY
+  GEMINI_API_KEY, 
+  FRONTEND
 } = process.env;

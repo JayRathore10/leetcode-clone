@@ -9,11 +9,12 @@ import cookieParser from "cookie-parser";
 import { submissionRouter } from "./routes/submission.routes";
 import { authRouter } from "./routes/auth.routes";
 import { analyzeRouter } from "./routes/analyze.routes";
+import { FRONTEND } from "./configs/env.config";
 
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173", 
+  origin: FRONTEND , 
   methods: ["GET", "POST" , "DELETE" , "PUT"],
   credentials: true
 }));

@@ -1,4 +1,4 @@
-import {Request , Response , NextFunction} from "express";
+import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import { userLoginSchema, userSchema } from "../validation/user.validation";
 import { JWT_SECRET, SALT_ROUND } from "../configs/env.config";
@@ -7,147 +7,157 @@ import { userModel } from "../models/user.model";
 import jwt from "jsonwebtoken";
 
 
-export const registerNewUser = async(req :Request , res : Response , next : NextFunction)=>{
-  try{
+export const registerNewUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
     const parsed = userSchema.safeParse(req.body);
 
-    if(!parsed.success){
+    if (!parsed.success) {
       return res.status(400).json({
-        success : false , 
-        error : parsed.error.format()
+        success: false,
+        error: parsed.error.format()
       })
     }
 
-    const {username , email , password , name} = parsed.data;
+    const { username, email, password, name } = parsed.data;
 
-    const isUserExist = await userModel.findOne({email});
+    const isUserExist = await userModel.findOne({ email });
 
-    if(isUserExist){
+    if (isUserExist) {
       return res.status(400).json({
-        success: false , 
-        message : "User Already Exists"
+        success: false,
+        message: "User Already Exists"
       })
     }
 
-    const salt = await bcrypt.genSalt(Number(SALT_ROUND));  
-    const hashedPassword = await bcrypt.hash(password , salt);
+    const salt = await bcrypt.genSalt(Number(SALT_ROUND));
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await userModel.create({
-      username , 
-      email , 
-      password : hashedPassword ,
-      name 
+      username,
+      email,
+      password: hashedPassword,
+      name
     });
 
-    if(!user){
+    if (!user) {
       return res.status(400).json({
-        success : false , 
-        message : "Error in creating user"
+        success: false,
+        message: "Error in creating user"
       })
     }
 
-    const token = jwt.sign({email}, JWT_SECRET as string);
+    const token = jwt.sign({ email }, JWT_SECRET as string);
 
-    res.cookie("token" , token) ;
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      partitioned: true
+    });
 
     return res.status(201).json({
-      success : true ,
-      message : "User Registered Successfully" ,  
-      user 
+      success: true,
+      message: "User Registered Successfully",
+      user
     });
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const loginUser = async (req : Request , res : Response , next : NextFunction)=>{
-  try{
+export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
     const parsed = userLoginSchema.safeParse(req.body);
-    
-    if(!parsed.success){
+
+    if (!parsed.success) {
       return res.status(400).json({
-        success : false ,
-        error : parsed.error.format()
+        success: false,
+        error: parsed.error.format()
       })
     }
 
-    const {email  , password} = parsed.data;
+    const { email, password } = parsed.data;
 
-    const user = await userModel.findOne({email});
+    const user = await userModel.findOne({ email });
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({
-        success: false , 
-        message : "User Not found"
+        success: false,
+        message: "User Not found"
       })
     }
 
-    let result = await bcrypt.compare(password , user.password);
+    let result = await bcrypt.compare(password, user.password);
 
-    if(result === false){
+    if (result === false) {
       return res.status(400).json({
-        success : false , 
-        message : "Password is invalid"
+        success: false,
+        message: "Password is invalid"
       })
     }
 
-    const token = jwt.sign({email} , JWT_SECRET as string);
+    const token = jwt.sign({ email }, JWT_SECRET as string);
 
-    res.cookie("token" , token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      partitioned: true
+    });
 
     return res.status(200).json({
-      success : true , 
-      message : "Login successfully",
-      user 
+      success: true,
+      message: "Login successfully",
+      user
     })
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const logoutUser = async(req : Request, res: Response , next : NextFunction)=>{
-  try{
+export const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
     // procted have to make middleware for it 
     res.clearCookie("token");
     return res.status(200).json({
-      success : true , 
-      message : "Log out successfully"
+      success: true,
+      message: "Log out successfully"
     })
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const me = async(req : authRequest, res : Response  , next : NextFunction)=>{
-  try{
+export const me = async (req: authRequest, res: Response, next: NextFunction) => {
+  try {
     const authHeader = req.headers.authorization;
 
-    if(!authHeader){
+    if (!authHeader) {
       return res.status(401).json({
-        message : "No Token"
+        message: "No Token"
       });
     }
 
     const token = authHeader.split(" ")[1];
 
-    const decoded = jwt.verify(token , JWT_SECRET as string) as userPlayLoad;
+    const decoded = jwt.verify(token, JWT_SECRET as string) as userPlayLoad;
 
     const user = await userModel.findById(decoded.userId).select("-password");
 
-    if(!user){
+    if (!user) {
       return res.status(401).json({
-        message  : "User not found"
+        message: "User not found"
       });
     }
 
     return res.status(200).json({
-      success : true   , 
-      user 
+      success: true,
+      user
     });
 
-  }catch(error){
+  } catch (error) {
     next(error);
   }
 }

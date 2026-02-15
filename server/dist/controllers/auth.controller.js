@@ -50,7 +50,12 @@ const registerNewUser = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             });
         }
         const token = jsonwebtoken_1.default.sign({ email }, env_config_1.JWT_SECRET);
-        res.cookie("token", token);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            partitioned: true
+        });
         return res.status(201).json({
             success: true,
             message: "User Registered Successfully",
@@ -87,7 +92,12 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             });
         }
         const token = jsonwebtoken_1.default.sign({ email }, env_config_1.JWT_SECRET);
-        res.cookie("token", token);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            partitioned: true
+        });
         return res.status(200).json({
             success: true,
             message: "Login successfully",

@@ -16,6 +16,6 @@ const app_1 = __importDefault(require("./app"));
 const mongoDB_1 = require("./database/mongoDB");
 const PORT = process.env.PORT || 3000;
 app_1.default.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(`Server running on http://localhost:${PORT}`);
     yield (0, mongoDB_1.connectDatabase)();
+    console.log(`Server running on http://localhost:${PORT}`);
 }));

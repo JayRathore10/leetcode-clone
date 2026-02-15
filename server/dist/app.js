@@ -13,9 +13,10 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const submission_routes_1 = require("./routes/submission.routes");
 const auth_routes_1 = require("./routes/auth.routes");
 const analyze_routes_1 = require("./routes/analyze.routes");
+const env_config_1 = require("./configs/env.config");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173",
+    origin: env_config_1.FRONTEND,
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true
 }));

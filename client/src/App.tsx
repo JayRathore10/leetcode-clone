@@ -254,3 +254,8 @@ export default App;
 /**
  * Add Code analyzer using API 
  */
+
+/**
+ * Add the loading animation every where 
+ * Skelton ones are best
+ */

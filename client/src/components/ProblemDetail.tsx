@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CodeEditor } from "../components/CodeEditor";
 import { Header } from "./Header";
-import { useParams , useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { env } from "../configs/env.config";
 import { TestCasePanel } from "./TestCasePanel";
@@ -9,15 +9,16 @@ import { runCode } from '../utils/runcode';
 import { testCaseFields } from "../utils/runcode";
 import { SubmitPanel } from "./SubmitPanel";
 import { LoginProps } from "./Login";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
+import { MaintenanceAlert } from "./MaintenanceAlert";
 import "../styles/ProblemDetail.css";
 
-type Question =  {
-  title : string, 
-  description : string , 
-  difficulty  : "Easy" | "Medium" | "Hard" , 
-  tags : string[] , 
-  constraints : string[] , 
+type Question = {
+  title: string,
+  description: string,
+  difficulty: "Easy" | "Medium" | "Hard",
+  tags: string[],
+  constraints: string[],
   example: {
     input: string;
     output: string;
@@ -25,76 +26,80 @@ type Question =  {
   };
 }
 
-type panelModeType = "testcase" | "submit" ;
+type panelModeType = "testcase" | "submit";
 
 const fade = {
-  hidden : {opacity : 0, y : 20} , 
-  visible: {opacity : 1 , y : 0}
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
 }
 
-export function ProblemDetail({isloggedIn} : LoginProps) {
+export function ProblemDetail({ isloggedIn }: LoginProps) {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
-  const [output , setOutput] = useState<testCaseFields>({});
-  const [isRunning , setIsRunning] = useState<boolean>(false);
-  const [panelMode , setPanelMode] = useState<panelModeType>("testcase");
+  const [output, setOutput] = useState<testCaseFields>({});
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [panelMode, setPanelMode] = useState<panelModeType>("testcase");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [submitResult , setSubmitResult] = useState<any>(null);
-  const [submissionId , setSubmissionId] = useState<string>("");
+  const [submitResult, setSubmitResult] = useState<any>(null);
+  const [submissionId, setSubmissionId] = useState<string>("");
+  const [showMaintenance, setShowMaintenance] = useState(false);
 
   const { id } = useParams<{ id: string }>();
   const [question, setQuestion] = useState<Question>();
 
   const location = useLocation();
-  const successRate = location.state?.successRate ;
-  const questionNumber : string = location.state?.questionNumber;
+  const successRate = location.state?.successRate;
+  const questionNumber: string = location.state?.questionNumber;
 
   useEffect(() => {
     const fetchQuestion = async () => {
 
-      try{
+      try {
         const response = await axios.get(`${env.backendUrl}/api/question/${id}`);
         setQuestion(response.data.question);
-      }catch(error){
+      } catch (error) {
         console.log(error);
       }
     }
     fetchQuestion();
   }, [id]);
 
-  const submitCodeHandler = async()=>{
+  const submitCodeHandler = async () => {
 
-    if(isloggedIn === false){
+    if (isloggedIn === false) {
       alert("Login First");
-      return ;
+      return;
     }
 
     setIsRunning(true);
     setPanelMode("testcase");
 
-    try{
-      const response = await axios.post(`${env.backendUrl}/api/question/submit`  , {
-        questionId : id ,
-        code , 
+    try {
+      const response = await axios.post(`${env.backendUrl}/api/question/submit`, {
+        questionId: id,
+        code,
         language
-      } ,  { withCredentials: true });
+      }, { withCredentials: true });
 
       setPanelMode("submit");
       setSubmitResult(response.data);
 
       const submissionResponse = await axios.post(`${env.backendUrl}/api/submission/`, {
-        questionId : id , 
-        code , 
-        language , 
-        status : response.data.status , 
-        title : question?.title
-      } ,   { withCredentials: true });
+        questionId: id,
+        code,
+        language,
+        status: response.data.status,
+        title: question?.title
+      }, { withCredentials: true });
 
       setSubmissionId(submissionResponse.data.submission._id);
 
-    }catch(err){
-      console.log(err);
-    }finally{
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err?.response?.status === 500) {
+        setShowMaintenance(true);
+      }
+    } finally {
       setIsRunning(false);
     }
 
@@ -106,10 +111,10 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
 
       <motion.div className="pd-problem-detail"
         initial="hidden"
-        animate="visible" 
+        animate="visible"
         variants={fade}
         transition={{
-          duration :1
+          duration: 1
         }}
       >
         <div className="pd-problem-left">
@@ -142,26 +147,26 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
           <div className="pd-problem-constraints">
             <h3>Constraints</h3>
             <ul>
-             <li>{question?.constraints.map((con , index)=>(
-              <li key={index}>
-                {con}
-              </li>
-             ) )}</li>
+              <li>{question?.constraints.map((con, index) => (
+                <li key={index}>
+                  {con}
+                </li>
+              ))}</li>
             </ul>
           </div>
           {panelMode === "testcase" && (
-            <TestCasePanel questionId={id!} output={output!} isRunning= {isRunning} />     
+            <TestCasePanel questionId={id!} output={output!} isRunning={isRunning} />
           )}
 
           {panelMode === "submit" && (
-            <SubmitPanel 
+            <SubmitPanel
               result={submitResult}
               submissionId={submissionId}
-              onClose={()=> setPanelMode("testcase")}
+              onClose={() => setPanelMode("testcase")}
             />
           )}
 
-        </div>        
+        </div>
 
         <div className="pd-problem-right">
           <div className="pd-editor-header">
@@ -178,11 +183,20 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
 
             <div className="pd-editor-actions">
               <button className="pd-secondary-btn"
-                onClick={()=> runCode({ setOutput , code , language , questionNumber : id! , setIsRunning , isloggedIn})}
+                onClick={async () => {
+                  try {
+                    await runCode({ setOutput, code, language, questionNumber: id!, setIsRunning, isloggedIn })
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  } catch (err: any) {
+                    if (err?.response?.status === 500) {
+                      setShowMaintenance(true);
+                    }
+                  }
+                }}
               >Run</button>
               <button className="pd-primary-btn"
                 onClick={submitCodeHandler}
-                disabled= {isRunning}
+                disabled={isRunning}
               >Submit</button>
             </div>
           </div>
@@ -196,6 +210,12 @@ export function ProblemDetail({isloggedIn} : LoginProps) {
           </div>
         </div>
       </motion.div>
+      {showMaintenance && (
+        <MaintenanceAlert
+          message="Run & Submit APIs are under maintenance. It will start working in a few days."
+          onClose={() => setShowMaintenance(false)}
+        />
+      )}
     </>
   );
 }

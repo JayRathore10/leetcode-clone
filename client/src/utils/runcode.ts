@@ -39,8 +39,11 @@ export async function runCode({ setOutput, code , language , questionNumber , se
     // setOutput(JSON.stringify(res.data.result, null, 2));
     setOutput(res.data);
 
-  }catch(err){
-    console.error(err);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }catch(err : any){
+    if(err?.response?.status === 500){
+      throw err;
+    }
     setOutput({});
   }finally{
     setIsRunning(false);

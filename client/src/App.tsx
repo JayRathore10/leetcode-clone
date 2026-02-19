@@ -118,8 +118,6 @@ function App() {
           path="/signup"
           element={
             <SignUp
-              setIsloggedIn={setIsloggedIn}
-              isloggedIn={isloggedIn}
             />
           }
         />

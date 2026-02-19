@@ -10,8 +10,6 @@ import { submissionRouter } from "./routes/submission.routes";
 import { authRouter } from "./routes/auth.routes";
 import { analyzeRouter } from "./routes/analyze.routes";
 import { FRONTEND } from "./configs/env.config";
-import swaggerUi from "swagger-ui-express";
-import specs from "../src/configs/swagger.config";
 
 const app = express();
 
@@ -25,8 +23,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use("/images", express.static("public/images"));
 app.use(cookieParser());
-
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.get("/"  , (req : Request, res : Response)=>{
   res.send("Hi, Jexts here!")

@@ -3,10 +3,8 @@ import axios from "axios";
 import "../styles/auth.css";
 import { useState } from "react";
 import { env } from "../configs/env.config";
-import { LoginProps } from "./Login";
-import { Header } from "./Header";
 
-export function SignUp({ isloggedIn }: LoginProps) {
+export function SignUp() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
@@ -43,11 +41,6 @@ export function SignUp({ isloggedIn }: LoginProps) {
 
   return (
     <>
-
-      <Header 
-        isloggedIn={isloggedIn!}
-      />
-
       <div className="login-container">
         <h1 className="login-title">Create an Account</h1>
 

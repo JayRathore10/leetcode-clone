@@ -686,31 +686,170 @@ src/routes/question.route.ts
   "message": "There are no questions in database"
 }
 ```
+---
+
+# Submissions API
+
+Base Route: `/api/submissions`
+
+All submission routes are defined in:
+
+```
+src/routes/submission.route.ts
+```
+
+All routes are **User Protected** via `isUserLoggedIn` middleware.
 
 ---
 
-
-### Submit Solution
+## 1. Add Submission
 
 **POST** `/api/submissions`
 
-Request:
+### Request Body
 
 ```json
 {
-  "problemId": "p1",
-  "code": "function twoSum() { ... }",
-  "language": "javascript"
+  "questionId": "q1",
+  "title": "Two Sum",
+  "code": "function twoSum(nums, target) {...}",
+  "language": "javascript",
+  "status": "Accepted"
 }
 ```
 
-Response:
+### Success Response (201)
 
 ```json
 {
   "success": true,
-  "status": "Accepted",
-  "executionTime": "32ms"
+  "message": "New Submission Created",
+  "submission": {
+    "_id": "s1",
+    "userId": "u1",
+    "questionId": "q1",
+    "title": "Two Sum",
+    "code": "function twoSum(nums, target) {...}",
+    "language": "javascript",
+    "status": "Accepted",
+    "createdAt": "2026-02-20T15:00:00.000Z",
+    "updatedAt": "2026-02-20T15:00:00.000Z"
+  }
+}
+```
+
+### Error Responses
+
+**400 — Validation Error**
+
+```json
+{
+  "success": false,
+  "error": {
+    "fieldName": {
+      "_errors": ["Validation message"]
+    }
+  }
+}
+```
+
+**400 — Submission Creation Failed**
+
+```json
+{
+  "success": false,
+  "message": "Error in creating Submission"
+}
+```
+
+---
+
+## 2. Get All User Submissions
+
+**GET** `/api/submissions`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "User's All Submissions",
+  "submissions": [
+    {
+      "_id": "s1",
+      "questionId": {
+        "_id": "q1",
+        "title": "Two Sum",
+        "difficulty": "Easy"
+      },
+      "title": "Two Sum",
+      "code": "function twoSum(nums, target) {...}",
+      "language": "javascript",
+      "status": "Accepted",
+      "createdAt": "2026-02-20T15:00:00.000Z"
+    },
+    {
+      "_id": "s2",
+      "questionId": {
+        "_id": "q2",
+        "title": "Add Two Numbers",
+        "difficulty": "Medium"
+      },
+      "title": "Add Two Numbers",
+      "code": "...",
+      "language": "javascript",
+      "status": "Accepted",
+      "createdAt": "2026-02-20T14:55:00.000Z"
+    }
+  ]
+}
+```
+
+### No Submissions Response (200)
+
+```json
+{
+  "success": false,
+  "message": "User don't have any submissions"
+}
+```
+
+---
+
+## 3. Get Submission Detail
+
+**GET** `/api/submissions/:id`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Submission",
+  "submission": {
+    "_id": "s1",
+    "userId": "u1",
+    "questionId": {
+      "_id": "q1",
+      "title": "Two Sum",
+      "difficulty": "Easy"
+    },
+    "title": "Two Sum",
+    "code": "function twoSum(nums, target) {...}",
+    "language": "javascript",
+    "status": "Accepted",
+    "createdAt": "2026-02-20T15:00:00.000Z",
+    "updatedAt": "2026-02-20T15:00:00.000Z"
+  }
+}
+```
+
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "Submission not found"
 }
 ```
 

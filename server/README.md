@@ -95,27 +95,85 @@ http://localhost:3000
 
 ---
 
-## API Response Format
+# Authentication API
 
-It is recommended to document API responses in text (JSON format) rather than using screenshots.
+Base Route: `/api/auth`
 
-### Reasons:
+All authentication routes are defined in:
 
-- Easier to copy and test
-- Searchable within GitHub
-- Version controlled
-- Easier to maintain and update
-- Screenshots can quickly become outdated
+```
+src/routes/auth.route.ts
+```
 
 ---
 
-## Example API Responses
+## 1. Register User
 
-### Authentication — Login
+**POST** `/api/auth/register`
+
+### Request Body
+
+```json
+{
+  "username": "Jay_Rathore11",
+  "name": "Jay Rathore",
+  "email": "jayrathore8815@gmail.com",
+  "password": "Jay9575Rathore"
+}
+```
+
+### Success Response (201)
+
+```json
+{
+  "success": true,
+  "message": "User Registered Successfully",
+  "user": {
+    "_id": "69986d1a94d18a4af37102a2",
+    "username": "Jay_Rathore11",
+    "name": "Jay Rathore",
+    "email": "jayrathore8815@gmail.com",
+    "password": "$2b$10$hashedPassword",
+    "role": "user",
+    "profilePic": "default.jpg",
+    "createdAt": "2026-02-20T14:18:02.535Z",
+    "updatedAt": "2026-02-20T14:18:02.535Z",
+    "__v": 0
+  }
+}
+```
+
+### Error Responses
+
+**400 — Validation Error**
+
+```json
+{
+  "success": false,
+  "error": {
+    "fieldName": {
+      "_errors": ["Validation message"]
+    }
+  }
+}
+```
+
+**400 — User Already Exists**
+
+```json
+{
+  "success": false,
+  "message": "User Already Exists"
+}
+```
+
+---
+
+## 2. Login User
 
 **POST** `/api/auth/login`
 
-Request:
+### Request Body
 
 ```json
 {
@@ -124,33 +182,185 @@ Request:
 }
 ```
 
-Success Response:
+### Success Response (200)
 
 ```json
 {
-    "success": true,
-    "message": "Login successfully",
-    "user": {
-      "_id": "6978bfac5ba09e71d7453352",
-      "username": "Jay_Rathore1",
-      "name": "Jay Rathore",
-      "email": "jayrathore88155@gmail.com",
-      "password": "$2b$10$uSbBndmE6vnEu2yVWbUsTuDdS1PWMltcbRgdM53qFSCx0pMLGGI.6",
-      "role": "user",
-      "profilePic": "1770375732550-53458247.jpg",
-      "createdAt": "2026-01-27T13:37:48.010Z",
-      "updatedAt": "2026-02-06T11:02:12.611Z",
-      "__v": 0
-    }
+  "success": true,
+  "message": "Login successfully",
+  "user": {
+    "_id": "6978bfac5ba09e71d7453352",
+    "username": "Jay_Rathore1",
+    "name": "Jay Rathore",
+    "email": "jayrathore88155@gmail.com",
+    "password": "$2b$10$hashedPassword",
+    "role": "user",
+    "profilePic": "1770375732550-53458247.jpg",
+    "createdAt": "2026-01-27T13:37:48.010Z",
+    "updatedAt": "2026-02-06T11:02:12.611Z",
+    "__v": 0
+  }
 }
 ```
 
-Error Response:
+### Error Responses
+
+**404 — User Not Found**
+
+```json
+{
+  "success": false,
+  "message": "User Not found"
+}
+```
+
+**400 — Invalid Password**
 
 ```json
 {
   "success": false,
   "message": "Password is invalid"
+}
+```
+
+**400 — Validation Error**
+
+```json
+{
+  "success": false,
+  "error": {
+    "fieldName": {
+      "_errors": ["Validation message"]
+    }
+  }
+}
+```
+
+---
+
+## 3. Logout User (Protected Route)
+
+**POST** `/api/auth/logout`
+
+Middleware: `isUserLoggedIn`
+
+This route requires a valid authentication cookie (`token`).
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Log out successfully"
+}
+```
+
+### Error Response
+
+**401 — Token Not Found**
+
+```json
+{
+  "success": false,
+  "message": "Token not Found"
+}
+```
+
+---
+
+## 4. Get Current User
+
+**GET** `/api/auth/me`
+
+Requires Authorization header:
+
+```
+Authorization: Bearer <token>
+```
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "user": {
+    "_id": "6978bfac5ba09e71d7453352",
+    "username": "Jay_Rathore1",
+    "name": "Jay Rathore",
+    "email": "jayrathore88155@gmail.com",
+    "role": "user",
+    "profilePic": "1770375732550-53458247.jpg",
+    "createdAt": "2026-01-27T13:37:48.010Z",
+    "updatedAt": "2026-02-06T11:02:12.611Z",
+    "__v": 0
+  }
+}
+```
+
+### Error Responses
+
+**401 — No Token**
+
+```json
+{
+  "message": "No Token"
+}
+```
+
+**401 — User Not Found**
+
+```json
+{
+  "message": "User not found"
+}
+```
+
+---
+
+# Authentication Middleware
+
+## isUserLoggedIn
+
+- Reads JWT from cookies
+- Verifies token
+- Attaches user to `req.user`
+- Blocks access if token is missing or invalid
+
+### Possible Errors
+
+**401 — Token Not Found**
+
+```json
+{
+  "success": false,
+  "message": "Token not Found"
+}
+```
+
+**401 — User not found**
+
+```json
+{
+  "success": false,
+  "message": "User not found"
+}
+```
+
+---
+
+## isAdminLoggedIn
+
+- Reads JWT from cookies
+- Verifies token
+- Checks if `role === "admin"`
+- Blocks non-admin users
+
+### 403 — Not Admin
+
+```json
+{
+  "success": false,
+  "message": "You are not admin"
 }
 ```
 

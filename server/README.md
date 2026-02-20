@@ -1031,6 +1031,270 @@ All routes are **Admin Protected** unless specified otherwise.
   "message": "Not Test Case found"
 }
 ```
+---
+
+# Users API
+
+Base Route: `/api/users`
+
+All routes are defined in:
+
+```
+src/routes/user.route.ts
+```
+
+Middleware usage:
+
+- `isUserLoggedIn` — protects routes for authenticated users
+- Admin protection noted where applicable
+
+---
+
+## 1. Test Endpoint
+
+**GET** `/api/users/test`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Hello"
+}
+```
+
+---
+
+## 2. Get All Users (Admin Protected)
+
+**GET** `/api/users/all`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "All Users",
+  "data": {
+    "users": [
+      {
+        "_id": "u1",
+        "username": "Jay_Rathore1",
+        "name": "Jay Rathore",
+        "email": "jayrathore88155@gmail.com",
+        "role": "user",
+        "profilePic": "1770375732550-53458247.jpg",
+        "createdAt": "2026-01-27T13:37:48.010Z",
+        "updatedAt": "2026-02-06T11:02:12.611Z"
+      }
+    ]
+  }
+}
+```
+
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "No User found"
+}
+```
+
+---
+
+## 3. Get User by Username (Public)
+
+**GET** `/api/users/:username`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "User Details",
+  "user": {
+    "_id": "u1",
+    "username": "Jay_Rathore1",
+    "name": "Jay Rathore",
+    "email": "jayrathore88155@gmail.com",
+    "role": "user",
+    "profilePic": "1770375732550-53458247.jpg",
+    "createdAt": "2026-01-27T13:37:48.010Z",
+    "updatedAt": "2026-02-06T11:02:12.611Z"
+  }
+}
+```
+
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "User not found"
+}
+```
+
+---
+
+## 4. Get All Submissions by Username (Public)
+
+**GET** `/api/users/:username/all-submissions`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "All Submissions",
+  "data": {
+    "submissions": [
+      {
+        "_id": "s1",
+        "questionId": "q1",
+        "title": "Two Sum",
+        "code": "...",
+        "language": "javascript",
+        "status": "Accepted",
+        "createdAt": "2026-02-20T15:00:00.000Z"
+      }
+    ]
+  }
+}
+```
+
+### No Submissions Response (200)
+
+```json
+{
+  "success": true,
+  "message": "No Submission found",
+  "submissions": []
+}
+```
+
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "User not found"
+}
+```
+
+---
+
+## 5. Get Logged-In User Profile (User Protected)
+
+**GET** `/api/users/profile`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "User Data",
+  "user": {
+    "_id": "u1",
+    "username": "Jay_Rathore1",
+    "name": "Jay Rathore",
+    "email": "jayrathore88155@gmail.com",
+    "role": "user",
+    "profilePic": "1770375732550-53458247.jpg",
+    "createdAt": "2026-01-27T13:37:48.010Z",
+    "updatedAt": "2026-02-06T11:02:12.611Z"
+  }
+}
+```
+
+### Error Response (400 / 404)
+
+```json
+{
+  "success": false,
+  "message": "Error in getting user detail"
+}
+```
+
+---
+
+## 6. Edit Logged-In User Profile (User Protected)
+
+**PUT** `/api/users/profile`
+
+**Request Body (multipart/form-data)**
+
+| Field       | Type   | Description                |
+|------------|--------|----------------------------|
+| name       | string | Optional new display name  |
+| profilePic | file   | Optional profile picture   |
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Profile Updated"
+}
+```
+
+### Error Response (400)
+
+```json
+{
+  "success": false,
+  "message": "Cannot find user"
+}
+```
+---
+
+# Code Analysis API
+
+Base Route: `/api/analyze`
+
+This endpoint uses Google Generative AI (Gemini) to analyze user-submitted code and provide insights or suggestions.  
+
+---
+
+## Analyze Code
+
+**POST** `/api/analyze`
+
+### Request Body
+
+```json
+{
+  "code": "function twoSum(nums, target) { ... }",
+  "problem": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
+  "language": "javascript"
+}
+```
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "analysis": "This JavaScript code implements the Two Sum algorithm. It iterates over the array and uses a hash map to find complementary numbers efficiently. Time complexity is O(n), and space complexity is O(n). Potential improvements: ..."
+}
+```
+
+### Error Response (500)
+
+```json
+{
+  "success": false,
+  "message": "Internal server error"
+}
+```
+
+---
+
+### Notes
+
+- Requires `GEMINI_API_KEY` environment variable.
+- Returns AI-generated analysis of the submitted code.
+- This route is currently **not protected**, but authentication middleware can be added if needed.
 
 ---
 

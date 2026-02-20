@@ -366,24 +366,135 @@ Authorization: Bearer <token>
 
 ---
 
-### Get All Problems
+# Questions API
 
-**GET** `/api/problems`
+Base Route: `/api/questions`
 
-Response:
+All question routes are defined in:
+
+```
+src/routes/question.route.ts
+```
+
+---
+
+## 1. Add Question (Admin Protected)
+
+**POST** `/api/questions/add`
+
+### Request Body
+
+```json
+{
+  "title": "Two Sum",
+  "description": "Given an array...",
+  "difficulty": "Easy",
+  "tags": ["array", "hashmap"],
+  "constraints": "1 <= nums.length <= 10^4",
+  "example": "Input: nums = [2,7,11,15], target = 9"
+}
+```
+
+### Success Response (201)
 
 ```json
 {
   "success": true,
-  "count": 2,
-  "data": [
+  "message": "New Question Created",
+  "data": {
+    "newQuestion": {
+      "_id": "q1",
+      "title": "Two Sum",
+      "description": "Given an array...",
+      "difficulty": "Easy",
+      "tags": ["array", "hashmap"],
+      "constraints": "1 <= nums.length <= 10^4",
+      "example": "Input: nums = [2,7,11,15], target = 9",
+      "createdAt": "2026-02-20T14:18:02.535Z",
+      "updatedAt": "2026-02-20T14:18:02.535Z"
+    }
+  }
+}
+```
+
+### Error Responses
+
+**400 — Validation Error**
+
+```json
+{
+  "error": {
+    "fieldName": {
+      "_errors": ["Validation message"]
+    }
+  }
+}
+```
+
+**400 — Creation Failed**
+
+```json
+{
+  "success": false,
+  "message": "New Question is not created"
+}
+```
+
+---
+
+## 2. Delete Question (Admin Protected)
+
+**DELETE** `/api/questions/delete/:questionId`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Question delete successfully"
+}
+```
+
+### Error Responses
+
+**404 — Missing Question Id**
+
+```json
+{
+  "success": false,
+  "message": "Enter the question Id"
+}
+```
+
+**404 — Question Not Found**
+
+```json
+{
+  "success": false,
+  "message": "Question Not found"
+}
+```
+
+---
+
+## 3. Get All Questions (Public)
+
+**GET** `/api/questions/all`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "These are all questions",
+  "questions": [
     {
-      "_id": "p1",
+      "_id": "q1",
       "title": "Two Sum",
       "difficulty": "Easy"
     },
     {
-      "_id": "p2",
+      "_id": "q2",
       "title": "Add Two Numbers",
       "difficulty": "Medium"
     }
@@ -391,7 +502,193 @@ Response:
 }
 ```
 
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "There is no question in database"
+}
+```
+
 ---
+
+## 4. Get Single Question (Public)
+
+**GET** `/api/questions/:id`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "This is Question",
+  "question": {
+    "_id": "q1",
+    "title": "Two Sum",
+    "description": "Given an array...",
+    "difficulty": "Easy",
+    "tags": ["array", "hashmap"],
+    "constraints": "1 <= nums.length <= 10^4",
+    "example": "Input: nums = [2,7,11,15], target = 9"
+  }
+}
+```
+
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "Question not found"
+}
+```
+
+---
+
+## 5. Run Code (User Protected)
+
+**POST** `/api/questions/run`
+
+### Request Body
+
+```json
+{
+  "questionId": "q1",
+  "code": "function twoSum(nums, target) {...}",
+  "language": "javascript"
+}
+```
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "result": [
+    { "test": 1, "status": "Passed" },
+    { "test": 2, "status": "Passed" }
+  ]
+}
+```
+
+### Error Responses
+
+**400 — Missing Fields**
+
+```json
+{
+  "success": false,
+  "message": "Code, language or questionId is not mentioned"
+}
+```
+
+**404 — Test Cases Not Found**
+
+```json
+{
+  "success": false,
+  "message": "Not Test Case found"
+}
+```
+
+**Compilation / Runtime / TLE / MLE**
+
+```json
+{
+  "success": false,
+  "status": "WA",
+  "failedTest": 1,
+  "errorType": "Compilation Error",
+  "message": "Error message here"
+}
+```
+
+---
+
+## 6. Submit Code (User Protected)
+
+**POST** `/api/questions/submit`
+
+### Request Body
+
+```json
+{
+  "questionId": "q1",
+  "code": "function twoSum(nums, target) {...}",
+  "language": "javascript"
+}
+```
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "status": "Accepted",
+  "totalTest": 5
+}
+```
+
+### Error Responses
+
+**404 — Missing Fields**
+
+```json
+{
+  "success": false,
+  "message": "questionId, code, or language is not mentioned"
+}
+```
+
+**404 — Test Cases Not Present**
+
+```json
+{
+  "success": false,
+  "message": "Test Cases are not present"
+}
+```
+
+**Wrong Answer**
+
+```json
+{
+  "status": "WA",
+  "failedTest": 2,
+  "expected": "3",
+  "actual": "4",
+  "totalTest": 5
+}
+```
+
+---
+
+## 7. Total Questions (Public)
+
+**GET** `/api/questions/total`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Total Number of Questions",
+  "totalQuestion": 10
+}
+```
+
+### Error Response (400)
+
+```json
+{
+  "success": false,
+  "message": "There are no questions in database"
+}
+```
+
+---
+
 
 ### Submit Solution
 

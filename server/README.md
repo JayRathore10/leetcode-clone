@@ -852,6 +852,185 @@ All routes are **User Protected** via `isUserLoggedIn` middleware.
   "message": "Submission not found"
 }
 ```
+---
+
+# Test Cases API
+
+Base Route: `/api/testcases`
+
+All test case routes are defined in:
+
+```
+src/routes/testCase.route.ts
+```
+
+All routes are **Admin Protected** unless specified otherwise.
+
+---
+
+## 1. Get Visible Test Cases (Public/Admin)
+
+**GET** `/api/testcases/visible/:questionId`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "These are the test cases",
+  "testCases": [
+    {
+      "_id": "tc1",
+      "questionId": "q1",
+      "input": "1 2",
+      "output": "3",
+      "isHidden": false,
+      "createdAt": "2026-02-20T15:00:00.000Z",
+      "updatedAt": "2026-02-20T15:00:00.000Z"
+    }
+  ]
+}
+```
+
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "Test Cases are not found"
+}
+```
+
+---
+
+## 2. Get Hidden Test Cases (Admin Protected)
+
+**GET** `/api/testcases/hidden/:questionId`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "These are all hidden test cases",
+  "testCases": [
+    {
+      "_id": "tc2",
+      "questionId": "q1",
+      "input": "2 3",
+      "output": "5",
+      "isHidden": true,
+      "createdAt": "2026-02-20T15:05:00.000Z"
+    }
+  ]
+}
+```
+
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "No test Case found"
+}
+```
+
+---
+
+## 3. Add Test Cases (Admin Protected)
+
+**POST** `/api/testcases/add`
+
+### Request Body
+
+```json
+[
+  {
+    "questionId": "q1",
+    "input": "1 2",
+    "output": "3",
+    "isHidden": false
+  },
+  {
+    "questionId": "q1",
+    "input": "2 3",
+    "output": "5",
+    "isHidden": true
+  }
+]
+```
+
+### Success Response (201)
+
+```json
+{
+  "success": true,
+  "message": "New Test Case Created",
+  "newTestCases": [
+    {
+      "_id": "tc1",
+      "questionId": "q1",
+      "input": "1 2",
+      "output": "3",
+      "isHidden": false
+    },
+    {
+      "_id": "tc2",
+      "questionId": "q1",
+      "input": "2 3",
+      "output": "5",
+      "isHidden": true
+    }
+  ]
+}
+```
+
+### Error Responses
+
+**400 — Validation Error**
+
+```json
+{
+  "error": {
+    "fieldName": {
+      "_errors": ["Validation message"]
+    }
+  }
+}
+```
+
+**400 — Creation Failed**
+
+```json
+{
+  "success": false,
+  "message": "New Test case is not created"
+}
+```
+
+---
+
+## 4. Delete Test Case (Admin Protected)
+
+**DELETE** `/api/testcases/delete/:testCaseId`
+
+### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "This test case deleted"
+}
+```
+
+### Error Response (404)
+
+```json
+{
+  "success": false,
+  "message": "Not Test Case found"
+}
+```
 
 ---
 

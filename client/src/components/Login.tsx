@@ -24,6 +24,7 @@ export function Login({setIsloggedIn , isloggedIn} : LoginProps) {
         password
       } ,   { withCredentials: true })
       if (response.data.success === true) {
+        localStorage.setItem("token", response.data.token);
         setIsloggedIn?.(true);
         navigate("/problems");
       }

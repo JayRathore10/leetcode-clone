@@ -179,7 +179,7 @@ function App() {
         <Route 
           path="/profile/edit" 
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isloading = {isLoading} >
+            <ProtectedNavigate isloggedIn={isloggedIn} isLoading = {isLoading} >
               <EditProfile isloggedIn = {isloggedIn} />
             </ProtectedNavigate>
           }

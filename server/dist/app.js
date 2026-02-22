@@ -14,8 +14,6 @@ const submission_routes_1 = require("./routes/submission.routes");
 const auth_routes_1 = require("./routes/auth.routes");
 const analyze_routes_1 = require("./routes/analyze.routes");
 const env_config_1 = require("./configs/env.config");
-const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-const swagger_config_1 = __importDefault(require("../src/configs/swagger.config"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: env_config_1.FRONTEND,
@@ -26,7 +24,6 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/images", express_1.default.static("public/images"));
 app.use((0, cookie_parser_1.default)());
-app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_config_1.default));
 app.get("/", (req, res) => {
     res.send("Hi, Jexts here!");
 });

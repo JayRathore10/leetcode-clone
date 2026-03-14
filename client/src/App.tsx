@@ -21,7 +21,7 @@ import { Analyze } from "./components/Analyze";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ProtectedNavigate = ({ isLoading, isloggedIn, children }: any) => {
-
+  // add loading 
   if (isLoading) {
     return (
       <div className="ap-loading-container">

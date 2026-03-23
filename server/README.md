@@ -120,6 +120,7 @@ src/routes/auth.route.ts
   "email": "jayrathore8815@gmail.com",
   "password": "Jay9575Rathore"
 }
+
 ```
 
 ### Success Response (201)

@@ -32,7 +32,7 @@ export const errorMiddleware = async(err : any , req : Request , res : Response 
     }
 
     res.status(error.statusCode || 500).json({
-      success : false , 
+      success : false ,   
       error : error.message || "Server Error"
     });
     

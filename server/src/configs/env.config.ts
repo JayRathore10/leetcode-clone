@@ -9,5 +9,6 @@ export const {
   SALT_ROUND , 
   JWT_SECRET, 
   GEMINI_API_KEY, 
-  FRONTEND
+  FRONTEND , 
+  OPENROUTER_API_KEY 
 } = process.env;

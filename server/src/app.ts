@@ -28,6 +28,11 @@ app.get("/"  , (req : Request, res : Response)=>{
   res.send("Hi, Jexts here!")
 })
 
+app.get("/test"  , (req : Request , res : Response)=>{
+  res.status(200).json({
+    message : "Test" , 
+  });
+});
 
 app.use("/api/users" , userRouter);
 app.use("/api/question" , questionRouter);

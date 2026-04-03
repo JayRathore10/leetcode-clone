@@ -1,12 +1,7 @@
 import axios from "axios";
 import { Response, NextFunction } from "express";
 import { authRequest } from "../types/authRequest.type";
-
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-
-if (!OPENROUTER_API_KEY) {
-  throw new Error("OPENROUTER_API_KEY is not defined");
-}
+import { OPENROUTER_API_KEY } from "../configs/env.config";
 
 export const analyzeCode = async (
   req: authRequest,

@@ -106,8 +106,8 @@ describe("POST /api/auth/register", () => {
     expect(res.body.success).toBe(true);
   });
 
-  it("should return 400 when there is a zod parsed error", async()=>{
-     (userModel.findOne as jest.Mock).mockResolvedValue(null);
+  it("should return 400 when there is a zod parsed error", async () => {
+    (userModel.findOne as jest.Mock).mockResolvedValue(null);
 
     (bcrypt.genSalt as jest.Mock).mockResolvedValue("***");
     (bcrypt.hash as jest.Mock).mockResolvedValue("12345***");
@@ -131,6 +131,28 @@ describe("POST /api/auth/register", () => {
       });
 
     expect(res.body.message).toBe("parsed error");
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+  })
+
+  it("should return 400 when there is a user already exists", async () => {
+    (userModel.findOne as jest.Mock).mockResolvedValue({
+      username: "testUser11",
+      email: "test@gmail.com",
+      password: "123457***",
+      name: "test 1"
+    });
+
+    const res = await request(app).
+      post("/api/auth/register")
+      .send({
+        username: "testUser",
+        email: "test@gmail.com",
+        password: "12345***",
+        name: "test"
+      });
+
+    expect(res.body.message).toBe("User Already Exists");
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
   })

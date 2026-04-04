@@ -101,8 +101,38 @@ describe("POST /api/auth/register", () => {
         name: "test"
       });
 
-      expect(res.body.message).toBe("User Registered Successfully");
+    expect(res.body.message).toBe("User Registered Successfully");
     expect(res.status).toBe(201);
     expect(res.body.success).toBe(true);
+  });
+
+  it("should return 400 when there is a zod parsed error", async()=>{
+     (userModel.findOne as jest.Mock).mockResolvedValue(null);
+
+    (bcrypt.genSalt as jest.Mock).mockResolvedValue("***");
+    (bcrypt.hash as jest.Mock).mockResolvedValue("12345***");
+
+    (userModel.create as jest.Mock).mockResolvedValue({
+      username: "testUser",
+      email: "test@gmail",
+      password: "12345***",
+      name: "test"
+    });
+
+    (jwt.sign as jest.Mock).mockReturnValue("fake_token");
+
+    const res = await request(app).
+      post("/api/auth/register")
+      .send({
+        username: "testUser",
+        email: "test@gmail",
+        password: "12345***",
+        name: "test"
+      });
+
+    expect(res.body.message).toBe("parsed error");
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
   })
+
 })

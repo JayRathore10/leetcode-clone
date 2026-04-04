@@ -39,7 +39,7 @@ describe("POST /api/auth/login" , ()=>{
     expect(cookies[0]).toContain("token=fake_token");
   });
 
-  it("does not found user in Database" , async()=>{
+  it("should return 404 if user is not found in database" , async()=>{
     // this null means user not found in our database 
     (userModel.findOne as jest.Mock).mockResolvedValue(null);
 
@@ -52,6 +52,26 @@ describe("POST /api/auth/login" , ()=>{
 
     expect(res.status).toBe(404);
     expect(res.body.success).toBe(false);
+  })
+
+  it("should return 400 if user password is not matching" , async()=>{
+    (userModel.findOne as jest.Mock).mockResolvedValue({
+      email : "test@gmail.com" , 
+      password : "12345"
+    });
+
+    (bcrypt.compare as jest.Mock).mockReturnValue(false);
+
+    const res = await request(app).
+      post("/api/auth/login").
+      send({
+        email : "test@gmail.com" , 
+        password : "123456"
+    })
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+
   })
 
 });

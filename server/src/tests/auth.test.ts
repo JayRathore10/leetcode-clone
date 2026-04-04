@@ -8,13 +8,13 @@ jest.mock("../models/user.model");
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
 
-describe("POST /api/auth/login" , ()=>{
-  it("should login successfully", async()=>{
+describe("POST /api/auth/login", () => {
+  it("should login successfully", async () => {
     // mocking the DB using the jest mock 
     (userModel.findOne as jest.Mock).mockResolvedValue({
-      email : "test@gmail.com"  , 
-      password : "hashedPassword", 
-    }); 
+      email: "test@gmail.com",
+      password: "hashedPassword",
+    });
 
     // mocking bcrypt.compare(passowrd , user.password) 
     (bcrypt.compare as jest.Mock).mockReturnValue(true);
@@ -25,13 +25,13 @@ describe("POST /api/auth/login" , ()=>{
     const res = await request(app).
       post("/api/auth/login").
       send({
-        email : "test@gmail.com" , 
-        password : "123456"
+        email: "test@gmail.com",
+        password: "123456"
       })
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
-    
+
     // take out cookies from the header 
     const cookies = res.headers["set-cookie"];
 
@@ -39,25 +39,25 @@ describe("POST /api/auth/login" , ()=>{
     expect(cookies[0]).toContain("token=fake_token");
   });
 
-  it("should return 404 if user is not found in database" , async()=>{
+  it("should return 404 if user is not found in database", async () => {
     // this null means user not found in our database 
     (userModel.findOne as jest.Mock).mockResolvedValue(null);
 
     const res = await request(app).
       post("/api/auth/login").
       send({
-        email : "test@gmail.com" , 
-        password : "12345"
+        email: "test@gmail.com",
+        password: "12345"
       });
 
     expect(res.status).toBe(404);
     expect(res.body.success).toBe(false);
   })
 
-  it("should return 400 if user password is not matching" , async()=>{
+  it("should return 400 if user password is not matching", async () => {
     (userModel.findOne as jest.Mock).mockResolvedValue({
-      email : "test@gmail.com" , 
-      password : "12345"
+      email: "test@gmail.com",
+      password: "12345"
     });
 
     (bcrypt.compare as jest.Mock).mockReturnValue(false);
@@ -65,9 +65,9 @@ describe("POST /api/auth/login" , ()=>{
     const res = await request(app).
       post("/api/auth/login").
       send({
-        email : "test@gmail.com" , 
-        password : "123456"
-    })
+        email: "test@gmail.com",
+        password: "123456"
+      })
 
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
@@ -75,3 +75,34 @@ describe("POST /api/auth/login" , ()=>{
   })
 
 });
+
+describe("POST /api/auth/register", () => {
+  it("should register new user successfully with the status code of 201", async () => {
+    (userModel.findOne as jest.Mock).mockResolvedValue(null);
+
+    (bcrypt.genSalt as jest.Mock).mockResolvedValue("***");
+    (bcrypt.hash as jest.Mock).mockResolvedValue("12345***");
+
+    (userModel.create as jest.Mock).mockResolvedValue({
+      username: "testUser",
+      email: "test@gmail.com",
+      password: "12345***",
+      name: "test"
+    });
+
+    (jwt.sign as jest.Mock).mockReturnValue("fake_token");
+
+    const res = await request(app).
+      post("/api/auth/register")
+      .send({
+        username: "testUser",
+        email: "test@gmail.com",
+        password: "12345***",
+        name: "test"
+      });
+
+      expect(res.body.message).toBe("User Registered Successfully");
+    expect(res.status).toBe(201);
+    expect(res.body.success).toBe(true);
+  })
+})

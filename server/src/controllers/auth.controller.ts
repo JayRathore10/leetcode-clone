@@ -14,7 +14,8 @@ export const registerNewUser = async (req: Request, res: Response, next: NextFun
     if (!parsed.success) {
       return res.status(400).json({
         success: false,
-        error: parsed.error.format()
+        error: parsed.error.format(), 
+        message : "parsed error"
       })
     }
 

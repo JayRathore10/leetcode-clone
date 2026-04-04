@@ -156,5 +156,31 @@ describe("POST /api/auth/register", () => {
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
   })
+});
 
-})
+describe("POST /api/auth/logout", () => {
+  it("should logout user successfully and clear cookie", async () => {
+
+    (jwt.verify as jest.Mock).mockReturnValue({ email: "test@gmail.com" });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        email: "test@gmail.com",
+        username: "testUser"
+      })
+    });
+
+    const res = await request(app)
+      .post("/api/auth/logout").
+      set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Log out successfully");
+
+    const cookies = res.headers["set-cookie"];
+    expect(cookies).toBeDefined();
+    expect(cookies[0]).toContain("token=");
+
+  });
+});

@@ -6,7 +6,7 @@ import { userModel } from "../models/user.model";
 
 export const isUserLoggedIn = async (req: authRequest, res: Response, next: NextFunction) => {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies?.token;
 
     if (!token) {
       return res.status(401).json({

@@ -184,3 +184,58 @@ describe("POST /api/auth/logout", () => {
 
   });
 });
+
+describe("GET /api/auth/me", () => {
+
+  it("should return 401 if no token is provided", async () => {
+
+    const res = await request(app)
+      .get("/api/auth/me");
+
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBe("No Token");
+  });
+
+  it("should return 401 if user is not found", async () => {
+
+    // mock jwt
+    (jwt.verify as jest.Mock).mockReturnValue({ userId: "123" });
+
+    // mock mongoose chain
+    (userModel.findById as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue(null)
+    });
+
+    const res = await request(app)
+      .get("/api/auth/me")
+      .set("Authorization", "Bearer fake_token");
+
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBe("User not found");
+  });
+
+  it("should return user details if token is valid", async () => {
+
+    // mock jwt
+    (jwt.verify as jest.Mock).mockReturnValue({ userId: "123" });
+
+    // mock mongoose chain
+    (userModel.findById as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "123",
+        email: "test@gmail.com",
+        username: "testUser"
+      })
+    });
+
+    const res = await request(app)
+      .get("/api/auth/me")
+      .set("Authorization", "Bearer fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.user).toBeDefined();
+    expect(res.body.user.email).toBe("test@gmail.com");
+  });
+
+})

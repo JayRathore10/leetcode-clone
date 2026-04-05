@@ -237,5 +237,5 @@ describe("GET /api/auth/me", () => {
     expect(res.body.user).toBeDefined();
     expect(res.body.user.email).toBe("test@gmail.com");
   });
+});
 
-})

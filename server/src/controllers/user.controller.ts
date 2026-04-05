@@ -2,7 +2,6 @@ import {Request , Response , NextFunction} from "express";
 import { userModel } from "../models/user.model";
 import { submissionModel } from "../models/submission.model";
 import { authRequest } from "../types/authRequest.type";
-import multer from "multer";
 
 export const test = (req : Request, res: Response, next : NextFunction)=>{
   try{

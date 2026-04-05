@@ -23,6 +23,21 @@ describe("GET /api/users/all" , ()=>{
       get("/api/users/all");
 
     expect(res.status).toBe(404);
+  })
+
+  it("should return 200 when successfully return all users in database" , async()=>{
+
+    (userModel.find as jest.Mock).mockResolvedValue(["user"]);
+
+    const res = await request(app).
+      get("/api/users/all");
+
+    expect(res.status).toBe(200);
 
   })
-})
+
+});
+
+// describe("GET /api/users/profile" , ()=>{
+//   it("should return ")
+// })

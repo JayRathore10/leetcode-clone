@@ -76,4 +76,38 @@ describe("Auth Middleware" , ()=>{
       expect(next).toHaveBeenCalled();
     })
   });
+
+    describe("isAdminLoggedIn" , ()=>{
+    it("should return 403 if not admin", async()=>{
+      req.cookies.token = "validToken";
+      (jwt.verify as jest.Mock).mockReturnValue({
+        email :"test@test.com" , 
+        role : "user"
+      });
+
+      await isAdminLoggedIn(req , res , next);
+      expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it("should call next if admin"  , async()=>{
+      req.cookies.token = "ValidToken";
+      (jwt.verify as jest.Mock).mockReturnValue({
+        email : "admin@test.com" , 
+        role : "admin"
+      });
+
+      const mockUser = {email : "admin@test.com"};
+
+      (userModel.findOne as jest.Mock).mockReturnValue({
+        select : jest.fn().mockResolvedValue(mockUser)
+      })
+
+      await isAdminLoggedIn(req , res , next);
+
+      expect(req.user).toEqual(mockUser)
+      expect(next).toHaveBeenCalled();
+    })
+
+  })
+
 });

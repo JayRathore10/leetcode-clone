@@ -6,9 +6,6 @@ export const errorMiddleware = async(err : any , req : Request , res : Response 
     let error = {...err};
 
     error.message = err.message ;
-
-    console.error(err);
-
     // Mongoose bad objectId 
     if(err.name === "CastError"){
       const message = "Resource not found";

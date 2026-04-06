@@ -4,6 +4,7 @@ import { isUserLoggedIn } from "../middleware/auth.middleware";
 import { Request, Response, NextFunction } from "express";
 import { editProfile } from "../controllers/user.controller";
 import { authRequest } from "../types/authRequest.type";
+import { getByUsername } from "../controllers/user.controller";
 import request from "supertest";
 
 
@@ -113,15 +114,13 @@ describe("PUT /api/users/profile", () => {
 
     mockNext = jest.fn();
 
-    // 🔇 silence console errors if any
-    jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => { });
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  // 🔹 No user in request
   it("should return 400 if user not found", async () => {
     mockReq = {
       body: { name: "John" },
@@ -137,7 +136,6 @@ describe("PUT /api/users/profile", () => {
     });
   });
 
-  // 🔹 Update name only
   it("should update user name", async () => {
     const saveMock = jest.fn().mockResolvedValue(true);
 
@@ -162,7 +160,6 @@ describe("PUT /api/users/profile", () => {
     });
   });
 
-  // 🔹 Update profile pic only
   it("should update profile picture", async () => {
     const saveMock = jest.fn().mockResolvedValue(true);
 
@@ -186,7 +183,6 @@ describe("PUT /api/users/profile", () => {
     expect(mockRes.status).toHaveBeenCalledWith(200);
   });
 
-  // 🔹 Update both name + profile pic
   it("should update both name and profile pic", async () => {
     const saveMock = jest.fn().mockResolvedValue(true);
 
@@ -209,7 +205,6 @@ describe("PUT /api/users/profile", () => {
     expect(saveMock).toHaveBeenCalled();
   });
 
-  // 🔹 Error handling (save fails)
   it("should call next on error", async () => {
     const error = new Error("DB Error");
 
@@ -227,4 +222,27 @@ describe("PUT /api/users/profile", () => {
 
     expect(mockNext).toHaveBeenCalledWith(error);
   });
+});
+
+describe("GET /api/users/:username", () => {
+  it("should return 404 when req.params dont carry any username", async () => {
+    const mockReq : any = {
+      params: {}
+    }
+
+    const mockRes : any = {
+      status: jest.fn().mockReturnThis()  , 
+      json : jest.fn()
+    }
+
+    const mockNext = jest.fn();
+
+    await getByUsername(mockReq  , mockRes , mockNext);
+
+    expect(mockRes.status).toHaveBeenCalledWith(404);
+    expect(mockRes.json).toHaveBeenCalledWith({
+      success : false , 
+      message : "Wrong route"
+    })
+  })
 });

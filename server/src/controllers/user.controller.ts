@@ -117,8 +117,8 @@ export const getUserProfile = async(req : authRequest , res : Response , next : 
     }
 
     const userId = req.user?._id;
-
-    const user = await userModel.findById({userId}).select("-password");
+    // change 
+    const user = await userModel.findById(userId).select("-password");
 
     if(!user){
       return res.status(404).json({

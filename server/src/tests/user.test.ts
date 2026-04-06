@@ -225,24 +225,18 @@ describe("PUT /api/users/profile", () => {
 });
 
 describe("GET /api/users/:username", () => {
-  it("should return 404 when req.params dont carry any username", async () => {
-    const mockReq : any = {
-      params: {}
-    }
+  it("should return 404 when user not exits in database ", async () => {
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue(null)
+    });
 
-    const mockRes : any = {
-      status: jest.fn().mockReturnThis()  , 
-      json : jest.fn()
-    }
+    const res = await request(app).
+      get("/api/users/testUser");
 
-    const mockNext = jest.fn();
-
-    await getByUsername(mockReq  , mockRes , mockNext);
-
-    expect(mockRes.status).toHaveBeenCalledWith(404);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      success : false , 
-      message : "Wrong route"
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({
+      success: false,
+      message: "User not found"
     })
   })
 });

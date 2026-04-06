@@ -239,4 +239,25 @@ describe("GET /api/users/:username", () => {
       message: "User not found"
     })
   })
+  
+  it("should return 200 when user exists in database and return successfully" , async()=>{
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select : jest.fn().mockResolvedValue({
+        _id : "1234"
+      })
+    });
+
+    const res = await request(app).
+      get("/api/users/testUser");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      success : true ,  
+      message : "User Details" , 
+      user : {
+        _id : "1234"
+      }
+    })
+  })
+  
 });

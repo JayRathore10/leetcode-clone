@@ -1,6 +1,9 @@
 import { userModel } from "../models/user.model";
 import app from "../app";
 import { isUserLoggedIn } from "../middleware/auth.middleware";
+import { Request, Response, NextFunction } from "express";
+import { editProfile } from "../controllers/user.controller";
+import { authRequest } from "../types/authRequest.type";
 import request from "supertest";
 
 
@@ -93,5 +96,135 @@ describe("GET /api/users/profile", () => {
     expect(res.body.message).toBe("User Data");
     expect(res.body.user).toBeDefined();
   })
+});
 
-})
+describe("PUT /api/users/profile", () => {
+  let mockReq: Partial<authRequest>;
+  let mockRes: Partial<Response>;
+  let mockNext: NextFunction;
+
+  beforeEach(() => {
+    mockReq = {};
+
+    mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+
+    mockNext = jest.fn();
+
+    // 🔇 silence console errors if any
+    jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  // 🔹 No user in request
+  it("should return 400 if user not found", async () => {
+    mockReq = {
+      body: { name: "John" },
+      user: undefined
+    };
+
+    await editProfile(mockReq as authRequest, mockRes as Response, mockNext);
+
+    expect(mockRes.status).toHaveBeenCalledWith(400);
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "Can not find Error",
+      success: false
+    });
+  });
+
+  // 🔹 Update name only
+  it("should update user name", async () => {
+    const saveMock = jest.fn().mockResolvedValue(true);
+
+    mockReq = {
+      body: { name: "John" },
+      user: {
+        name: "Old",
+        profilePic: "old.png",
+        save: saveMock
+      } as any
+    };
+
+    await editProfile(mockReq as authRequest, mockRes as Response, mockNext);
+
+    expect(mockReq.user?.name).toBe("John");
+    expect(saveMock).toHaveBeenCalled();
+
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+    expect(mockRes.json).toHaveBeenCalledWith({
+      success: true,
+      message: "Profile Updated"
+    });
+  });
+
+  // 🔹 Update profile pic only
+  it("should update profile picture", async () => {
+    const saveMock = jest.fn().mockResolvedValue(true);
+
+    mockReq = {
+      body: {},
+      file: {
+        filename: "newpic.png"
+      } as Express.Multer.File,
+      user: {
+        name: "Old",
+        profilePic: "old.png",
+        save: saveMock
+      } as any
+    };
+
+    await editProfile(mockReq as authRequest, mockRes as Response, mockNext);
+
+    expect(mockReq.user?.profilePic).toBe("newpic.png");
+    expect(saveMock).toHaveBeenCalled();
+
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+  });
+
+  // 🔹 Update both name + profile pic
+  it("should update both name and profile pic", async () => {
+    const saveMock = jest.fn().mockResolvedValue(true);
+
+    mockReq = {
+      body: { name: "John" },
+      file: {
+        filename: "newpic.png"
+      } as Express.Multer.File,
+      user: {
+        name: "Old",
+        profilePic: "old.png",
+        save: saveMock
+      } as any
+    };
+
+    await editProfile(mockReq as authRequest, mockRes as Response, mockNext);
+
+    expect(mockReq.user?.name).toBe("John");
+    expect(mockReq.user?.profilePic).toBe("newpic.png");
+    expect(saveMock).toHaveBeenCalled();
+  });
+
+  // 🔹 Error handling (save fails)
+  it("should call next on error", async () => {
+    const error = new Error("DB Error");
+
+    const saveMock = jest.fn().mockRejectedValue(error);
+
+    mockReq = {
+      body: { name: "John" },
+      user: {
+        name: "Old",
+        save: saveMock
+      } as any
+    };
+
+    await editProfile(mockReq as authRequest, mockRes as Response, mockNext);
+
+    expect(mockNext).toHaveBeenCalledWith(error);
+  });
+});

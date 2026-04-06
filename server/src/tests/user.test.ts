@@ -6,7 +6,7 @@ import request from "supertest";
 
 jest.mock("../models/user.model");
 jest.mock("../middleware/auth.middleware", () => ({
-  isUserLoggedIn : jest.fn()
+  isUserLoggedIn: jest.fn()
 }));
 
 describe("GET /api/users/test", () => {
@@ -44,7 +44,7 @@ describe("GET /api/users/all", () => {
 describe("GET /api/users/profile", () => {
   it("should return 400 when Error in getting user details", async () => {
 
-    (isUserLoggedIn as jest.Mock).mockImplementation((req : any, res : any, next : any)=>{
+    (isUserLoggedIn as jest.Mock).mockImplementation((req: any, res: any, next: any) => {
       req.user = null;
       next();
     })
@@ -59,18 +59,39 @@ describe("GET /api/users/profile", () => {
   it("should return 404 when the user is not found in database", async () => {
 
     (userModel.findById as jest.Mock).mockReturnValue({
-      select : jest.fn().mockResolvedValue(null)
+      select: jest.fn().mockResolvedValue(null)
     });
 
-    (isUserLoggedIn as jest.Mock).mockImplementation((req : any , res : any, next : any)=>{
-      req.user = {_id : "123"}; 
+    (isUserLoggedIn as jest.Mock).mockImplementation((req: any, res: any, next: any) => {
+      req.user = { _id: "123" };
       next();
     })
 
     const res = await request(app).
       get("/api/users/profile");
 
-      expect(res.status).toBe(404);
+    expect(res.status).toBe(404);
     expect(res.body.message).toBe("User not found");
   });
+
+  it("should return 200 when user data exists", async () => {
+    (userModel.findById as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "1243",
+      })
+    });
+
+    (isUserLoggedIn as jest.Mock).mockImplementation((req: any, res: any, next: any) => {
+      req.user = { _id: "1234" };
+      next();
+    });
+
+    const res = await request(app).
+      get("/api/users/profile");
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe("User Data");
+    expect(res.body.user).toBeDefined();
+  })
+
 })

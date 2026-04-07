@@ -239,11 +239,11 @@ describe("GET /api/users/:username", () => {
       message: "User not found"
     })
   })
-  
-  it("should return 200 when user exists in database and return successfully" , async()=>{
+
+  it("should return 200 when user exists in database and return successfully", async () => {
     (userModel.findOne as jest.Mock).mockReturnValue({
-      select : jest.fn().mockResolvedValue({
-        _id : "1234"
+      select: jest.fn().mockResolvedValue({
+        _id: "1234"
       })
     });
 
@@ -252,12 +252,29 @@ describe("GET /api/users/:username", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
-      success : true ,  
-      message : "User Details" , 
-      user : {
-        _id : "1234"
+      success: true,
+      message: "User Details",
+      user: {
+        _id: "1234"
       }
     })
   })
-  
+
 });
+
+describe("GET /api/users/:username/all-submission", () => {
+  it("should return 404 when user not exits in database", async () => {
+    (userModel.findOne as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app).
+      get("/api/users/testUser/all-submissions");
+
+
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({
+      success: false,
+      message: "User not found"
+    })
+
+  })
+})

@@ -4,14 +4,15 @@ import { isUserLoggedIn } from "../middleware/auth.middleware";
 import { Request, Response, NextFunction } from "express";
 import { editProfile } from "../controllers/user.controller";
 import { authRequest } from "../types/authRequest.type";
-import { getByUsername } from "../controllers/user.controller";
 import request from "supertest";
+import { submissionModel } from "../models/submission.model";
 
 
 jest.mock("../models/user.model");
 jest.mock("../middleware/auth.middleware", () => ({
   isUserLoggedIn: jest.fn()
 }));
+jest.mock("../models/submission.model");
 
 describe("GET /api/users/test", () => {
   it("should return 200 for success run", async () => {
@@ -275,6 +276,35 @@ describe("GET /api/users/:username/all-submission", () => {
       success: false,
       message: "User not found"
     })
+  });
+
+  it("should return 200 when the successfully find the submissions and return then", async () => {
+    (userModel.findOne as jest.Mock).mockResolvedValue({
+      _id: "1234"
+    });
+
+    (submissionModel.find as jest.Mock).mockReturnValue({
+      sort: jest.fn().mockResolvedValue([
+        { _id: "sub1", createdAt: "2024-01-01" },
+        { _id: "sub2", createdAt: "2024-01-02" }
+      ])
+    });
+
+    const res = await request(app).
+      get("/api/users/testUser/all-submissions");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      success: true,
+      message: "All Submissions",
+      data: {
+        submissions: [
+          { _id: "sub1", createdAt: "2024-01-01" },
+          { _id: "sub2", createdAt: "2024-01-02" }
+        ]
+      }
+    });
 
   })
+
 })

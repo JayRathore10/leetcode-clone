@@ -7,7 +7,6 @@ import { authRequest } from "../types/authRequest.type";
 import request from "supertest";
 import { submissionModel } from "../models/submission.model";
 
-
 jest.mock("../models/user.model");
 jest.mock("../middleware/auth.middleware", () => ({
   isUserLoggedIn: jest.fn()

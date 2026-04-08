@@ -35,6 +35,16 @@ describe("DELETE /api/question/delete/:questionId", () => {
       success: true,
       message: "Question delete successfully"
     });
-
   });
+})
+
+describe("POST /api/question/add" , ()=>{
+  it("should return 400 when validation fails", async()=>{
+    const res = await request(app).
+      post("/api/question/add")
+      .send({});
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("error");
+  })
 })

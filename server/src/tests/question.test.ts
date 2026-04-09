@@ -125,3 +125,18 @@ describe("POST /api/question/add", () => {
   })
 
 })
+
+describe("GET /api/question/all", () => {
+  it("should return 404 when there is not question in database", async () => {
+    (questionModel.find as jest.Mock).mockResolvedValue([]);
+
+    const res = await request(app).
+      get("/api/question/all");
+
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({
+      success: false,
+      message: "There is not question in database"
+    });
+  })
+})

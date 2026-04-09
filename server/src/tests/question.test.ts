@@ -522,3 +522,43 @@ describe("GET /api/question/total", () => {
   });
 
 });
+
+describe("GET /api/question/:id", () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return 404 when question not found", async () => {
+    (questionModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .get("/api/question/123");
+
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({
+      success: false,
+      message: "Question not found"
+    });
+  });
+
+  it("should return 200 when question is found", async () => {
+    const mockQuestion = {
+      _id: "123",
+      title: "Two Sum"
+    };
+
+    (questionModel.findById as jest.Mock).mockResolvedValue(mockQuestion);
+
+    const res = await request(app)
+      .get("/api/question/123");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      success: true,
+      message: "This is Question",
+      question: mockQuestion
+    });
+  });
+
+});

@@ -51,5 +51,44 @@ describe("GET /api/testcase/visible/:questionId", () => {
       testCases: mockTestCases
     });
   });
+});
+
+describe("GET /api/testcase/hidden/:questionId", () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return 404 when no hidden test cases found", async () => {
+    (testCaseModel.find as jest.Mock).mockResolvedValue([]);
+
+    const res = await request(app)
+      .get("/api/testcase/hidden/123");
+
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({
+      success: false,
+      message: "No test Case found"
+    });
+  });
+
+  it("should return 200 with hidden test cases", async () => {
+    const mockTestCases = [
+      { input: "1 2", output: "3", isHidden: true },
+      { input: "2 3", output: "5", isHidden: true }
+    ];
+
+    (testCaseModel.find as jest.Mock).mockResolvedValue(mockTestCases);
+
+    const res = await request(app)
+      .get("/api/testcase/hidden/123");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      success: true,
+      message: "These are all hidden test cases",
+      testCases: mockTestCases
+    });
+  });
 
 });

@@ -94,7 +94,7 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
 
     const visibleTestCases = await testCaseModel.find({ questionId: questionId, isHidden: false });
 
-    if (!visibleTestCases) {
+    if (!visibleTestCases || visibleTestCases.length === 0) {
       return res.status(404).json({
         success: false,
         message: "Not Test Case found"

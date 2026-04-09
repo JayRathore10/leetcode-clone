@@ -1,7 +1,5 @@
 import request from "supertest";
 import app from "../app";
-import { questionModel } from "../models/question.model";
-import { isUserLoggedIn } from "../middleware/auth.middleware";
 import axios from "axios";
 import { testCaseModel } from "../models/testCase.model";
 

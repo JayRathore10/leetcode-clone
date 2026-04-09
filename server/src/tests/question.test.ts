@@ -483,3 +483,42 @@ describe("POST /api/question/submit", () => {
   });
 
 });
+
+describe("GET /api/question/total", () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return 400 when no questions exist", async () => {
+    (questionModel.find as jest.Mock).mockResolvedValue([]);
+
+    const res = await request(app)
+      .get("/api/question/total");
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({
+      success: false,
+      message: "There are no questions in database"
+    });
+  });
+
+  it("should return 200 with total number of questions", async () => {
+    (questionModel.find as jest.Mock).mockResolvedValue([
+      { _id: "1" },
+      { _id: "2" },
+      { _id: "3" }
+    ]);
+
+    const res = await request(app)
+      .get("/api/question/total");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      success: true,
+      message: "Total Number of Questions",
+      totalQuestion: 3
+    });
+  });
+
+});

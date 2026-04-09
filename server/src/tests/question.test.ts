@@ -139,4 +139,19 @@ describe("GET /api/question/all", () => {
       message: "There is not question in database"
     });
   })
+
+  it("should return 200 when successfully return all question present in databases", async () => {
+    (questionModel.find as jest.Mock).mockResolvedValue(["1"]);
+
+    const res = await request(app).
+      get("/api/question/all");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      success: true,
+      message: "This are all questions",
+      questions :  ["1"]
+    });
+  })
+
 })

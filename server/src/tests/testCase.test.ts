@@ -92,3 +92,103 @@ describe("GET /api/testcase/hidden/:questionId", () => {
   });
 
 });
+
+
+
+describe("POST /api/testcase/add", () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return 400 when validation fails", async () => {
+    const res = await request(app)
+      .post("/api/testcase/add")
+      .send({});
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("error");
+  });
+
+  it("should return 400 when test case is not created", async () => {
+    (testCaseModel.insertMany as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .post("/api/testcase/add")
+      .send([
+        {
+          input: "1 2",
+          output: "3",
+          questionId: "123",
+          isHidden: false
+        }
+      ]);
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({
+      success: false,
+      message: "New Test case is not created"
+    });
+  });
+
+  it("should return 201 when test cases are created", async () => {
+    const mockData = [
+      {
+        input: "1 2",
+        output: "3",
+        questionId: "123",
+        isHidden: false
+      }
+    ];
+
+    (testCaseModel.insertMany as jest.Mock).mockResolvedValue(mockData);
+
+    const res = await request(app)
+      .post("/api/testcase/add")
+      .send(mockData);
+
+    expect(res.status).toBe(201);
+    expect(res.body).toEqual({
+      success: true,
+      message: "New Test Case Created",
+      newTestCases: mockData
+    });
+  });
+
+});
+
+describe("DELETE /api/testcase/delete/:testCaseId", () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return 404 when test case not found", async () => {
+    (testCaseModel.findByIdAndDelete as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .delete("/api/testcase/delete/123");
+
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({
+      success: false,
+      message: "Not Test Case found"
+    });
+  });
+
+  it("should return 200 when test case is deleted", async () => {
+    (testCaseModel.findByIdAndDelete as jest.Mock).mockResolvedValue({
+      _id: "123"
+    });
+
+    const res = await request(app)
+      .delete("/api/testcase/delete/123");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      success: true,
+      message: "This test case deleted"
+    });
+  });
+
+});

@@ -55,6 +55,27 @@ describe("POST /api/question/add", () => {
       .post("/api/question/add")
       .send({
         title: "Two Sum",
+        description: "desc",
+        difficulty: "Easy",
+        tags: ["array"],
+        constraints: ["1 <= n <= 10^5"],
+        example: {
+          input: "nums = [2,7,11,15], target = 9",
+          output: "[0,1]",
+          explanation: "Because nums[0] + nums[1] = 9"
+        }
+      });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({
+      success: false,
+      message: "New Question is not created"
+    });
+  });
+
+  it("should return 201 when new question is successfully created", async () => {
+    (questionModel.create as jest.Mock).mockReturnValue({
+      title: "Two Sum",
       description: "desc",
       difficulty: "Easy",
       tags: ["array"],
@@ -64,13 +85,43 @@ describe("POST /api/question/add", () => {
         output: "[0,1]",
         explanation: "Because nums[0] + nums[1] = 9"
       }
+    });
+
+    const res = await request(app)
+      .post("/api/question/add")
+      .send({
+        title: "Two Sum",
+        description: "desc",
+        difficulty: "Easy",
+        tags: ["array"],
+        constraints: ["1 <= n <= 10^5"],
+        example: {
+          input: "nums = [2,7,11,15], target = 9",
+          output: "[0,1]",
+          explanation: "Because nums[0] + nums[1] = 9"
+        }
       });
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(201);
     expect(res.body).toEqual({
-      success: false,
-      message: "New Question is not created"
+      success: true,
+      message: "New Question Created",
+      data: {
+        newQuestion: {
+          title: "Two Sum",
+          description: "desc",
+          difficulty: "Easy",
+          tags: ["array"],
+          constraints: ["1 <= n <= 10^5"],
+          example: {
+            input: "nums = [2,7,11,15], target = 9",
+            output: "[0,1]",
+            explanation: "Because nums[0] + nums[1] = 9"
+          }
+        }
+      }
     });
-  });
+
+  })
 
 })

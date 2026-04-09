@@ -201,7 +201,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
     const allTestCase = await testCaseModel.find({ questionId: questionId });
 
-    if (!allTestCase) {
+    if (!allTestCase || allTestCase.length === 0) {
       return res.status(404).json({
         success: false,
         message: "Test Cases are not present"

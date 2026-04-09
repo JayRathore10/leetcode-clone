@@ -14,7 +14,6 @@ jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-
 describe("DELETE /api/question/delete/:questionId", () => {
   it("should return 404 when question not found in database for deletion", async () => {
     (questionModel.findByIdAndDelete as jest.Mock).mockResolvedValue(null);
@@ -331,6 +330,156 @@ describe("POST /api/question/run", () => {
 
     expect(res.body.success).toBe(true);
     expect(res.body.result.length).toBe(2);
+  });
+
+});
+
+describe("POST /api/question/submit", () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return 404 when required fields are missing", async () => {
+    const res = await request(app)
+      .post("/api/question/submit")
+      .send({});
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+  });
+
+  it("should return 404 when no test cases found", async () => {
+    (testCaseModel.find as jest.Mock).mockResolvedValue([]);
+
+    const res = await request(app)
+      .post("/api/question/submit")
+      .send({
+        questionId: "1",
+        code: "test",
+        language: "cpp"
+      });
+
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({
+      success: false,
+      message: "Test Cases are not present"
+    });
+  });
+
+  const mockTestCases = [
+    { input: "1 2", output: "3" }
+  ];
+
+  it("should return compilation error", async () => {
+    (testCaseModel.find as jest.Mock).mockResolvedValue(mockTestCases);
+
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        compile: { stderr: "syntax error" }
+      }
+    } as any);
+
+    const res = await request(app)
+      .post("/api/question/submit")
+      .send({
+        questionId: "1",
+        code: "wrong",
+        language: "cpp"
+      });
+
+    expect(res.body.status).toBe("WA");
+    expect(res.body.errorType).toBe("Compilation Error");
+  });
+
+  it("should return TLE", async () => {
+    (testCaseModel.find as jest.Mock).mockResolvedValue(mockTestCases);
+
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        run: { signal: "SIGXCPU" }
+      }
+    } as any);
+
+    const res = await request(app)
+      .post("/api/question/submit")
+      .send({
+        questionId: "1",
+        code: "loop",
+        language: "cpp"
+      });
+
+    expect(res.body.status).toBe("TLE");
+    expect(res.body.failedTest).toBe(1);
+  });
+
+  it("should return MLE", async () => {
+    (testCaseModel.find as jest.Mock).mockResolvedValue(mockTestCases);
+
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        run: { signal: "SIGSEGV" }
+      }
+    } as any);
+
+    const res = await request(app)
+      .post("/api/question/submit")
+      .send({
+        questionId: "1",
+        code: "memory",
+        language: "cpp"
+      });
+
+    expect(res.body.status).toBe("MLE");
+  });
+
+  it("should return WA when output mismatches", async () => {
+    (testCaseModel.find as jest.Mock).mockResolvedValue(mockTestCases);
+
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        run: { stdout: "5" }
+      }
+    } as any);
+
+    const res = await request(app)
+      .post("/api/question/submit")
+      .send({
+        questionId: "1",
+        code: "wrong",
+        language: "cpp"
+      });
+
+    expect(res.body.status).toBe("WA");
+    expect(res.body.expected).toBe("3");
+    expect(res.body.actual).toBe("5");
+  });
+
+  it("should return Accepted when all test cases pass", async () => {
+    (testCaseModel.find as jest.Mock).mockResolvedValue([
+      { input: "1 2", output: "3" },
+      { input: "2 3", output: "5" }
+    ]);
+
+    mockedAxios.post
+      .mockResolvedValueOnce({
+        data: { run: { stdout: "3" } }
+      } as any)
+      .mockResolvedValueOnce({
+        data: { run: { stdout: "5" } }
+      } as any);
+
+    const res = await request(app)
+      .post("/api/question/submit")
+      .send({
+        questionId: "1",
+        code: "correct",
+        language: "cpp"
+      });
+
+    expect(res.body.success).toBe(true);
+    expect(res.body.status).toBe("Accepted");
+    expect(res.body.totalTest).toBe(2);
   });
 
 });

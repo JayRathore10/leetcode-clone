@@ -26,3 +26,8 @@ export function Contests() {
     </div>
   );
 }
+
+
+/*
+  Have to connect socket io and wirte infra for players connectivity. 
+*/

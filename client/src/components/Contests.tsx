@@ -29,5 +29,6 @@ export function Contests() {
 
 
 /*
+  Make diff folder for diff pages and components. 
   Have to connect socket io and wirte infra for players connectivity. 
 */

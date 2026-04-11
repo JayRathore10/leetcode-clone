@@ -9,4 +9,7 @@ export default {
     ...tsJestTransformCfg,
   },
   setupFilesAfterEnv: ["<rootDir>/setupTests.ts"], 
+   testMatch: [
+    "<rootDir>/src/tests/**/*.test.tsx",
+  ],
 };

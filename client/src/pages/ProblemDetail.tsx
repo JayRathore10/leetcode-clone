@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { CodeEditor } from "../components/CodeEditor";
-import { Header } from "./Header";
+import { Header } from "../components/Header";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { env } from "../configs/env.config";
-import { TestCasePanel } from "./TestCasePanel";
+import { TestCasePanel } from "../components/TestCasePanel";
 import { runCode } from '../utils/runcode';
 import { testCaseFields } from "../utils/runcode";
-import { SubmitPanel } from "./SubmitPanel";
+import { SubmitPanel } from "../components/SubmitPanel";
 import { LoginProps } from "./Login";
 import { motion } from "framer-motion";
-import { MaintenanceAlert } from "./MaintenanceAlert";
+import { MaintenanceAlert } from "../components/MaintenanceAlert";
 import "../styles/ProblemDetail.css";
 
 type Question = {

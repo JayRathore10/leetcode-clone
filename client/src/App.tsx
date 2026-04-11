@@ -1,23 +1,23 @@
 import { Route, Routes } from "react-router-dom";
-import { Login } from "./components/Login";
-import { SignUp } from "./components/SignUp";
-import { NotFound } from "./components/NotFound";
-import { Home } from "./components/Home";
-import { Problems } from "./components/Problems";
-import { ProblemDetail } from "./components/ProblemDetail";
-import { Profile } from "./components/Profile";
-import { Contests } from "./components/Contests";
-import { Discuss } from "./components/Discuss";
+import { Login } from "./pages/Login";
+import { SignUp } from "./pages/SignUp";
+import { NotFound } from "./pages/NotFound";
+import { Home } from "./pages/Home";
+import { Problems } from "./pages/Problems";
+import { ProblemDetail } from "./pages/ProblemDetail";
+import { Profile } from "./pages/Profile";
+import { Contests } from "./pages/Contests";
+import { Discuss } from "./pages/Discuss";
 import { Leaderboard } from "./components/Leaderboard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { env } from "./configs/env.config";
-import { Logout } from "./components/Logout";
-import { EditProfile } from "./components/EditProfile";
-import { Submission } from "./components/Submission";
+import { Logout } from "./pages/Logout";
+import { EditProfile } from "./pages/EditProfile";
+import { Submission } from "./pages/Submission";
 import { Navigate } from "react-router-dom";
 import "./App.css";
-import { Analyze } from "./components/Analyze";
+import { Analyze } from "./pages/Analyze";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ProtectedNavigate = ({ isLoading, isloggedIn, children }: any) => {

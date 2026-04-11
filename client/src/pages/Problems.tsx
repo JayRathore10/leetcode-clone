@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/Problems.css";
-import { Header } from "./Header";
+import { Header } from "../components/Header";
 import { env } from "../configs/env.config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import "../styles/Analyze.css";
-import { Header } from "./Header";
+import { Header } from "../components/Header";
 import { LoginProps } from "./Login";
 import { useEffect, useState } from "react";
 import { Submission as SubmissionType } from "./Profile";

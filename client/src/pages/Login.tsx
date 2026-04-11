@@ -3,7 +3,7 @@ import axios from "axios";
 import "../styles/auth.css";
 import { useState } from "react";
 import { env } from "../configs/env.config";
-import { Header } from "./Header";
+import { Header } from "../components/Header";
 
 export interface LoginProps {
   setIsloggedIn ?: React.Dispatch<React.SetStateAction<boolean>>;

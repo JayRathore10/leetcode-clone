@@ -1,4 +1,4 @@
-import { render, screen} from "@testing-library/react";
+import { fireEvent, render, screen} from "@testing-library/react";
 import { CodeEditor } from "../components/CodeEditor";
 
 jest.mock("@monaco-editor/react", () => ({
@@ -42,4 +42,19 @@ describe("CodeEditor" , ()=>{
     expect(calledWith).toContain("def solve()");
   });
 
+  test("updates code on change" , ()=>{
+    render(
+      <CodeEditor 
+        code={code} 
+        setCode={setCode} 
+        language="javascript"
+      />
+    );
+
+    const editor = screen.getByTestId("editor");
+
+    fireEvent.change(editor , {
+      target : {value : "console.log('hello)"}
+    });
+  })
 })

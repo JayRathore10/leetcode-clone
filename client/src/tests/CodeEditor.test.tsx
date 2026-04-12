@@ -29,4 +29,17 @@ describe("CodeEditor" , ()=>{
     expect(screen.getByTestId("editor")).toBeInTheDocument();
   });
 
+  test("sets boilerplate when language changes", ()=>{
+    render(
+      <CodeEditor 
+        code={code} 
+        setCode={setCode} 
+        language="python"
+      />
+    );
+    expect(setCode).toHaveBeenCalled();
+    const calledWith = setCode.mock.calls[0][0] ;
+    expect(calledWith).toContain("def solve()");
+  });
+
 })

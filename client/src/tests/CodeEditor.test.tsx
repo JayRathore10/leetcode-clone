@@ -56,5 +56,8 @@ describe("CodeEditor" , ()=>{
     fireEvent.change(editor , {
       target : {value : "console.log('hello)"}
     });
+
+    expect(setCode).toHaveBeenCalledWith("console.log('hello)");
+
   })
 })

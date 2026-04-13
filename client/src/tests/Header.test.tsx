@@ -36,4 +36,17 @@ describe("Header" , ()=>{
     expect(screen.getByText("Leaderboard")).toBeInTheDocument();
   })
 
+  test("show Login when not logged in" , ()=>{
+    render (<MemoryRouter >
+      <Header 
+        isloggedIn = {false}
+      />
+    </MemoryRouter>
+    );
+
+    expect(screen.getByRole("button")).toHaveTextContent("Login");
+  })
+
+
+
 })

@@ -59,6 +59,18 @@ describe("Header" , ()=>{
     expect(screen.getByRole("button")).toHaveTextContent("Profile");
   });
 
-  
+  test("show logout on the profile page" , ()=>{
+    render(
+      <MemoryRouter 
+        initialEntries={["/profile"]}
+      >
+        <Header 
+          isloggedIn={true}
+        />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole("button")).toHaveTextContent("Logout");
+  })
  
 })

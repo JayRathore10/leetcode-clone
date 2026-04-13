@@ -86,4 +86,31 @@ describe("Header" , ()=>{
 
     expect(mockNavigate).toHaveBeenCalledWith("/");
   });
+
+  test("navigates to profile when logged in", () => {
+    render(
+      <MemoryRouter initialEntries={["/home"]}>
+        <Header isloggedIn={true} />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole("button"));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/profile");
+  });
+
+
+   test("navigates to logout when on profile page", () => {
+    render(
+      <MemoryRouter initialEntries={["/profile"]}>
+        <Header isloggedIn={true} />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole("button"));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/logout");
+  });
+
+
 })

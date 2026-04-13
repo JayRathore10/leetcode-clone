@@ -47,6 +47,18 @@ describe("Header" , ()=>{
     expect(screen.getByRole("button")).toHaveTextContent("Login");
   })
 
+  test("shows profile on logged in and not on the profile page" , ()=>{
+    render(
+      <MemoryRouter >
+        <Header 
+          isloggedIn={true}
+        />
+      </MemoryRouter>
+    );
 
+    expect(screen.getByRole("button")).toHaveTextContent("Profile");
+  });
 
+  
+ 
 })

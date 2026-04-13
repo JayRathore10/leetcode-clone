@@ -23,5 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+# jest coverage 
+coverage
+
 #dummy App
 App.md

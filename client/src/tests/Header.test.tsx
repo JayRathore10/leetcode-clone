@@ -11,21 +11,21 @@ jest.mock("framer-motion", () => ({
 
 const mockNavigate = jest.fn();
 
-jest.mock("react-router-dom" , ()=>({
-  ...jest.requireActual("react-router-dom") , 
-  useNavigate : () => mockNavigate
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate
 }));
 
-describe("Header" , ()=>{
-  beforeEach(()=>{
+describe("Header", () => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test("render nav links" , ()=>{
+  test("render nav links", () => {
     render(
       <MemoryRouter>
-        <Header 
-          isloggedIn = {false}
+        <Header
+          isloggedIn={false}
         />
       </MemoryRouter>
     );
@@ -36,10 +36,10 @@ describe("Header" , ()=>{
     expect(screen.getByText("Leaderboard")).toBeInTheDocument();
   })
 
-  test("show Login when not logged in" , ()=>{
-    render (<MemoryRouter >
-      <Header 
-        isloggedIn = {false}
+  test("show Login when not logged in", () => {
+    render(<MemoryRouter >
+      <Header
+        isloggedIn={false}
       />
     </MemoryRouter>
     );
@@ -47,10 +47,10 @@ describe("Header" , ()=>{
     expect(screen.getByRole("button")).toHaveTextContent("Login");
   })
 
-  test("shows profile on logged in and not on the profile page" , ()=>{
+  test("shows profile on logged in and not on the profile page", () => {
     render(
       <MemoryRouter >
-        <Header 
+        <Header
           isloggedIn={true}
         />
       </MemoryRouter>
@@ -59,12 +59,12 @@ describe("Header" , ()=>{
     expect(screen.getByRole("button")).toHaveTextContent("Profile");
   });
 
-  test("show logout on the profile page" , ()=>{
+  test("show logout on the profile page", () => {
     render(
-      <MemoryRouter 
+      <MemoryRouter
         initialEntries={["/profile"]}
       >
-        <Header 
+        <Header
           isloggedIn={true}
         />
       </MemoryRouter>
@@ -72,8 +72,8 @@ describe("Header" , ()=>{
 
     expect(screen.getByRole("button")).toHaveTextContent("Logout");
   })
- 
-  test("navigate to login when not logged in" , ()=>{
+
+  test("navigate to login when not logged in", () => {
     render(
       <MemoryRouter>
         <Header
@@ -100,7 +100,7 @@ describe("Header" , ()=>{
   });
 
 
-   test("navigates to logout when on profile page", () => {
+  test("navigates to logout when on profile page", () => {
     render(
       <MemoryRouter initialEntries={["/profile"]}>
         <Header isloggedIn={true} />
@@ -112,5 +112,16 @@ describe("Header" , ()=>{
     expect(mockNavigate).toHaveBeenCalledWith("/logout");
   });
 
+  test("clicking logo navigates to home", () => {
+    render(
+      <MemoryRouter>
+        <Header isloggedIn={true} />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByText("CodeChamp"));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/home");
+  });
 
 })

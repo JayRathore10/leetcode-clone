@@ -1,4 +1,4 @@
-import { render, screen, } from "@testing-library/react";
+import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from "react-router-dom";
 import { Header } from "../components/Header";
 
@@ -73,4 +73,17 @@ describe("Header" , ()=>{
     expect(screen.getByRole("button")).toHaveTextContent("Logout");
   })
  
+  test("navigate to login when not logged in" , ()=>{
+    render(
+      <MemoryRouter>
+        <Header
+          isloggedIn={false}
+        />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole("button"));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/");
+  });
 })

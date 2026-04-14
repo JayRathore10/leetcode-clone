@@ -18,4 +18,16 @@ describe("LanguageSelect Component", () => {
     expect(screen.getByText("JAVA")).toBeInTheDocument();
     expect(screen.getByText("JAVASCRIPT")).toBeInTheDocument();
   });
+
+  test("has correct default select value" , ()=>{
+    render(
+      <LanguageSelect 
+        language="python" 
+        setLanguage={jest.fn()}
+      />
+    );
+    const select = screen.getByRole("combobox") as HTMLSelectElement;
+    expect(select.value).toBe("python");
+  })
+
 });

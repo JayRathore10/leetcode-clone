@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import LanguageSelect from "../components/LanguageSelect";
 
 describe("LanguageSelect Component", () => {
@@ -28,6 +28,23 @@ describe("LanguageSelect Component", () => {
     );
     const select = screen.getByRole("combobox") as HTMLSelectElement;
     expect(select.value).toBe("python");
+  });
+
+  test("calls setLanguage when selection changes", ()=>{
+    const mockSetLanguage = jest.fn();
+    render(
+      <LanguageSelect 
+        language="cpp"
+        setLanguage={mockSetLanguage}
+      />
+    );
+
+    const select = screen.getByRole("combobox");
+    fireEvent.change(select , {target : {value : "java"}});
+
+    expect(mockSetLanguage).toHaveBeenCalledTimes(1);
+    expect(mockSetLanguage).toHaveBeenCalledWith("java");
+
   })
 
 });

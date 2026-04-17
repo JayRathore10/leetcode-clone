@@ -1,5 +1,8 @@
 # LeetCode Clone — Server
 
+# If server is sleep then click on this link to awake it 
+https://leetcode-clone-pi-flame.vercel.app
+
 This directory contains the backend API for the LeetCode Clone project.
 
 The server is responsible for:

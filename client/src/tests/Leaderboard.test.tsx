@@ -11,7 +11,7 @@ jest.mock("react-router-dom", () => ({
 
 
 describe("Leaderboard Component" , ()=>{
-  test(" " , ()=>{
+  test("Render LeaderBoard component" , ()=>{
     render(
       <MemoryRouter>
         <Leaderboard />
@@ -19,6 +19,11 @@ describe("Leaderboard Component" , ()=>{
     );
 
     expect(screen.getByText("Coming Soon")).toBeInTheDocument();
-
+    expect(screen.getByText("Coming Soon")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Global rankings, ratings, and competitive statistics/i
+      )
+    ).toBeInTheDocument();
   })
 })

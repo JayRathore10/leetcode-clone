@@ -1,4 +1,4 @@
-import { screen , render } from "@testing-library/react";
+import { fireEvent ,  screen , render } from "@testing-library/react";
 import { Leaderboard } from "../components/Leaderboard";
 import { MemoryRouter } from "react-router-dom";
 
@@ -38,5 +38,19 @@ describe("Leaderboard Component" , ()=>{
       screen.getByRole("button", { name: /back to home/i })
     ).toBeInTheDocument();
   });
+
+   test("navigates to home on button click", () => {
+    render(
+      <MemoryRouter>
+        <Leaderboard />
+      </MemoryRouter>
+    );
+
+    const button = screen.getByRole("button", { name: /back to home/i });
+    fireEvent.click(button);
+
+    expect(mockNavigate).toHaveBeenCalledWith("/");
+  });
+
 
 })

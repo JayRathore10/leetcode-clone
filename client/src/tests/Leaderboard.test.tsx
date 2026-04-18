@@ -11,7 +11,7 @@ jest.mock("react-router-dom", () => ({
 
 
 describe("Leaderboard Component" , ()=>{
-  test("render leaderboard" , ()=>{
+  test(" " , ()=>{
     render(
       <MemoryRouter>
         <Leaderboard />

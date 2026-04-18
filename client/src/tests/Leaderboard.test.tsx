@@ -26,4 +26,17 @@ describe("Leaderboard Component" , ()=>{
       )
     ).toBeInTheDocument();
   })
+
+  test("button is rendered", () => {
+    render(
+      <MemoryRouter>
+        <Leaderboard />
+      </MemoryRouter>
+    );
+
+    expect(
+      screen.getByRole("button", { name: /back to home/i })
+    ).toBeInTheDocument();
+  });
+
 })

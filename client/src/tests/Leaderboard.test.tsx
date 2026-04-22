@@ -51,6 +51,4 @@ describe("Leaderboard Component" , ()=>{
 
     expect(mockNavigate).toHaveBeenCalledWith("/");
   });
-
-
-})
+});

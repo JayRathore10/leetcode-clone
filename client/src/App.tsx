@@ -10,14 +10,14 @@ import { Contests } from "./pages/Contests";
 import { Discuss } from "./pages/Discuss";
 import { Leaderboard } from "./components/Leaderboard";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { env } from "./configs/env.config";
 import { Logout } from "./pages/Logout";
 import { EditProfile } from "./pages/EditProfile";
 import { Submission } from "./pages/Submission";
 import { Navigate } from "react-router-dom";
-import "./App.css";
 import { Analyze } from "./pages/Analyze";
+import axios from "axios";
+import "./App.css";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ProtectedNavigate = ({ isLoading, isloggedIn, children }: any) => {

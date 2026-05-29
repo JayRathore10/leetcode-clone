@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction  } from "express";
+import { Request, Response, NextFunction } from "express";
 import { questionSchema } from "../validation/question.validation";
 import { questionModel } from "../models/question.model";
 import { testCaseModel } from "../models/testCase.model";
@@ -70,7 +70,7 @@ export const deleteQuestion = async (req: Request, res: Response, next: NextFunc
         message: "Question Not found"
       })
     }
- 
+
     return res.status(200).json({
       success: true,
       message: "Question delete successfully"
@@ -106,56 +106,59 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
     for (let i = 0; i < visibleTestCases.length; i++) {
       const tc = visibleTestCases[i];
 
+      // original APi call :
+      // https://emkc.org/api/v2/piston/execute 
+
       const response = await axios.post(
-        "https://emkc.org/api/v2/piston/execute",
+        "http://localhost:2000/api/v2/execute",
         {
           language,
-          version: "*",
+          version: "15.10.0",
           files: [{ name: "main", content: code }],
           stdin: tc.input
         }
       );
 
       // Compilation Error 
-      if(response.data.compile?.stderr){
+      if (response.data.compile?.stderr) {
         return res.status(200).json({
-          success : false , 
-          status : "WA"   ,
-          errorType : "Compilation Error" , 
-          message : response.data.compile.stderr
+          success: false,
+          status: "WA",
+          errorType: "Compilation Error",
+          message: response.data.compile.stderr
         })
       }
 
       // Time Limit Exceeded  
-      const run = response.data.run ;
+      const run = response.data.run;
 
-      if(run.signal === "SIGXCPU"){
+      if (run.signal === "SIGXCPU") {
         return res.status(200).json({
-          success : false , 
-          status : "TLE" , 
-          failedTest : i + 1 , 
-          message : "Time Limit Exceeded"
+          success: false,
+          status: "TLE",
+          failedTest: i + 1,
+          message: "Time Limit Exceeded"
         })
       }
 
       // Memory Limit Exceeded 
-      if(run.signal === "SIGSEGV"){
+      if (run.signal === "SIGSEGV") {
         return res.status(200).json({
-          success : false , 
-          status : "MLE" ,
-          failedTest : i + 1 , 
-          message : "Memory Limit Exceeded"
+          success: false,
+          status: "MLE",
+          failedTest: i + 1,
+          message: "Memory Limit Exceeded"
         });
       }
 
       // Runtime Error
-      if(run.stderr){
+      if (run.stderr) {
         return res.status(200).json({
-          success : false , 
-          status : "WA" , 
-          failedTest : i + 1 , 
-          errorType : "Runtime Error" , 
-          message : run.stderr
+          success: false,
+          status: "WA",
+          failedTest: i + 1,
+          errorType: "Runtime Error",
+          message: run.stderr
         })
       }
 
@@ -166,11 +169,11 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
 
       if (actual != expected) {
         return res.status(200).json({
-            success : false , 
-            status: "WA",
-            failedTest: i + 1,
-            expected,
-            actual
+          success: false,
+          status: "WA",
+          failedTest: i + 1,
+          expected,
+          actual
         });
       }
       result.push({ test: i + 1, status: "Passed" });
@@ -181,8 +184,22 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
       result
     });
 
-  } catch (err) {
-    next(err);
+  } catch (err: any) {
+
+    console.log("========== ERROR ==========");
+    console.log(err.message);
+
+    if (err.response) {
+      console.log("STATUS:", err.response.status);
+      console.log("DATA:", err.response.data);
+    }
+
+    console.log(err);
+
+    return res.status(500).json({
+      success: false,
+      message: err.message
+    });
   }
 }
 
@@ -224,30 +241,30 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
       );
 
       // Compilation Error 
-      if(response.data.compile?.stderr){
+      if (response.data.compile?.stderr) {
         return res.status(200).json({
-          status : "WA" ,
-          errorType : "Compilation Error" , 
-          message : response.data.compiler
+          status: "WA",
+          errorType: "Compilation Error",
+          message: response.data.compiler
         })
-      } 
+      }
 
       // Time Limit Exceeded 
-      const run = response.data.run ;
-      if(run.signal === "SIGXCPU"){
+      const run = response.data.run;
+      if (run.signal === "SIGXCPU") {
         return res.status(200).json({
-          status : "TLE" , 
-          failedTest : i + 1 , 
-          message : "Time Limit Exceeded" 
+          status: "TLE",
+          failedTest: i + 1,
+          message: "Time Limit Exceeded"
         })
       }
 
       // Memory Limit Exceeded 
-      if(run.signal === "SIGSEGV"){
+      if (run.signal === "SIGSEGV") {
         return res.status(200).json({
-          status : "MLE" ,
-          failedTest : i + 1 , 
-          message  : "Memory Limit Exceeded"
+          status: "MLE",
+          failedTest: i + 1,
+          message: "Memory Limit Exceeded"
         })
       }
 
@@ -267,11 +284,11 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
       if (actual !== expected) {
         return res.status(200).json({
-            status: "WA",
-            failedTest: i + 1,
-            expected,
-            actual,
-            totalTest : allTestCase.length
+          status: "WA",
+          failedTest: i + 1,
+          expected,
+          actual,
+          totalTest: allTestCase.length
         })
       }
 
@@ -280,8 +297,8 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
 
     return res.status(200).json({
       success: true,
-        status: "Accepted",
-        totalTest: allTestCase.length
+      status: "Accepted",
+      totalTest: allTestCase.length
     })
 
   } catch (err) {
@@ -289,71 +306,71 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
   }
 }
 
-export const getAllQuestions = async(req : authRequest , res : Response  , next : NextFunction)=>{
-  try{
+export const getAllQuestions = async (req: authRequest, res: Response, next: NextFunction) => {
+  try {
     // for question(problem Table)
     const allQuestions = await questionModel.find();
 
-    if(allQuestions.length === 0){
+    if (allQuestions.length === 0) {
       return res.status(404).json({
-        success : false , 
-        message : "There is not question in database"
+        success: false,
+        message: "There is not question in database"
       });
     }
 
     return res.status(200).json({
-      success : true , 
-      message : "This are all questions" , 
-      questions : allQuestions, 
+      success: true,
+      message: "This are all questions",
+      questions: allQuestions,
     });
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const getQuestion = async(req : authRequest  , res: Response , next : NextFunction)=>{
-  try{
+export const getQuestion = async (req: authRequest, res: Response, next: NextFunction) => {
+  try {
     const id = req.params.id;
 
     const question = await questionModel.findById(id);
 
-    if(!question){
+    if (!question) {
       return res.status(404).json({
-        success : false  , 
-        message : "Question not found"
+        success: false,
+        message: "Question not found"
       })
     }
 
     return res.status(200).json({
-      success : true , 
-      message : "This is Question" , 
-      question 
+      success: true,
+      message: "This is Question",
+      question
     })
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const totalQuestion = async(req : authRequest , res : Response , next : NextFunction)=>{
-  try{
+export const totalQuestion = async (req: authRequest, res: Response, next: NextFunction) => {
+  try {
     const totalQuestion = await questionModel.find();
 
-    if(totalQuestion.length === 0 ){
+    if (totalQuestion.length === 0) {
       return res.status(400).json({
-        success : false   , 
-        message : "There are no questions in database"
+        success: false,
+        message: "There are no questions in database"
       })
     }
 
     return res.status(200).json({
-      success : true ,  
-      message : "Total Number of Questions" , 
-      totalQuestion : totalQuestion.length
+      success: true,
+      message: "Total Number of Questions",
+      totalQuestion: totalQuestion.length
     })
 
-  }catch(error){
+  } catch (error) {
     next(error);
   }
 }

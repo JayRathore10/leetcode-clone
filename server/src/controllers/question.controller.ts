@@ -241,8 +241,11 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
     for (let i = 0; i < allTestCase.length; i++) {
       const tc = allTestCase[i];
 
+      // original api call 
+      // "https://emkc.org/api/v2/piston/execute"
+
       const response = await axios.post(
-        "https://emkc.org/api/v2/piston/execute",
+        "http://localhost:2000/api/v2/execute",
         {
           language,
           version: LANGUAGE_MAP[language].version,

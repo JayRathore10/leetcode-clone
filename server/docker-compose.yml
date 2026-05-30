@@ -1,34 +1,13 @@
-# docker-compose.yml
 services:
   piston:
     image: ghcr.io/engineer-man/piston
     container_name: piston_api
-    privileged: true  
+    privileged: true
     ports:
       - "2000:2000"
     volumes:
       - piston-packages:/piston/packages
     restart: unless-stopped
-    # Security: isolate Piston from your app network
-    networks:
-      - judge-internal
-
-  backend:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - PISTON_URL=http://piston:2000   # use service name, not localhost
-    depends_on:
-      - piston
-    networks:
-      - judge-internal
-      - mongo-net
 
 volumes:
   piston-packages:
-
-networks:
-  judge-internal:
-    internal: true   # no outside internet access for the judge
-  mongo-net:

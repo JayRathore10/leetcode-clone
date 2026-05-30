@@ -34,3 +34,6 @@ temp/
 
 #jest 
 coverage/
+
+#imp  
+imp.txt

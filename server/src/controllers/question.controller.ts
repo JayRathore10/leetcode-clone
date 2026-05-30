@@ -10,6 +10,14 @@ interface ResultInterface {
   status: string
 };
 
+// languageMap.ts
+export const LANGUAGE_MAP: Record<string, { language: string; version: string }> = {
+  cpp:        { language: "gcc",    version: "10.2.0"  },
+  python:     { language: "python", version: "3.10.0"  },
+  javascript: { language: "node",   version: "18.15.0" },
+  java:       { language: "java",   version: "15.0.2"  },
+};
+
 export const addQuestion = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const parsed = questionSchema.safeParse(req.body);
@@ -113,7 +121,7 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
         "http://localhost:2000/api/v2/execute",
         {
           language,
-          version: "15.10.0",
+          version: LANGUAGE_MAP[language].version,
           files: [{ name: "main", content: code }],
           stdin: tc.input
         }
@@ -186,20 +194,23 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
 
   } catch (err: any) {
 
-    console.log("========== ERROR ==========");
-    console.log(err.message);
+    // console.log("========== ERROR ==========");
+    // console.log(err.message);
 
-    if (err.response) {
-      console.log("STATUS:", err.response.status);
-      console.log("DATA:", err.response.data);
-    }
+    // if (err.response) {
+    //   console.log("STATUS:", err.response.status);
+    //   console.log("DATA:", err.response.data);
+    // }
 
-    console.log(err);
+    // console.log(err);
 
-    return res.status(500).json({
-      success: false,
-      message: err.message
-    });
+    // return res.status(500).json({
+    //   success: false,
+    //   message: err.message
+    // });
+
+    next(err);
+
   }
 }
 
@@ -234,7 +245,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
         "https://emkc.org/api/v2/piston/execute",
         {
           language,
-          version: "*",
+          version: LANGUAGE_MAP[language].version,
           files: [{ name: "main", content: code }],
           stdin: tc.input
         }

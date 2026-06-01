@@ -257,3 +257,7 @@ export default App;
  * Add the loading animation every where 
  * Skelton ones are best
  */
+
+// refined the file structure (style folder)
+
+// also add the AI code analysis to it. 

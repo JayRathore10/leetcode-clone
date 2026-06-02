@@ -24,7 +24,8 @@ const registerNewUser = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         if (!parsed.success) {
             return res.status(400).json({
                 success: false,
-                error: parsed.error.format()
+                error: parsed.error.format(),
+                message: "parsed error"
             });
         }
         const { username, email, password, name } = parsed.data;
@@ -112,7 +113,6 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 exports.loginUser = loginUser;
 const logoutUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // procted have to make middleware for it 
         res.clearCookie("token");
         return res.status(200).json({
             success: true,

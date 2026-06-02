@@ -17,8 +17,9 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const env_config_1 = require("../configs/env.config");
 const user_model_1 = require("../models/user.model");
 const isUserLoggedIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const token = req.cookies.token;
+        const token = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.token;
         if (!token) {
             return res.status(401).json({
                 success: false,

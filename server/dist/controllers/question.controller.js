@@ -12,12 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.totalQuestion = exports.getQuestion = exports.getAllQuestions = exports.submitCode = exports.run = exports.deleteQuestion = exports.addQuestion = void 0;
+exports.totalQuestion = exports.getQuestion = exports.getAllQuestions = exports.submitCode = exports.run = exports.deleteQuestion = exports.addQuestion = exports.LANGUAGE_MAP = void 0;
 const question_validation_1 = require("../validation/question.validation");
 const question_model_1 = require("../models/question.model");
 const testCase_model_1 = require("../models/testCase.model");
 const axios_1 = __importDefault(require("axios"));
 ;
+// languageMap.ts
+exports.LANGUAGE_MAP = {
+    cpp: { language: "gcc", version: "10.2.0" },
+    python: { language: "python", version: "3.10.0" },
+    javascript: { language: "node", version: "18.15.0" },
+    java: { language: "java", version: "15.0.2" },
+};
 const addQuestion = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const parsed = question_validation_1.questionSchema.safeParse(req.body);
@@ -92,7 +99,7 @@ const run = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         const visibleTestCases = yield testCase_model_1.testCaseModel.find({ questionId: questionId, isHidden: false });
-        if (!visibleTestCases) {
+        if (!visibleTestCases || visibleTestCases.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Not Test Case found"
@@ -101,9 +108,11 @@ const run = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         let result = [];
         for (let i = 0; i < visibleTestCases.length; i++) {
             const tc = visibleTestCases[i];
-            const response = yield axios_1.default.post("https://emkc.org/api/v2/piston/execute", {
+            // original APi call :
+            // https://emkc.org/api/v2/piston/execute 
+            const response = yield axios_1.default.post("http://localhost:2000/api/v2/execute", {
                 language,
-                version: "*",
+                version: exports.LANGUAGE_MAP[language].version,
                 files: [{ name: "main", content: code }],
                 stdin: tc.input
             });
@@ -166,6 +175,17 @@ const run = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (err) {
+        // console.log("========== ERROR ==========");
+        // console.log(err.message);
+        // if (err.response) {
+        //   console.log("STATUS:", err.response.status);
+        //   console.log("DATA:", err.response.data);
+        // }
+        // console.log(err);
+        // return res.status(500).json({
+        //   success: false,
+        //   message: err.message
+        // });
         next(err);
     }
 });
@@ -183,7 +203,7 @@ const submitCode = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             });
         }
         const allTestCase = yield testCase_model_1.testCaseModel.find({ questionId: questionId });
-        if (!allTestCase) {
+        if (!allTestCase || allTestCase.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Test Cases are not present"
@@ -192,9 +212,11 @@ const submitCode = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         let result = [];
         for (let i = 0; i < allTestCase.length; i++) {
             const tc = allTestCase[i];
-            const response = yield axios_1.default.post("https://emkc.org/api/v2/piston/execute", {
+            // original api call 
+            // "https://emkc.org/api/v2/piston/execute"
+            const response = yield axios_1.default.post("http://localhost:2000/api/v2/execute", {
                 language,
-                version: "*",
+                version: exports.LANGUAGE_MAP[language].version,
                 files: [{ name: "main", content: code }],
                 stdin: tc.input
             });

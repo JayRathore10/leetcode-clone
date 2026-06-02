@@ -1,58 +1,120 @@
-import { Route, Routes } from "react-router-dom";
-import { Login } from "./pages/Login/Login";
-import { SignUp } from "./pages/SignUp/SignUp";
-import { NotFound } from "./pages/NotFound/NotFound";
-import { Home } from "./pages/Home/Home";
-import { Problems } from "./pages/Problems/Problems";
-import { ProblemDetail } from "./pages/ProblemDetail/ProblemDetail";
-import { Profile } from "./pages/Profile/Profile";
-import { Contests } from "./pages/Contests/Contests";
-import { Discuss } from "./pages/Discuss/Discuss";
-import { Leaderboard } from "./components/Leaderboard/Leaderboard";
-import { useEffect, useState } from "react";
-import { env } from "./configs/env.config";
-import { Logout } from "./pages/Logout/Logout";
-import { EditProfile } from "./pages/EditProfile/EditProfile";
-import { Submission } from "./pages/Submission/Submission";
-import { Navigate } from "react-router-dom";
-import { Analyze } from "./pages/Analyze/Analyze";
+import { lazy, Suspense, useEffect, useState, ReactNode } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
+
+import { env } from "./configs/env.config";
 import "./App.css";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ProtectedNavigate = ({ isLoading, isloggedIn, children }: any) => {
-  // add loading 
-  if (isLoading) {
-    return (
-      <div className="ap-loading-container">
-        <div className="ap-spinner"></div>
-        <div className="ap-loading-text">Loading app...</div>
-      </div>
-    )
-  }
+const Login = lazy(() =>
+  import("./pages/Login/Login").then((module) => ({
+    default: module.Login,
+  }))
+);
 
+const SignUp = lazy(() =>
+  import("./pages/SignUp/SignUp").then((module) => ({
+    default: module.SignUp,
+  }))
+);
+
+const Home = lazy(() =>
+  import("./pages/Home/Home").then((module) => ({
+    default: module.Home,
+  }))
+);
+
+const Problems = lazy(() =>
+  import("./pages/Problems/Problems").then((module) => ({
+    default: module.Problems,
+  }))
+);
+
+const ProblemDetail = lazy(() =>
+  import("./pages/ProblemDetail/ProblemDetail").then((module) => ({
+    default: module.ProblemDetail,
+  }))
+);
+
+const Profile = lazy(() =>
+  import("./pages/Profile/Profile").then((module) => ({
+    default: module.Profile,
+  }))
+);
+
+const EditProfile = lazy(() =>
+  import("./pages/EditProfile/EditProfile").then((module) => ({
+    default: module.EditProfile,
+  }))
+);
+
+const Submission = lazy(() =>
+  import("./pages/Submission/Submission").then((module) => ({
+    default: module.Submission,
+  }))
+);
+
+const Analyze = lazy(() =>
+  import("./pages/Analyze/Analyze").then((module) => ({
+    default: module.Analyze,
+  }))
+);
+
+const Logout = lazy(() =>
+  import("./pages/Logout/Logout").then((module) => ({
+    default: module.Logout,
+  }))
+);
+
+const Contests = lazy(() =>
+  import("./pages/Contests/Contests").then((module) => ({
+    default: module.Contests,
+  }))
+);
+
+const Discuss = lazy(() =>
+  import("./pages/Discuss/Discuss").then((module) => ({
+    default: module.Discuss,
+  }))
+);
+
+const NotFound = lazy(() =>
+  import("./pages/NotFound/NotFound").then((module) => ({
+    default: module.NotFound,
+  }))
+);
+
+const Leaderboard = lazy(() =>
+  import("./components/Leaderboard/Leaderboard").then((module) => ({
+    default: module.Leaderboard,
+  }))
+);
+
+const LoadingScreen = () => (
+  <div className="ap-loading-container">
+    <div className="ap-spinner"></div>
+    <div className="ap-loading-text">Loading app...</div>
+  </div>
+);
+
+interface ProtectedNavigateProps {
+  isloggedIn: boolean;
+  children: ReactNode;
+}
+
+const ProtectedNavigate = ({
+  isloggedIn,
+  children,
+}: ProtectedNavigateProps) => {
   if (!isloggedIn) {
     return <Navigate to="/" replace />;
   }
-  return children;
-}
+
+  return <>{children}</>;
+};
 
 function App() {
-
-  const [isloggedIn, setIsloggedIn] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const call = async () => {
-      try {
-        const res = await axios.get(`${env.backendUrl}`);
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    call();
-  }, []);
+  const [isloggedIn, setIsloggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -61,51 +123,46 @@ function App() {
 
         if (!token) {
           setIsloggedIn(false);
-          setIsLoading(false);
           return;
         }
 
-        const response = await axios.get(`${env.backendUrl}/api/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${env.backendUrl}/api/auth/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+          }
+        );
 
         if (response.status === 200) {
           setIsloggedIn(true);
         }
-
       } catch (error) {
         setIsloggedIn(false);
-        console.log(error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
     };
 
     checkAuth();
-
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="ap-loading-container">
-        <div className="ap-spinner"></div>
-        <div className="ap-loading-text">Loading app...</div>
-      </div>
-
-    );
+    return <LoadingScreen />;
   }
 
-
   return (
-    <>
+    <Suspense fallback={<LoadingScreen />}>
       <Routes>
         <Route
           path="/"
           element={
-            isloggedIn ? <Navigate to="/home" replace /> : (
+            isloggedIn ? (
+              <Navigate to="/home" replace />
+            ) : (
               <Login
                 setIsloggedIn={setIsloggedIn}
                 isloggedIn={isloggedIn}
@@ -114,18 +171,12 @@ function App() {
           }
         />
 
-        <Route
-          path="/signup"
-          element={
-            <SignUp
-            />
-          }
-        />
+        <Route path="/signup" element={<SignUp />} />
 
         <Route
           path="/home"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Home isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -134,7 +185,7 @@ function App() {
         <Route
           path="/problems"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Problems isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -143,7 +194,7 @@ function App() {
         <Route
           path="/problems/:id"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <ProblemDetail isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -152,16 +203,16 @@ function App() {
         <Route
           path="/submission/:id"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Submission isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
         />
 
-        <Route 
+        <Route
           path="/analysis/:id"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Analyze isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
@@ -170,25 +221,25 @@ function App() {
         <Route
           path="/profile"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Profile isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
         />
 
-        <Route 
-          path="/profile/edit" 
+        <Route
+          path="/profile/edit"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading = {isLoading} >
-              <EditProfile isloggedIn = {isloggedIn} />
+            <ProtectedNavigate isloggedIn={isloggedIn}>
+              <EditProfile isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
-          />
+        />
 
         <Route
           path="/logout"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Logout setIsloggedIn={setIsloggedIn} />
             </ProtectedNavigate>
           }
@@ -197,7 +248,7 @@ function App() {
         <Route
           path="/contests"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Contests />
             </ProtectedNavigate>
           }
@@ -206,7 +257,7 @@ function App() {
         <Route
           path="/discuss"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Discuss />
             </ProtectedNavigate>
           }
@@ -215,14 +266,15 @@ function App() {
         <Route
           path="/leaderboard"
           element={
-            <ProtectedNavigate isloggedIn={isloggedIn} isLoading={isLoading}>
+            <ProtectedNavigate isloggedIn={isloggedIn}>
               <Leaderboard />
             </ProtectedNavigate>
           }
         />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </Suspense>
   );
 }
 
@@ -257,7 +309,3 @@ export default App;
  * Add the loading animation every where 
  * Skelton ones are best
  */
-
-// refined the file structure (style folder)
-
-// also add the AI code analysis to it. 

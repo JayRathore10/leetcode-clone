@@ -14,10 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.analyzeCode = void 0;
 const axios_1 = __importDefault(require("axios"));
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-if (!OPENROUTER_API_KEY) {
-    throw new Error("OPENROUTER_API_KEY is not defined");
-}
+const env_config_1 = require("../configs/env.config");
 const analyzeCode = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f;
     try {
@@ -56,7 +53,7 @@ Provide:
             ],
         }, {
             headers: {
-                Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+                Authorization: `Bearer ${env_config_1.OPENROUTER_API_KEY}`,
                 "Content-Type": "application/json",
                 "HTTP-Referer": "http://localhost:3000", // optional but recommended
                 "X-Title": "Code Analyzer App", // optional

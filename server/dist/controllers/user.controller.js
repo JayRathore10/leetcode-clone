@@ -114,7 +114,8 @@ const getUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             });
         }
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
-        const user = yield user_model_1.userModel.findById({ userId }).select("-password");
+        // change 
+        const user = yield user_model_1.userModel.findById(userId).select("-password");
         if (!user) {
             return res.status(404).json({
                 success: false,

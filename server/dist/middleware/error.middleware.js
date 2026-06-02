@@ -14,7 +14,6 @@ const errorMiddleware = (err, req, res, next) => __awaiter(void 0, void 0, void 
     try {
         let error = Object.assign({}, err);
         error.message = err.message;
-        console.error(err);
         // Mongoose bad objectId 
         if (err.name === "CastError") {
             const message = "Resource not found";

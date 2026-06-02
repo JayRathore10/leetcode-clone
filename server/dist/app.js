@@ -27,6 +27,11 @@ app.use((0, cookie_parser_1.default)());
 app.get("/", (req, res) => {
     res.send("Hi, Jexts here!");
 });
+app.get("/test", (req, res) => {
+    res.status(200).json({
+        message: "Test",
+    });
+});
 app.use("/api/users", user_routes_1.userRouter);
 app.use("/api/question", question_routes_1.questionRouter);
 app.use("/api/testcase", testCase_routes_1.testCaseRouter);

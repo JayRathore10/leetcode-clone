@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../styles/auth.css";
+import "../../styles/auth.css";
 import { useState } from "react";
-import { env } from "../configs/env.config";
+import { env } from "../../configs/env.config";
 
 export function SignUp() {
   const navigate = useNavigate();

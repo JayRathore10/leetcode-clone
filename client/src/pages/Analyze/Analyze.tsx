@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import "../styles/Analyze.css";
-import { Header } from "../components/Header/Header";
-import { LoginProps } from "./Login";
+import "./Analyze.css";
+import { Header } from "../../components/Header/Header";
+import { LoginProps } from "../Login/Login";
 import { useEffect, useState } from "react";
-import { Submission as SubmissionType } from "./Profile";
+import { Submission as SubmissionType } from "../Profile/Profile";
 import axios from "axios";
-import { env } from "../configs/env.config";
+import { env } from "../../configs/env.config";
 
 export function Analyze({ isloggedIn }: LoginProps) {
   const { id } = useParams<{ id: string }>();

@@ -1,10 +1,10 @@
-import "../styles/Home.css";
-import { Header } from "../components/Header/Header";
+import "./Home.css";
+import { Header } from "../../components/Header/Header";
 import { useNavigate } from "react-router-dom";
-import { LoginProps } from "./Login";
+import { LoginProps } from "../Login/Login";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { env } from "../configs/env.config";
+import { env } from "../../configs/env.config";
 import { motion } from "framer-motion";
 import { MdOutlineFindInPage, MdTrendingUp } from "react-icons/md";
 import { FaCode } from "react-icons/fa";

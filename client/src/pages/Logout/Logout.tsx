@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { env } from "../configs/env.config";
-import "../styles/Logout.css";
+import { env } from "../../configs/env.config";
+import "./Logout.css";
 
 interface LogoutProps {
   setIsloggedIn: React.Dispatch<React.SetStateAction<boolean>>;

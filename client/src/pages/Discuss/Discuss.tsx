@@ -1,5 +1,5 @@
 import {  useNavigate } from "react-router-dom";
-import "../styles/Discuss.css";
+import "./Discuss.css";
 
 export function Discuss() {
   const navigate = useNavigate();

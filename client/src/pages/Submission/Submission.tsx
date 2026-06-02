@@ -1,13 +1,12 @@
 import { useParams } from "react-router-dom";
-import "../styles/Submission.css";
+import "./Submission.css";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { env } from "../configs/env.config";
-import { Submission as SubmissionType } from "./Profile";
-import { LoginProps } from "./Login";
-import { Header } from "../components/Header/Header";
+import { env } from "../../configs/env.config";
+import { Submission as SubmissionType } from "../Profile/Profile";
+import { LoginProps } from "../Login/Login";
+import { Header } from "../../components/Header/Header";
 import { useNavigate } from "react-router-dom";
-
 import Prism from "prismjs";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-python";

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/Contests.css";
+import "./Contests.css";
 
 export function Contests() {
   const navigate = useNavigate();

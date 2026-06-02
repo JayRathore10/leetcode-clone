@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
-import { TestCasePanel } from "../components/TestCasePanel";
+import { TestCasePanel } from '../components/TestCasePanel/TestCasePanel';
 
 jest.mock("../configs/env.config", () => ({
   env: {

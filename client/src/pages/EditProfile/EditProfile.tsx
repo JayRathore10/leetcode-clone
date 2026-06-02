@@ -1,10 +1,10 @@
-import { LoginProps } from './Login';
-import "../styles/EditProfile.css";
-import { Header } from '../components/Header/Header';
+import { LoginProps } from '../Login/Login';
+import "./EditProfile.css";
+import { Header } from '../../components/Header/Header';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { env } from '../configs/env.config';
+import { env } from '../../configs/env.config';
 export function EditProfile({isloggedIn}: LoginProps){
 
   const [preview  , setPreview] = useState<string>("");

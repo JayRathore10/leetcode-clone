@@ -1,4 +1,4 @@
-import "../styles/auth.css";
+import "../../styles/auth.css";
 
 export function NotFound() {
   return (

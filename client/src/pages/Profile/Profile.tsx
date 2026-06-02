@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import "../styles/Profile.css";
-import { Header } from "../components/Header/Header";
+import "./Profile.css";
+import { Header } from "../../components/Header/Header";
 import axios from "axios";
-import { env } from "../configs/env.config";
-import { LoginProps } from "./Login";
+import { env } from "../../configs/env.config";
+import { LoginProps } from "../Login/Login";
 import {motion} from "framer-motion";
 import { useNavigate } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/Profile.css";
-import { Header } from "../components/Header";
+import { Header } from "../components/Header/Header";
 import axios from "axios";
 import { env } from "../configs/env.config";
 import { LoginProps } from "./Login";

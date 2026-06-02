@@ -1,5 +1,5 @@
 import { fireEvent, screen, render } from "@testing-library/react";
-import { MaintenanceAlert } from "../components/MaintenanceAlert";
+import { MaintenanceAlert } from "../components/MaintenanceAlert/MaintenanceAlert";
 import { MemoryRouter } from "react-router-dom";
 
 describe("Maintenance Alert Component", () => {

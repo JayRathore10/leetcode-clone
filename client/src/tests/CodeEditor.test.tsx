@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { CodeEditor } from "../components/CodeEditor";
+import { CodeEditor } from "../components/CodeEditor/CodeEditor";
 
 jest.mock("@monaco-editor/react", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

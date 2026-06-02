@@ -8,7 +8,7 @@ import { ProblemDetail } from "./pages/ProblemDetail";
 import { Profile } from "./pages/Profile";
 import { Contests } from "./pages/Contests";
 import { Discuss } from "./pages/Discuss";
-import { Leaderboard } from "./components/Leaderboard";
+import { Leaderboard } from "./components/Leaderboard/Leaderboard";
 import { useEffect, useState } from "react";
 import { env } from "./configs/env.config";
 import { Logout } from "./pages/Logout";

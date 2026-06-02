@@ -1,6 +1,6 @@
 import { NavLink, useNavigate  , useLocation} from "react-router-dom";
-import "../styles/Header.css";
-import { LoginProps } from "../pages/Login";
+import "./Header.css";
+import { LoginProps } from "../../pages/Login";
 import { motion } from "framer-motion";
 
 const fadeup = {

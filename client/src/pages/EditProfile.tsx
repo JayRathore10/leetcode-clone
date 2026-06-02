@@ -1,6 +1,6 @@
 import { LoginProps } from './Login';
 import "../styles/EditProfile.css";
-import { Header } from '../components/Header';
+import { Header } from '../components/Header/Header';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';

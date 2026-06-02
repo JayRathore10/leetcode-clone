@@ -1,4 +1,4 @@
-import "../styles/SubmitPanel.css";
+import "./SubmitPanel.css";
 import { useNavigate } from "react-router-dom";
 
 interface SubmitPanelProps {

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/Leaderboard.css";
+import "./Leaderboard.css";
 
 export function Leaderboard() {
 

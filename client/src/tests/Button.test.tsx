@@ -1,5 +1,5 @@
 import {render, screen , fireEvent} from "@testing-library/react";
-import Button from "../components/Button";
+import Button from "../components/Button/Button";
 
 test("render button with text" , ()=>{
   render(<Button label="Click Me" onClick={() => {}} />);

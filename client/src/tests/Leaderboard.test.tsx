@@ -1,5 +1,5 @@
 import { fireEvent ,  screen , render } from "@testing-library/react";
-import { Leaderboard } from "../components/Leaderboard";
+import { Leaderboard } from "../components/Leaderboard/Leaderboard";
 import { MemoryRouter } from "react-router-dom";
 
 const mockNavigate = jest.fn();

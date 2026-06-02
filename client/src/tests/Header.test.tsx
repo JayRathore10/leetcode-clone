@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from "react-router-dom";
-import { Header } from "../components/Header";
+import { Header } from '../components/Header/Header';
 
 jest.mock("framer-motion", () => ({
   motion: {

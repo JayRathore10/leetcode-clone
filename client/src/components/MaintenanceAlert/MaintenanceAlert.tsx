@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import "../styles/MaintenanceAlert.css";
+import "./MaintenanceAlert.css";
 
 interface Props {
   message: string;

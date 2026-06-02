@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { SubmitPanel } from "../components/SubmitPanel";
+import { SubmitPanel } from "../components/SubmitPanel/SubmitPanel";
 import { BrowserRouter } from "react-router-dom";
 
 // Mock useNavigate

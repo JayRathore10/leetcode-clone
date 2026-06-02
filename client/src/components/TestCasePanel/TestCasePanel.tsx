@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { env } from "../configs/env.config";
-import { testCaseFields } from "../utils/runcode";
-import "../styles/TestCasePanel.css";
+import { env } from "../../configs/env.config";
+import "./TestCasePanel.css";
+import { testCaseFields } from './../../utils/runcode';
 
 interface TestCase {
   _id: string;

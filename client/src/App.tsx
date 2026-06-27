@@ -309,3 +309,7 @@ export default App;
  * Add the loading animation every where 
  * Skelton ones are best
  */
+
+/**
+ * Change the whole UI to modern UI with the help of Ai 
+ */

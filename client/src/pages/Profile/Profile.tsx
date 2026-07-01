@@ -44,7 +44,7 @@ export function Profile({ isloggedIn }: LoginProps) {
   const [totalSolved, setTotalSolved] = useState<number>(0);
   const [rating, setRating] = useState<number>(0);
   const [, setIsLoading] = useState<boolean>(true);
-  const [,setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -61,6 +61,11 @@ export function Profile({ isloggedIn }: LoginProps) {
             withCredentials: true,
           }
         );
+
+        console.log(userResponse.data);
+        console.log(userResponse.data.user);
+
+        setUser(userResponse.data.user);
 
         setUser(userResponse.data.user);
 
@@ -115,7 +120,7 @@ export function Profile({ isloggedIn }: LoginProps) {
             ? Math.floor((solved / totalQuestions) * 100)
             : 0
         );
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error(err);
 
@@ -123,7 +128,7 @@ export function Profile({ isloggedIn }: LoginProps) {
           console.log(err.response?.status);
           console.log(err.response?.data);
         }
-
+        console.log(user?.profilePic);
         setError("Failed to load profile data.");
       } finally {
         setIsLoading(false);

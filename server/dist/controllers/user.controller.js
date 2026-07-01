@@ -105,27 +105,16 @@ const getAllSubmission = (req, res, next) => __awaiter(void 0, void 0, void 0, f
 });
 exports.getAllSubmission = getAllSubmission;
 const getUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         if (!req.user) {
-            return res.status(400).json({
+            return res.status(401).json({
                 success: false,
-                message: "Error in getting user detail"
-            });
-        }
-        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
-        // change 
-        const user = yield user_model_1.userModel.findById(userId).select("-password");
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
+                message: "Unauthorized",
             });
         }
         return res.status(200).json({
             success: true,
-            message: "User Data",
-            user
+            user: req.user,
         });
     }
     catch (err) {

@@ -22,7 +22,12 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use("/images", express_1.default.static("public/images"));
+// app.use("/images", express.static("public/images"));
+app.use("/images", express_1.default.static("images", {
+    setHeaders: (res) => {
+        res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    },
+}));
 app.use((0, cookie_parser_1.default)());
 app.get("/", (req, res) => {
     res.send("Hi, Jexts here!");

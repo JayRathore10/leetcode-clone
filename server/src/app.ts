@@ -21,7 +21,15 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
-app.use("/images", express.static("public/images"));
+// app.use("/images", express.static("public/images"));
+app.use(
+  "/images",
+  express.static("images", {
+    setHeaders: (res) => {
+      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    },
+  })
+);
 app.use(cookieParser());
 
 app.get("/"  , (req : Request, res : Response)=>{

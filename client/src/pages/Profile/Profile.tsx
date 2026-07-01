@@ -4,12 +4,12 @@ import { Header } from "../../components/Header/Header";
 import axios from "axios";
 import { env } from "../../configs/env.config";
 import { LoginProps } from "../Login/Login";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 type User = {
   username: string;
-email: string;
+  email: string;
   name: string;
   profilePic: string
 }
@@ -23,19 +23,19 @@ export type Submission = {
   questionId: {
     _id: string,
     difficulty: string,
-    description : string 
+    description: string
   }
   title: string,
 };
 
 const fade = {
-  hidden : {opacity : 0, y : 20} , 
-  visible: {opacity : 1 , y : 0}
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
 }
 
 export function Profile({ isloggedIn }: LoginProps) {
 
-  const [username, setUserName] = useState<string>("");
+  // const [username, setUserName] = useState<string>("");
   const [user, setUser] = useState<User>();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [easy, setEasy] = useState<number>(0);
@@ -43,89 +43,95 @@ export function Profile({ isloggedIn }: LoginProps) {
   const [medium, setMedium] = useState<number>(0);
   const [totalSolved, setTotalSolved] = useState<number>(0);
   const [rating, setRating] = useState<number>(0);
+  const [, setIsLoading] = useState<boolean>(true);
+  const [,setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      /*
-        we have to use /api/users/profile to get the user detail but we dont have user middleware connection so we use /api/users/:username to the info about the user  
-      */
-      setUserName("Jay_Rathore1");
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+
       try {
-        const response = await axios.get(`${env.backendUrl}/api/users/${username}`);
-        setUser(response.data.user);
-      } catch (error) {
-        console.log(error);
-      }
-    }
+        // Fetch user profile
+        const userResponse = await axios.get(
+          `${env.backendUrl}/api/users/profile`,
+          {
+            withCredentials: true,
+          }
+        );
 
+        setUser(userResponse.data.user);
 
-    fetchUserData();
-  }, [username]);
+        // Fetch submissions and total questions
+        const [submissionsResponse, questionsResponse] = await Promise.all([
+          axios.get(`${env.backendUrl}/api/submission/`, {
+            withCredentials: true,
+          }),
+          axios.get(`${env.backendUrl}/api/question/total`),
+        ]);
 
-  useEffect(() => {
+        const submissions: Submission[] = submissionsResponse.data.submissions;
+        const totalQuestions = questionsResponse.data.totalQuestion;
 
-    const fetchUserSubmissions = async () => {
-      try {
-        const response = await axios.get(`${env.backendUrl}/api/submission/`);
-        console.log(response.data);
-        setSubmissions(response.data.submissions);
+        const uniqueQuestions = new Set<string>();
+        let easyCount = 0;
+        let mediumCount = 0;
+        let hardCount = 0;
 
-        const uniqueQuestion = new Set<string>();
+        submissions.forEach((sub) => {
+          if (!sub.questionId) return;
 
-        let easy = 0;
-        let med = 0;
-        let hard = 0;
-        let total = 0;
-
-        response.data.submissions.map((sub: Submission) => {
-          const diff = sub.questionId.difficulty;
           const qId = sub.questionId._id;
 
-          if (uniqueQuestion.has(qId)) return;
+          if (uniqueQuestions.has(qId)) return;
 
-          uniqueQuestion.add(qId);
-          total++;
+          uniqueQuestions.add(qId);
 
-          if (diff === "Easy") {
-            easy++;
-          } else if (diff === "Medium") {
-            med++;
-          } else if (diff === "Hard") {
-            hard++;
+          switch (sub.questionId.difficulty) {
+            case "Easy":
+              easyCount++;
+              break;
+            case "Medium":
+              mediumCount++;
+              break;
+            case "Hard":
+              hardCount++;
+              break;
           }
+        });
 
-        })
+        const solved = uniqueQuestions.size;
 
-        setEasy(easy);
-        setMedium(med);
-        setHard(hard);
-        setTotalSolved(total);
+        setSubmissions(submissions);
+        setEasy(easyCount);
+        setMedium(mediumCount);
+        setHard(hardCount);
+        setTotalSolved(solved);
 
-      } catch (error) {
-        console.log(error);
+        setRating(
+          totalQuestions > 0
+            ? Math.floor((solved / totalQuestions) * 100)
+            : 0
+        );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.error(err);
+
+        if (axios.isAxiosError(err)) {
+          console.log(err.response?.status);
+          console.log(err.response?.data);
+        }
+
+        setError("Failed to load profile data.");
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
 
-    const fetchAllQuestions = async () => {
-      try {
-        const response = await axios.get(`${env.backendUrl}/api/question/total`);
-        const totalQuestions = response.data.totalQuestion;
-
-        /**
-         * total unique solve questions / total number of questions 
-         */
-
-        setRating(Math.floor(totalQuestions / totalSolved) * 100);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchAllQuestions();
-    fetchUserSubmissions();
-  }, [totalSolved]);
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -180,10 +186,10 @@ export function Profile({ isloggedIn }: LoginProps) {
         </div>
 
         <motion.div className="profile-sections"
-          initial="hidden" 
-          animate="visible" 
+          initial="hidden"
+          animate="visible"
           variants={fade}
-          transition={{duration : 0.5}}
+          transition={{ duration: 0.5 }}
         >
           <div className="profile-card submissions-card">
             <h2>Recent Submissions</h2>

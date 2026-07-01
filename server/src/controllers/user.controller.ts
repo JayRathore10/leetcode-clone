@@ -106,37 +106,27 @@ export const getAllSubmission = async (req : Request  , res : Response, next : N
   }
 }
 
-export const getUserProfile = async(req : authRequest , res : Response , next : NextFunction)=>{
-  try{
-
-    if(!req.user){
-      return res.status(400).json({
-        success : false , 
-        message : "Error in getting user detail" 
-      })
-    }
-
-    const userId = req.user?._id;
-    // change 
-    const user = await userModel.findById(userId).select("-password");
-
-    if(!user){
-      return res.status(404).json({
-        success : false , 
-        message : "User not found"
-      })
+export const getUserProfile = async (
+  req: authRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
     }
 
     return res.status(200).json({
-      success : true , 
-      message : "User Data" , 
-      user
-    })
-    
-  }catch(err){
+      success: true,
+      user: req.user,
+    });
+  } catch (err) {
     next(err);
   }
-}
+};
 
 export const editProfile = async(req : authRequest , res : Response , next : NextFunction)=>{
   try{

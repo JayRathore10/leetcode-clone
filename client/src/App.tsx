@@ -117,6 +117,16 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Theme sync
+    const savedTheme = localStorage.getItem("theme") || "system";
+    let activeTheme = savedTheme;
+    if (savedTheme === "system") {
+      activeTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    document.documentElement.setAttribute("data-theme", activeTheme);
+  }, []);
+
+  useEffect(() => {
     const checkAuth = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -249,7 +259,7 @@ function App() {
           path="/contests"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Contests />
+              <Contests isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
         />
@@ -258,7 +268,7 @@ function App() {
           path="/discuss"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Discuss />
+              <Discuss isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
         />
@@ -267,7 +277,7 @@ function App() {
           path="/leaderboard"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Leaderboard />
+              <Leaderboard isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
         />

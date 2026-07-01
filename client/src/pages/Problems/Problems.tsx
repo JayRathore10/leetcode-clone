@@ -100,7 +100,7 @@ export function Problems({ isloggedIn }: LoginProps) {
             <span>Acceptance</span>
           </div>
 
-          {filterQuestions.length !== 0 &&
+          {filterQuestions.length !== 0 ? (
             filterQuestions.map((question, index) => {
 
               const originalIndex = questions.findIndex((q) => q._id === question._id);
@@ -121,7 +121,11 @@ export function Problems({ isloggedIn }: LoginProps) {
                 </div>
               )
             })
-          }
+          ) : (
+            <div className="problems-empty">
+              No problems found matching the selected filters.
+            </div>
+          )}
         </div>
       </div>
     </>

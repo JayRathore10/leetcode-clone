@@ -1,13 +1,19 @@
 .submit-panel {
-  background: #0a2239;
-  border-top: 2px solid #34435e;
-  padding: 16px;
-  animation: slideDown 0.35s ease-out;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-top: 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes slideDown {
   from {
-    transform: translateY(-12px);
+    transform: translateY(-8px);
     opacity: 0;
   }
   to {
@@ -22,71 +28,99 @@
   align-items: center;
 }
 
+.submit-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 .submit-close {
-  background: none;
+  background: transparent;
   border: none;
-  color: #cfd8dc;
-  font-size: 18px;
+  color: var(--text-secondary);
+  font-size: 16px;
   cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.submit-close:hover {
+  background-color: var(--bg-card-hover);
+  color: var(--text-primary);
 }
 
 .submit-status {
-  margin: 12px 0;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  text-transform: uppercase;
 }
 
 .submit-status.Accepted {
-  color: #22c55e;
+  color: var(--easy-color);
 }
 
 .submit-status.WA,
 .submit-status.TLE,
 .submit-status.MLE {
-  color: #ef4444;
+  color: var(--hard-color);
 }
 
 .submit-message {
-  margin: 10px;
-  background: #020d18;
-  padding: 10px;
-  border-radius: 6px;
-  color: #e0e0e0;
-  font-weight: bolder;
+  margin: 0;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 1.5;
+  overflow-x: auto;
 }
 
-.outputs-gap{
-  margin-bottom: 10px;
+.outputs-gap {
+  margin-bottom: 8px;
 }
 
-.failed-test-cases , .total-test-cases{
-  font-weight: bolder;
+.failed-test-cases,
+.total-test-cases {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .submit-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 14px;
+  margin-top: 4px;
 }
 
 .analyze-btn {
-  background: #34435e;
-  color: #ffffff;
-  border: 1px solid #132e32;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-weight: bold;
+  background-color: var(--primary-btn-bg);
+  color: var(--primary-btn-text);
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-size: 13.5px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
-.analyze-btn:hover {
-  background: #0a2239;
-  border-color: #22c55e;
+.analyze-btn:hover:not(:disabled) {
+  background-color: var(--primary-btn-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.analyze-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .analyze-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-

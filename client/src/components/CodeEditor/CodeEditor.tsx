@@ -1,10 +1,10 @@
 import { Editor } from "@monaco-editor/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface CodeEditorProps {
-  code: string,
+  code: string;
   setCode: React.Dispatch<React.SetStateAction<string>>;
-  language: string
+  language: string;
 }
 
 const boilerplates: Record<string, string> = {
@@ -78,49 +78,50 @@ solve()
 `
 };
 
-
 export function CodeEditor({ code, setCode, language }: CodeEditorProps) {
+  const [editorTheme, setEditorTheme] = useState("vs-dark");
 
   useEffect(() => {
     setCode(boilerplates[language || "cpp"]);
-  }, [language, setCode])
+  }, [language, setCode]);
+
+  useEffect(() => {
+    // Sync theme
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    setEditorTheme(currentTheme === "light" ? "light" : "vs-dark");
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === "data-theme") {
+          const updatedTheme = document.documentElement.getAttribute("data-theme");
+          setEditorTheme(updatedTheme === "light" ? "light" : "vs-dark");
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
       <Editor
-        height="90vh"
-        width="90vw"
+        height="100%"
+        width="100%"
         language={language || "cpp"}
-        theme="vs-dark"
+        theme={editorTheme}
         value={code}
         onChange={(value) => setCode(value || "")}
         options={{
-          fontSize: 16,         
-          fontFamily: "Fira Code, monospace",
+          fontSize: 15,         
+          fontFamily: "JetBrains Mono, Fira Code, monospace",
           lineHeight: 22,
           minimap: { enabled: false },
           wordWrap: "on",
-          automaticLayout: true
+          automaticLayout: true,
+          padding: { top: 12, bottom: 12 }
         }}
       />
     </>
-  )
+  );
 }
-
-/**
- * 
- * MY next Task is not make the editor to run the test summit the test 
- * and check auto input and output for it 
- * also the erorr in this 
- * and also run the test cases 
- * if it clear all the test case then it 
- * accecpted and correct answer 
- * 
- */
-
-/**
- * 
- * for checking 
- * login print out put to trim kar ke whiout space i have to check with my output with trim and without space   
- * 
- */

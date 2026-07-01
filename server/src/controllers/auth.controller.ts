@@ -47,7 +47,7 @@ export const registerNewUser = async (req: Request, res: Response, next: NextFun
       })
     }
 
-    const token = jwt.sign({ email }, JWT_SECRET as string);
+    const token = jwt.sign({ userId: user._id, email: user.email, role: user.role }, JWT_SECRET as string);
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -98,7 +98,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       })
     }
 
-    const token = jwt.sign({ email }, JWT_SECRET as string);
+    const token = jwt.sign({ userId: user._id, email: user.email, role: user.role }, JWT_SECRET as string);
 
     res.cookie("token", token, {
       httpOnly: true,

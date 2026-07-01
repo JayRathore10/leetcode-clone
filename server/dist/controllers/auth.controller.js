@@ -50,7 +50,7 @@ const registerNewUser = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
                 message: "Error in creating user"
             });
         }
-        const token = jsonwebtoken_1.default.sign({ email }, env_config_1.JWT_SECRET);
+        const token = jsonwebtoken_1.default.sign({ userId: user._id, email: user.email, role: user.role }, env_config_1.JWT_SECRET);
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
@@ -92,7 +92,7 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
                 message: "Password is invalid"
             });
         }
-        const token = jsonwebtoken_1.default.sign({ email }, env_config_1.JWT_SECRET);
+        const token = jsonwebtoken_1.default.sign({ userId: user._id, email: user.email, role: user.role }, env_config_1.JWT_SECRET);
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,

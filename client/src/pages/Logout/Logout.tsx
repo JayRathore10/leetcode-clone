@@ -31,7 +31,7 @@ export function Logout({ setIsloggedIn }: LogoutProps) {
     callLogoutApi();
 
     const timer = setTimeout(() => {
-      navigate("/login", { replace: true });
+      navigate("/", { replace: true });
     }, 3500);
 
     return () => clearTimeout(timer);
@@ -49,7 +49,7 @@ export function Logout({ setIsloggedIn }: LogoutProps) {
 
         <button
           className="logout-btn"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/")}
         >
           Go to Login
         </button>

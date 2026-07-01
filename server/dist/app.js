@@ -40,3 +40,4 @@ app.use("/api/auth", auth_routes_1.authRouter);
 app.use("/api/analyze", analyze_routes_1.analyzeRouter);
 app.use(error_middleware_1.errorMiddleware);
 exports.default = app;
+// Add AI Code analysic and also learn to host docker 

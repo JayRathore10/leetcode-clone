@@ -6,18 +6,35 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { env } from "../../configs/env.config";
 import { motion } from "framer-motion";
+import { Variants } from "framer-motion";
 import {
   FiArrowRight, FiZap, FiTarget, FiTrendingUp,
   FiCode, FiUsers, FiAward
 } from "react-icons/fi";
 
-const stagger = {
+
+const stagger: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
 };
-const fadeUp = {
-  hidden:  { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+
+const fadeUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut",
+    },
+  },
 };
 
 export function Home({ isloggedIn }: LoginProps) {
@@ -73,10 +90,6 @@ export function Home({ isloggedIn }: LoginProps) {
           animate="visible"
           variants={stagger}
         >
-          <motion.div className="hm-hero-badge" variants={fadeUp}>
-            🚀 New problems every week
-          </motion.div>
-
           <motion.h1 className="hm-hero-title" variants={fadeUp}>
             Master Algorithms.<br />
             <span className="hm-hero-gradient">Land Your Dream Job.</span>

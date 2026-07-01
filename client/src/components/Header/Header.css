@@ -23,7 +23,7 @@
 }
 
 /* ── Logo ─────────────────────────────────────── */
-.hdr-logo {
+/* .hdr-logo {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -54,8 +54,39 @@
   color: var(--text-primary);
   letter-spacing: -0.02em;
 }
-.hdr-logo-accent { color: var(--accent); }
+.hdr-logo-accent { color: var(--accent); } */
 
+
+/* new */
+
+.hdr-logo {
+  display: flex;
+  align-items: center;
+  gap: 0rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hdr-logo-image {
+  width: 42px;
+  height: 42px;
+  margin-top: -0.5rem;
+  object-fit: contain;
+  display: block;
+}
+
+.hdr-logo-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hdr-logo-accent {
+  color: var(--accent);
+}
+
+/**/
 /* ── Nav ──────────────────────────────────────── */
 .hdr-nav {
   display: flex;

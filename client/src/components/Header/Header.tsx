@@ -3,9 +3,10 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiSun, FiMoon, FiMonitor, FiChevronDown,
-  FiUser, FiLogOut, FiCode
+  FiUser, FiLogOut
 } from "react-icons/fi";
 import { LoginProps } from "../../pages/Login/Login";
+import logo from "../../assets/logo.png";
 import "./Header.css";
 
 type ThemeType = "light" | "dark" | "system";
@@ -61,8 +62,8 @@ export function Header({ isloggedIn }: LoginProps) {
 
   const themeIcon =
     theme === "light" ? <FiSun size={16} /> :
-    theme === "dark"  ? <FiMoon size={16} /> :
-                        <FiMonitor size={16} />;
+      theme === "dark" ? <FiMoon size={16} /> :
+        <FiMonitor size={16} />;
 
   const navLinks = [
     { to: "/problems", label: "Problems" },
@@ -76,7 +77,12 @@ export function Header({ isloggedIn }: LoginProps) {
       <div className="hdr-inner">
         {/* Logo */}
         <button className="hdr-logo" onClick={() => navigate("/home")}>
-          <span className="hdr-logo-icon"><FiCode size={18} /></span>
+          <img
+            src={logo}
+            alt="CodeChamp Logo"
+            className="hdr-logo-image"
+          />
+
           <span className="hdr-logo-text">
             Code<span className="hdr-logo-accent">Champ</span>
           </span>
@@ -133,8 +139,8 @@ export function Header({ isloggedIn }: LoginProps) {
                       role="menuitem"
                     >
                       {t === "light" && <FiSun size={14} />}
-                      {t === "dark"  && <FiMoon size={14} />}
-                      {t === "system"&& <FiMonitor size={14} />}
+                      {t === "dark" && <FiMoon size={14} />}
+                      {t === "system" && <FiMonitor size={14} />}
                       {t.charAt(0).toUpperCase() + t.slice(1)}
                     </button>
                   ))}

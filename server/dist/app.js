@@ -23,7 +23,7 @@ app.use((0, cors_1.default)({
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 // app.use("/images", express.static("public/images"));
-app.use("/images", express_1.default.static("images", {
+app.use("/images", express_1.default.static("public/images", {
     setHeaders: (res) => {
         res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
     },

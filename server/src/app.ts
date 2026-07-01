@@ -24,7 +24,7 @@ app.use(express.urlencoded({extended : true}));
 // app.use("/images", express.static("public/images"));
 app.use(
   "/images",
-  express.static("images", {
+  express.static("public/images", {
     setHeaders: (res) => {
       res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
     },

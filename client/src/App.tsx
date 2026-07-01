@@ -259,7 +259,7 @@ function App() {
           path="/contests"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Contests isloggedIn={isloggedIn} />
+              <Contests/>
             </ProtectedNavigate>
           }
         />
@@ -268,7 +268,7 @@ function App() {
           path="/discuss"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Discuss isloggedIn={isloggedIn} />
+              <Discuss />
             </ProtectedNavigate>
           }
         />
@@ -277,7 +277,7 @@ function App() {
           path="/leaderboard"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Leaderboard isloggedIn={isloggedIn} />
+              <Leaderboard />
             </ProtectedNavigate>
           }
         />

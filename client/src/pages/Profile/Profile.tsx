@@ -6,6 +6,8 @@ import { env } from "../../configs/env.config";
 import { LoginProps } from "../Login/Login";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { FiEdit2 } from "react-icons/fi";
+
 
 type User = {
   username: string;
@@ -61,9 +63,6 @@ export function Profile({ isloggedIn }: LoginProps) {
             withCredentials: true,
           }
         );
-
-        console.log(userResponse.data);
-        console.log(userResponse.data.user);
 
         setUser(userResponse.data.user);
 
@@ -128,7 +127,6 @@ export function Profile({ isloggedIn }: LoginProps) {
           console.log(err.response?.status);
           console.log(err.response?.data);
         }
-        console.log(user?.profilePic);
         setError("Failed to load profile data.");
       } finally {
         setIsLoading(false);
@@ -153,8 +151,9 @@ export function Profile({ isloggedIn }: LoginProps) {
               <button
                 className="edit-profile-btn"
                 onClick={() => navigate("/profile/edit")}
+                aria-label="Edit Profile"
               >
-                Edit Profile
+                <FiEdit2 />
               </button>
             </div>
             <div className="profile-info">

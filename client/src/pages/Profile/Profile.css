@@ -40,23 +40,49 @@
 
 .edit-profile-btn {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: var(--accent);
-  color: var(--text-inverse);
+  bottom: 8px;
+  right: 8px;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius);
-  font-size: 0.875rem;
-  font-weight: 500;
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition);
+  border-radius: 50%;
+
+  background: var(--accent);
+  color: white;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.edit-profile-btn svg {
+  font-size: 18px;
 }
 
 .edit-profile-btn:hover {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  background: var(--accent-hover);
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.edit-profile-btn:active {
+  transform: scale(0.95);
+}
+
+.edit-profile-btn:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.35);
+  outline-offset: 3px;
 }
 
 .profile-info {

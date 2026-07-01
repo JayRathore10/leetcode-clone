@@ -36,6 +36,7 @@
   object-fit: cover;
   border: 3px solid var(--accent);
   box-shadow: var(--shadow-lg);
+  margin-top: -22px;
 }
 
 .edit-profile-btn {

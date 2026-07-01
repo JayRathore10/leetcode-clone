@@ -146,7 +146,7 @@ export function Profile({ isloggedIn }: LoginProps) {
               <img
                 src={`${env.backendUrl}/images/${user?.profilePic}`}
                 className="avatar"
-                alt="JR"
+                alt="URER"
               />
               <button
                 className="edit-profile-btn"

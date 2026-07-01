@@ -5,6 +5,7 @@ import { useState } from "react";
 import { env } from "../../configs/env.config";
 import { Header } from "../../components/Header/Header";
 import { motion } from "framer-motion";
+import { FiCode, FiAlertCircle } from "react-icons/fi";
 
 export interface LoginProps {
   setIsloggedIn?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,106 +14,105 @@ export interface LoginProps {
 
 export function Login({ setIsloggedIn, isloggedIn }: LoginProps) {
   const navigate = useNavigate();
-
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [email,    setEmail]    = useState("");
+  const [password, setPassword] = useState("");
+  const [error,    setError]    = useState("");
+  const [loading,  setLoading]  = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg("");
+    setError("");
+    setLoading(true);
     try {
-      const response = await axios.post(
+      const res = await axios.post(
         `${env.backendUrl}/api/auth/login`,
-        {
-          email,
-          password
-        },
+        { email, password },
         { withCredentials: true }
       );
-      if (response.data.success === true) {
-        localStorage.setItem("token", response.data.token);
+      if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
         setIsloggedIn?.(true);
         navigate("/problems");
       }
-    } catch (error) {
-      console.log(error);
-      setErrorMsg("Invalid email or password");
+    } catch {
+      setError("Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
+    <div className="auth-page">
       <Header isloggedIn={isloggedIn!} />
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "calc(100vh - 100px)", padding: "20px" }}>
-        <motion.div 
-          className="login-container"
-          initial={{ opacity: 0, y: 30, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          style={{ margin: 0 }}
+      <div className="auth-body">
+        <motion.div
+          className="auth-card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
         >
-          <h1 className="login-title">Welcome Back</h1>
-          <p className="login-subtitle">
-            Enter your credentials to access your account
-          </p>
+          <div className="auth-logo">
+            <div className="auth-logo-mark"><FiCode size={18} /></div>
+            <span className="auth-logo-name">
+              Code<span className="auth-logo-accent">Champ</span>
+            </span>
+          </div>
 
-          {errorMsg && (
-            <div style={{ color: "var(--hard-color)", fontSize: "13px", fontWeight: "600", marginBottom: "16px", textAlign: "center", padding: "8px", borderRadius: "6px", backgroundColor: "rgba(239, 68, 68, 0.1)" }}>
-              {errorMsg}
+          <h1 className="auth-heading">Welcome back</h1>
+          <p className="auth-sub">Enter your credentials to access your account</p>
+
+          {error && (
+            <div className="auth-error">
+              <FiAlertCircle size={15} style={{ flexShrink: 0, marginTop: 1 }} />
+              {error}
             </div>
           )}
 
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="auth-field">
+              <label className="auth-label" htmlFor="login-email">Email address</label>
               <input
+                id="login-email"
+                className="auth-input"
                 type="email"
-                id="email"
-                name="email"
-                placeholder="Enter your email"
+                placeholder="you@example.com"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
+            <div className="auth-field">
+              <label className="auth-label" htmlFor="login-password">Password</label>
               <input
+                id="login-password"
+                className="auth-input"
                 type="password"
-                id="password"
-                name="password"
                 placeholder="Enter your password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
               />
             </div>
 
-            <div className="form-options">
-              <label className="remember-me">
-                <input type="checkbox" />
-                Remember me
-              </label>
+            <div className="auth-options">
+              <input id="remember" type="checkbox" />
+              <label htmlFor="remember">Remember me</label>
             </div>
 
-            <button type="submit" className="login-button">
-              Login
+            <button type="submit" className="auth-submit" disabled={loading}>
+              {loading ? "Signing in…" : "Sign in"}
             </button>
           </form>
 
-          <p className="signup-text">
-            Don&apos;t have an account?{" "}
-            <span
-              className="signup-link"
-              onClick={() => navigate("/signup")}
-            >
-              Sign up
-            </span>
+          <p className="auth-footer">
+            Don't have an account?{" "}
+            <button className="auth-link" onClick={() => navigate("/signup")}>
+              Create account
+            </button>
           </p>
         </motion.div>
       </div>
-    </>
+    </div>
   );
 }

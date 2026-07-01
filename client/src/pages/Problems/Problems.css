@@ -1,188 +1,174 @@
-.problems-page {
-  max-width: 1200px;
+.prob-page {
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 40px 24px;
-}
-
-.page-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 28px;
-  letter-spacing: -0.5px;
-}
-
-.problems-filters {
+  padding: 40px 24px 80px;
   display: flex;
-  gap: 16px;
-  margin-bottom: 28px;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header */
+.prob-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.prob-title  { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; color: var(--text-primary); }
+.prob-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+
+/* Filters */
+.prob-filters {
+  display: flex;
+  gap: 10px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-.search-input {
+.prob-search-wrap {
   flex: 1;
-  min-width: 260px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-card);
-  color: var(--text-primary);
-  font-size: 14px;
-  font-weight: 500;
-  outline: none;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.search-input::placeholder {
-  color: var(--text-secondary);
-  opacity: 0.7;
-}
-
-.search-input:focus {
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px var(--bg-accent-color);
-}
-
-[data-theme='dark'] .search-input:focus {
-  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.2);
-}
-
-.filter-select {
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-card);
-  color: var(--text-primary);
-  font-size: 14px;
-  font-weight: 500;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.filter-select:hover {
-  background-color: var(--bg-card-hover);
-  border-color: var(--text-secondary);
-}
-
-.filter-select:focus {
-  border-color: var(--secondary-color);
-}
-
-/* Problems Table */
-.problems-table {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-
-.table-header,
-.table-row {
-  display: grid;
-  grid-template-columns: 80px 1fr 160px 120px;
+  min-width: 220px;
+  position: relative;
+  display: flex;
   align-items: center;
-  padding: 16px 24px;
 }
 
-.table-header {
-  background-color: var(--bg-card-hover);
-  border-bottom: 1px solid var(--border-color);
+.prob-search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.prob-search {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: all var(--transition);
+}
+.prob-search::placeholder { color: var(--text-muted); }
+.prob-search:hover  { border-color: var(--border-strong); }
+.prob-search:focus  { border-color: var(--accent); box-shadow: var(--shadow-focus); }
+
+.prob-selects { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.prob-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-secondary);
+  transition: border-color var(--transition);
+}
+.prob-select-wrap:hover { border-color: var(--border-strong); }
+
+.prob-select {
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
   font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.table-row {
-  border-bottom: 1px solid var(--border-color);
-  font-size: 14.5px;
-  color: var(--text-primary);
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 9px 0;
+  outline: none;
+  font-family: var(--font-sans);
 }
 
-.table-row:last-child {
-  border-bottom: none;
+/* Table */
+.prob-table {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
-.table-row:hover {
-  background-color: var(--bg-card-hover);
-}
-
-.problem-title { 
-  font-weight: 600;
-  color: var(--text-primary);
-  transition: color 0.15s ease;
-}
-
-.table-row:hover .problem-title {
-  color: var(--secondary-color);
-}
-
-.status {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-.status.done {
-  color: var(--easy-color);
-}
-
-/* Custom badges for difficulty */
-.difficulty {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.prob-table-head {
+  display: grid;
+  grid-template-columns: 56px 1fr 130px 110px;
+  padding: 12px 20px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
   font-size: 12px;
   font-weight: 700;
-  padding: 4px 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.prob-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 130px 110px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.prob-row:last-child { border-bottom: none; }
+
+.prob-num  { font-size: 13px; color: var(--text-muted); font-weight: 600; font-family: var(--font-mono); }
+.prob-name { font-weight: 600; transition: color var(--transition); }
+.prob-row:hover .prob-name { color: var(--accent); }
+.prob-rate { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+
+/* Difficulty badges */
+.prob-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
   border-radius: var(--radius-full);
-  width: fit-content;
+  font-size: 12px;
+  font-weight: 700;
 }
+.prob-badge--easy { background: var(--success-bg); color: var(--success); }
+.prob-badge--med  { background: var(--warning-bg); color: var(--warning); }
+.prob-badge--hard { background: var(--danger-bg);  color: var(--danger); }
 
-.difficulty.easy {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: var(--easy-color);
+/* Skeleton loading */
+.prob-empty { display: flex; flex-direction: column; }
+.prob-skeleton {
+  height: 50px;
+  background: linear-gradient(90deg, var(--bg-subtle) 25%, var(--bg-muted) 50%, var(--bg-subtle) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-bottom: 1px solid var(--border);
 }
+@keyframes skeleton-shimmer { to { background-position: -200% 0; } }
 
-.difficulty.medium {
-  background-color: rgba(245, 158, 11, 0.1);
-  color: var(--medium-color);
+/* Empty state */
+.prob-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--text-muted);
 }
-
-.difficulty.hard {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: var(--hard-color);
+.prob-empty-state p { font-size: 15px; font-weight: 500; }
+.prob-reset {
+  margin-top: 4px;
+  padding: 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
 }
+.prob-reset:hover { border-color: var(--accent); color: var(--accent); }
 
-/* Empty state styling */
-.problems-empty {
-  padding: 48px;
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: 15px;
-  font-weight: 500;
-}
-
-/* Responsiveness */
-@media (max-width: 640px) {
-  .problems-page {
-    padding: 24px 16px;
-  }
-  .table-header,
-  .table-row {
-    grid-template-columns: 50px 1fr 100px;
-    padding: 12px 16px;
-  }
-  /* Hide S.No on tiny viewports, or Acceptance rate */
-  .table-header span:nth-child(4),
-  .table-row span:nth-child(4) {
-    display: none;
-  }
+/* Responsive */
+@media (max-width: 600px) {
+  .prob-table-head,
+  .prob-row { grid-template-columns: 48px 1fr 90px; }
+  .prob-table-head span:nth-child(4),
+  .prob-row  span:nth-child(4) { display: none; }
+  .prob-page { padding: 20px 12px 60px; }
 }

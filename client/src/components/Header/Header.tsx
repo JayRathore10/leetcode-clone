@@ -1,173 +1,213 @@
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiSun, FiMoon, FiMonitor, FiChevronDown, FiUser, FiLogOut } from "react-icons/fi";
+import {
+  FiSun, FiMoon, FiMonitor, FiChevronDown,
+  FiUser, FiLogOut, FiCode
+} from "react-icons/fi";
 import { LoginProps } from "../../pages/Login/Login";
 import "./Header.css";
 
-const fadeup = {
-  hidden: { opacity: 0, y: -10 },
-  visible: { opacity: 1, y: 0 }
-};
+type ThemeType = "light" | "dark" | "system";
+
+function applyTheme(pref: ThemeType) {
+  const active =
+    pref === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      : pref;
+  document.documentElement.setAttribute("data-theme", active);
+}
 
 export function Header({ isloggedIn }: LoginProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const isOnProfilePage = location.pathname === "/profile";
 
-  const [theme, setTheme] = useState<"light" | "dark" | "system">(() => {
-    return (localStorage.getItem("theme") as "light" | "dark" | "system") || "system";
-  });
+  const [theme, setTheme] = useState<ThemeType>(
+    () => (localStorage.getItem("theme") as ThemeType) ?? "system"
+  );
+  const [dropOpen, setDropOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const dropRef = useRef<HTMLDivElement>(null);
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Sync theme
+  // Apply on mount + change
   useEffect(() => {
     localStorage.setItem("theme", theme);
-    let activeTheme = theme;
-    if (theme === "system") {
-      activeTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    document.documentElement.setAttribute("data-theme", activeTheme);
+    applyTheme(theme);
   }, [theme]);
 
-  // Sync theme on system setting changes
+  // Live OS theme changes
   useEffect(() => {
     if (theme !== "system") return;
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const listener = (e: MediaQueryListEvent) => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const fn = (e: MediaQueryListEvent) =>
       document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
-    };
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
   }, [theme]);
 
-  // Handle outside clicks for dropdown
+  // Close dropdown on outside click
   useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false);
-      }
+    const handler = (e: MouseEvent) => {
+      if (dropRef.current && !dropRef.current.contains(e.target as Node)) setDropOpen(false);
     };
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => document.removeEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const getThemeIcon = () => {
-    if (theme === "light") return <FiSun className="theme-btn-icon" />;
-    if (theme === "dark") return <FiMoon className="theme-btn-icon" />;
-    return <FiMonitor className="theme-btn-icon" />;
-  };
+  // Close mobile menu on route change
+  useEffect(() => setMenuOpen(false), [location.pathname]);
+
+  const themeIcon =
+    theme === "light" ? <FiSun size={16} /> :
+    theme === "dark"  ? <FiMoon size={16} /> :
+                        <FiMonitor size={16} />;
+
+  const navLinks = [
+    { to: "/problems", label: "Problems" },
+    { to: "/contests", label: "Contests" },
+    { to: "/discuss", label: "Discuss" },
+    { to: "/leaderboard", label: "Leaderboard" },
+  ];
 
   return (
-    <motion.header 
-      className="header"
-      initial="hidden"
-      animate="visible"
-      variants={fadeup} 
-      transition={{ duration: 0.4 }}
-    >
-      <div className="header-container">
-        <div className="header-left">
-          <span className="logo" onClick={() => navigate("/home")}>
-            <span className="logo-accent">Code</span>Champ
+    <header className="hdr">
+      <div className="hdr-inner">
+        {/* Logo */}
+        <button className="hdr-logo" onClick={() => navigate("/home")}>
+          <span className="hdr-logo-icon"><FiCode size={18} /></span>
+          <span className="hdr-logo-text">
+            Code<span className="hdr-logo-accent">Champ</span>
           </span>
-        </div>
+        </button>
 
-        <nav className="header-nav">
-          <NavLink to="/problems" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-            Problems
-          </NavLink>
-          <NavLink to="/contests" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-            Contests
-          </NavLink>
-          <NavLink to="/discuss" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-            Discuss
-          </NavLink>
-          <NavLink to="/leaderboard" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-            Leaderboard
-          </NavLink>
+        {/* Desktop nav */}
+        <nav className="hdr-nav" aria-label="Main navigation">
+          {navLinks.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) => `hdr-link${isActive ? " hdr-link--active" : ""}`}
+            >
+              {label}
+            </NavLink>
+          ))}
         </nav>
 
-        <div className="header-right">
-          {/* Custom Theme Selector Dropdown */}
-          <div className="theme-selector-container" ref={dropdownRef}>
-            <button 
-              className="theme-dropdown-trigger" 
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              title="Change theme"
+        {/* Right controls */}
+        <div className="hdr-right">
+          {/* Theme selector */}
+          <div className="hdr-theme" ref={dropRef}>
+            <button
+              className="hdr-theme-btn"
+              onClick={() => setDropOpen(v => !v)}
+              aria-label="Change theme"
+              aria-expanded={dropOpen}
             >
-              {getThemeIcon()}
-              <span className="theme-trigger-text">{theme.charAt(0).toUpperCase() + theme.slice(1)}</span>
-              <FiChevronDown className={`chevron-icon ${dropdownOpen ? "open" : ""}`} />
+              {themeIcon}
+              <span className="hdr-theme-label">
+                {theme.charAt(0).toUpperCase() + theme.slice(1)}
+              </span>
+              <FiChevronDown
+                size={13}
+                style={{ transition: "transform 0.2s", transform: dropOpen ? "rotate(180deg)" : "none" }}
+              />
             </button>
 
             <AnimatePresence>
-              {dropdownOpen && (
-                <motion.div 
-                  className="theme-dropdown-menu"
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              {dropOpen && (
+                <motion.div
+                  className="hdr-theme-menu"
+                  initial={{ opacity: 0, y: 6, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  exit={{ opacity: 0, y: 6, scale: 0.97 }}
                   transition={{ duration: 0.15 }}
+                  role="menu"
                 >
-                  <button 
-                    className={`theme-menu-item ${theme === "light" ? "active" : ""}`}
-                    onClick={() => { setTheme("light"); setDropdownOpen(false); }}
-                  >
-                    <FiSun className="menu-item-icon" />
-                    Light
-                  </button>
-                  <button 
-                    className={`theme-menu-item ${theme === "dark" ? "active" : ""}`}
-                    onClick={() => { setTheme("dark"); setDropdownOpen(false); }}
-                  >
-                    <FiMoon className="menu-item-icon" />
-                    Dark
-                  </button>
-                  <button 
-                    className={`theme-menu-item ${theme === "system" ? "active" : ""}`}
-                    onClick={() => { setTheme("system"); setDropdownOpen(false); }}
-                  >
-                    <FiMonitor className="menu-item-icon" />
-                    System
-                  </button>
+                  {(["light", "dark", "system"] as ThemeType[]).map(t => (
+                    <button
+                      key={t}
+                      className={`hdr-theme-item${theme === t ? " active" : ""}`}
+                      onClick={() => { setTheme(t); setDropOpen(false); }}
+                      role="menuitem"
+                    >
+                      {t === "light" && <FiSun size={14} />}
+                      {t === "dark"  && <FiMoon size={14} />}
+                      {t === "system"&& <FiMonitor size={14} />}
+                      {t.charAt(0).toUpperCase() + t.slice(1)}
+                    </button>
+                  ))}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
+          {/* Profile / Auth button */}
+          {isloggedIn ? (
+            <button
+              className="hdr-user-btn"
+              onClick={() => navigate(isOnProfilePage ? "/logout" : "/profile")}
+            >
+              {isOnProfilePage ? <FiLogOut size={15} /> : <FiUser size={15} />}
+              <span>{isOnProfilePage ? "Logout" : "Profile"}</span>
+            </button>
+          ) : (
+            <button className="hdr-cta-btn" onClick={() => navigate("/")}>
+              Sign In
+            </button>
+          )}
+
+          {/* Mobile hamburger */}
           <button
-            className={`header-btn ${isloggedIn ? "logged-in" : "logged-out"}`}
-            onClick={() => {
-              if (isloggedIn === false) {
-                navigate("/");
-              } else if (isOnProfilePage) {
-                navigate("/logout");
-              } else {
-                navigate("/profile");
-              }
-            }}
+            className="hdr-hamburger"
+            onClick={() => setMenuOpen(v => !v)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
           >
-            {isloggedIn ? (
-              isOnProfilePage ? (
-                <>
-                  <FiLogOut className="btn-icon" />
-                  <span>Logout</span>
-                </>
-              ) : (
-                <>
-                  <FiUser className="btn-icon" />
-                  <span>Profile</span>
-                </>
-              )
-            ) : (
-              "Login"
-            )}
+            <span className={`hdr-bar${menuOpen ? " open" : ""}`} />
+            <span className={`hdr-bar${menuOpen ? " open" : ""}`} />
+            <span className={`hdr-bar${menuOpen ? " open" : ""}`} />
           </button>
         </div>
       </div>
-    </motion.header>
+
+      {/* Mobile nav drawer */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="hdr-mobile-menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {navLinks.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) =>
+                  `hdr-mobile-link${isActive ? " hdr-mobile-link--active" : ""}`
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+            <div className="hdr-mobile-divider" />
+            {isloggedIn ? (
+              <button
+                className="hdr-mobile-link"
+                onClick={() => navigate(isOnProfilePage ? "/logout" : "/profile")}
+              >
+                {isOnProfilePage ? "Logout" : "Profile"}
+              </button>
+            ) : (
+              <button className="hdr-mobile-link" onClick={() => navigate("/")}>
+                Sign In
+              </button>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }

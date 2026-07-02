@@ -324,3 +324,4 @@ export default App;
 */
 
 // Have to Add logo and also new loading animation 
+// Have to clean the code and remove un wanted and messy comments 

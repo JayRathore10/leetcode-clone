@@ -18,7 +18,7 @@ export function Contests() {
 
         <button
           className="back-home-btn"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
         >
           ← Back to Home
         </button>

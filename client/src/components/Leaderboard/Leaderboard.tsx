@@ -16,7 +16,7 @@ export function Leaderboard() {
         </p>
         <button
           className="back-home-btn"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
         >
           ← Back to Home
         </button>

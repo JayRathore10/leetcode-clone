@@ -7,6 +7,7 @@ import axios from "axios";
 import { env } from "../../configs/env.config";
 import { motion } from "framer-motion";
 import { Variants } from "framer-motion";
+import { Footer } from "../../components/Footer/Footer";
 import {
   FiArrowRight, FiZap, FiTarget, FiTrendingUp,
   FiCode, FiUsers, FiAward
@@ -194,6 +195,7 @@ export function Home({ isloggedIn }: LoginProps) {
           </button>
         </motion.section>
       </main>
+      <Footer />
     </>
   );
 }

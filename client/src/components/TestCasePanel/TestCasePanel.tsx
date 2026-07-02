@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { env } from "../../configs/env.config";
 import "./TestCasePanel.css";
-import { testCaseFields } from './../../utils/runcode';
+import { testCaseFields } from "./../../utils/runcode";
 
 interface TestCase {
   _id: string;
@@ -12,11 +12,15 @@ interface TestCase {
 
 interface TestCasePanelProps {
   questionId: string;
-  output: testCaseFields,
-  isRunning: boolean
+  output: testCaseFields;
+  isRunning: boolean;
 }
 
-export function TestCasePanel({ questionId, output, isRunning }: TestCasePanelProps) {
+export function TestCasePanel({
+  questionId,
+  output,
+  isRunning,
+}: TestCasePanelProps) {
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,7 +46,6 @@ export function TestCasePanel({ questionId, output, isRunning }: TestCasePanelPr
     return <div className="tc-loading">Loading test cases...</div>;
   }
 
-  const isPending = isRunning;
   if (isRunning) {
     return (
       <div className="tc-panel">
@@ -58,22 +61,21 @@ export function TestCasePanel({ questionId, output, isRunning }: TestCasePanelPr
     return <div className="tc-empty">No test cases available</div>;
   }
 
-
   return (
     <div className="tc-panel">
       {testCases.map((tc, index) => {
         const testIndex = index + 1;
 
-        const isIdle = !output;
-        if (isIdle) {/* pass eslint */ }
-        const isFailed = output?.failedTest === testIndex || output?.success === false;
-        const isPassed = output?.success === true && !isFailed;
+        const testResult = output?.results?.find(
+          (r) => r.test === testIndex
+        );
+
+        const isFailed = output?.failedTest === testIndex;
+        const isPassed = testResult?.status === "Passed";
 
         let caseClass = "tc-case-idle";
         if (isPassed) caseClass = "tc-case-passed";
         if (isFailed) caseClass = "tc-case-failed";
-        if (isPending) caseClass = "tc-case-pending";
-
         return (
           <div key={tc._id} className={`tc-case ${caseClass}`}>
             <div className={`tc-case-title ${caseClass}`}>
@@ -85,35 +87,45 @@ export function TestCasePanel({ questionId, output, isRunning }: TestCasePanelPr
               <pre>{tc.input}</pre>
             </div>
 
-            {
-              isFailed ?
-                <>
-                  {
-                    output?.message ?
-                      <div className="tc-block">
-                        <h4>Error Happens</h4>
-                        <pre>{output?.message}</pre>
-                      </div>
-                      :
-                      <>
-                        <div className="tc-block">
-                          <h4>Expected</h4>
-                          <pre>{output?.expected}</pre>
-                        </div>
-                        <div className="tc-block">
-                          <h4>Actual Output</h4>
-                          <pre>{output?.actual}</pre>
-                        </div>
-                      </>
-                  }
-                </>
-                :
-                <div className="tc-block">
-                  <h4>Output</h4>
-                  <pre>{tc.output}</pre>
-                </div>
-            }
+            {isFailed ? (
+              <>
+                {output?.message ? (
+                  <div className="tc-block">
+                    <h4>Error Happens</h4>
+                    <pre>{output.message}</pre>
+                  </div>
+                ) : (
+                  <>
+                    <div className="tc-block">
+                      <h4>Expected Output</h4>
+                      <pre>{output.expected}</pre>
+                    </div>
 
+                    <div className="tc-block">
+                      <h4>Actual Output</h4>
+                      <pre>{output.actual}</pre>
+                    </div>
+                  </>
+                )}
+              </>
+            ) : isPassed ? (
+              <>
+                <div className="tc-block">
+                  <h4>Expected Output</h4>
+                  <pre>{testResult?.expected}</pre>
+                </div>
+
+                <div className="tc-block">
+                  <h4>Actual Output</h4>
+                  <pre>{testResult?.actual}</pre>
+                </div>
+              </>
+            ) : (
+              <div className="tc-block">
+                <h4>Output</h4>
+                <pre>{tc.output}</pre>
+              </div>
+            )}
           </div>
         );
       })}

@@ -6,16 +6,23 @@ import axios from "axios";
 import { authRequest } from "../types/authRequest.type";
 
 interface ResultInterface {
-  test: number,
+  test: number;
+  status: "Passed" | "Failed";
+  expected: string;
+  actual: string;
+}
+
+interface ResultInterface2{
+   test: number,
   status: string
-};
+}
 
 // languageMap.ts
 export const LANGUAGE_MAP: Record<string, { language: string; version: string }> = {
-  cpp:        { language: "gcc",    version: "10.2.0"  },
-  python:     { language: "python", version: "3.10.0"  },
-  javascript: { language: "node",   version: "18.15.0" },
-  java:       { language: "java",   version: "15.0.2"  },
+  cpp: { language: "gcc", version: "10.2.0" },
+  python: { language: "python", version: "3.10.0" },
+  javascript: { language: "node", version: "18.15.0" },
+  java: { language: "java", version: "15.0.2" },
 };
 
 export const addQuestion = async (req: Request, res: Response, next: NextFunction) => {
@@ -109,7 +116,7 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
       })
     }
 
-    let result: ResultInterface[] = [];
+    let results: ResultInterface[] = [];
 
     for (let i = 0; i < visibleTestCases.length; i++) {
       const tc = visibleTestCases[i];
@@ -175,21 +182,36 @@ export const run = async (req: Request, res: Response, next: NextFunction) => {
       const actual = response.data.run.stdout.trim();
       const expected = tc.output.trim();
 
-      if (actual != expected) {
+      if (actual !== expected) {
+
+        results.push({
+          test: i + 1,
+          status: "Failed",
+          expected,
+          actual
+        });
+
         return res.status(200).json({
           success: false,
           status: "WA",
           failedTest: i + 1,
           expected,
-          actual
+          actual,
+          results
         });
       }
-      result.push({ test: i + 1, status: "Passed" });
+
+      results.push({
+        test: i + 1,
+        status: "Passed",
+        expected,
+        actual
+      });
     }
 
     return res.status(200).json({
       success: true,
-      result
+      results
     });
 
   } catch (err: any) {
@@ -236,7 +258,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
       })
     }
 
-    let result: ResultInterface[] = [];
+    let results: ResultInterface2[] = [];
 
     for (let i = 0; i < allTestCase.length; i++) {
       const tc = allTestCase[i];
@@ -306,7 +328,7 @@ export const submitCode = async (req: Request, res: Response, next: NextFunction
         })
       }
 
-      result.push({ test: i + 1, status: "Passed" })
+      results.push({ test: i + 1, status: "Passed" })
     }
 
     return res.status(200).json({

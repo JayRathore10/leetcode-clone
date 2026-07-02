@@ -1,14 +1,23 @@
 import axios from "axios";
 import { env } from "../configs/env.config";
 
-export interface testCaseFields  {
-  success ?: boolean
-  status ?: "Accepted" | "WA" | "TLE" | "MLE" , 
-  failedTest ?: number , 
-  expected ?: string , 
-  actual ?: string
-  message ?: string
-};
+export interface TestCaseResult {
+  test: number;
+  status: "Passed" | "Failed";
+  expected: string;
+  actual: string;
+}
+
+export interface testCaseFields {
+  success?: boolean;
+  status?: "Accepted" | "WA" | "TLE" | "MLE";
+  failedTest?: number;
+  expected?: string;
+  actual?: string;
+  message?: string;
+
+  results?: TestCaseResult[];
+}
 
 export interface RunCodeInterface {
   code : string , 

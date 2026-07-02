@@ -8,6 +8,24 @@
   overflow: auto;
 }
 
+.ws-left {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0; /* IMPORTANT */
+}
+
+/* .ws-left-header {
+  flex-shrink: 0;
+} */
+
+/*.ws-left-body {
+  flex: 1;
+  min-height: 0; /* IMPORTANT
+  overflow-y: auto;
+  overflow-x: hidden;
+} */
+
 .ws-resize-handle {
   width: 6px;
   cursor: col-resize;

@@ -15,16 +15,16 @@
   min-height: 0; /* IMPORTANT */
 }
 
-/* .ws-left-header {
+.ws-left-header {
   flex-shrink: 0;
-} */
-
-/*.ws-left-body {
+} 
+/**/
+.ws-left-body {
   flex: 1;
-  min-height: 0; /* IMPORTANT
+  min-height: 0 ;  
   overflow-y: auto;
   overflow-x: hidden;
-} */
+} 
 
 .ws-resize-handle {
   width: 6px;

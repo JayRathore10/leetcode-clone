@@ -5,6 +5,7 @@ import { useState } from "react";
 import { env } from "../../configs/env.config";
 import { motion } from "framer-motion";
 import { FiCode, FiAlertCircle } from "react-icons/fi";
+import { Header } from "../../components/Header/Header";
 
 export function SignUp() {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ export function SignUp() {
 
   return (
     <div className="auth-page">
+      <Header/>
       <div className="auth-body">
         <motion.div
           className="auth-card"

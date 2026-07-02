@@ -170,9 +170,7 @@ function App() {
         <Route
           path="/"
           element={
-            isloggedIn ? (
-              <Navigate to="/home" replace />
-            ) : (
+           (
               <Login
                 setIsloggedIn={setIsloggedIn}
                 isloggedIn={isloggedIn}

@@ -12,7 +12,7 @@ export interface LoginProps {
   isloggedIn?: boolean;
 }
 
-export function Login({ setIsloggedIn, isloggedIn }: LoginProps) {
+export function Login({ setIsloggedIn }: LoginProps) {
   const navigate = useNavigate();
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
@@ -43,7 +43,7 @@ export function Login({ setIsloggedIn, isloggedIn }: LoginProps) {
 
   return (
     <div className="auth-page">
-      <Header isloggedIn={isloggedIn!} />
+      <Header />
       <div className="auth-body">
         <motion.div
           className="auth-card"

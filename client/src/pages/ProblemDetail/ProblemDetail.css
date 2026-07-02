@@ -1,17 +1,35 @@
-/* ── Workspace layout ──────────────────────────────── */
 .ws-layout {
-  display: grid;
-  grid-template-columns: 440px 1fr;
-  height: calc(100vh - var(--header-h));
-  overflow: hidden;
+  height: calc(100vh - 64px); /* Adjust if your header height differs */
 }
 
-/* ── Left panel ──────────────────────────────────── */
-.ws-left {
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+.ws-left,
+.ws-right {
+  height: 100%;
+  overflow: auto;
+}
+
+.ws-resize-handle {
+  width: 6px;
+  cursor: col-resize;
+  background: var(--border-color);
+  position: relative;
+  transition: background 0.2s;
+}
+
+.ws-resize-handle:hover {
+  background: var(--primary);
+}
+
+.ws-resize-handle::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 60px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .ws-left-header {

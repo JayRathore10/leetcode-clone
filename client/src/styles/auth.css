@@ -28,20 +28,22 @@
 .auth-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
   margin-bottom: 28px;
 }
 
 .auth-logo-mark {
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius);
-  background: linear-gradient(135deg, var(--brand-950), var(--brand-700));
-  color: #fff;
-  flex-shrink: 0;
+}
+
+.auth-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin-top: -0.4rem;
 }
 
 .auth-logo-name {

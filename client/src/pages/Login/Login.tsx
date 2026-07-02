@@ -5,7 +5,8 @@ import { useState } from "react";
 import { env } from "../../configs/env.config";
 import { Header } from "../../components/Header/Header";
 import { motion } from "framer-motion";
-import { FiCode, FiAlertCircle } from "react-icons/fi";
+import { FiAlertCircle } from "react-icons/fi";
+import logo from "../../assets/logo.png";
 
 export interface LoginProps {
   setIsloggedIn?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,10 +15,10 @@ export interface LoginProps {
 
 export function Login({ setIsloggedIn }: LoginProps) {
   const navigate = useNavigate();
-  const [email,    setEmail]    = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error,    setError]    = useState("");
-  const [loading,  setLoading]  = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +53,9 @@ export function Login({ setIsloggedIn }: LoginProps) {
           transition={{ duration: 0.35, ease: "easeOut" }}
         >
           <div className="auth-logo">
-            <div className="auth-logo-mark"><FiCode size={18} /></div>
+            <div className="auth-logo-mark">
+              <img src={logo} alt="CodeChamp Logo" className="auth-logo-img" />
+            </div>
             <span className="auth-logo-name">
               Code<span className="auth-logo-accent">Champ</span>
             </span>

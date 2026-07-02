@@ -1,73 +1,135 @@
+/* ========================================
+   SUBMISSION PAGE STYLES
+   ======================================== */
+
 .sd-container {
-  min-height: calc(100vh - 64px);
-  background-color: #0A2239;
-  padding: 32px;
-  color: #E5E7EB;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
 }
 
+/* Header Section */
 .sd-header {
-  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .sd-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
   cursor: pointer;
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: 12px;
+  transition: color var(--transition);
 }
 
-.sd-title:hover{
-  text-decoration: underline;
+.sd-title:hover {
+  color: var(--accent);
 }
 
+/* Badges */
 .sd-badges {
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .sd-badge {
-  padding: 4px 12px;
-  border-radius: 14px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* Difficulty Badge */
+.sub-difficulty {
+  background: var(--accent-subtle);
+  color: var(--accent);
 }
 
 .sub-difficulty.easy {
-  /* background-color: rgba(7, 230, 15, 0.15); */
-  color: #07e60f;
+  background: rgba(30, 255, 0, 0.15);
+  color: var(--easy-color);
 }
 
 .sub-difficulty.medium {
-  /* background-color: rgba(255, 193, 7, 0.15); */
+  background: rgba(255, 193, 7, 0.15);
   color: #ffc107;
 }
 
 .sub-difficulty.hard {
-  /* background-color: rgba(239, 68, 68, 0.15); */
-  color: #ef4444;
+  background: rgba(255, 0, 0, 0.15);
+  color: var(--hard-color);
+}
+
+/* Status Badge */
+.sd-status {
+  font-weight: 600;
 }
 
 .sd-status.accepted {
-  background-color: rgba(7, 247, 15, 0.15);
-  color: #07e60f;
+  background: var(--success-bg);
+  color: var(--success);
 }
 
 .sd-status.wrong {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
+/* Code Container */
 .sd-code-container {
-  background-color: #34435E;
-  border: 1px solid #34435E;
-  border-radius: 12px;
-  padding: 20px;
-  overflow-x: auto;
+  background: var(--bg-muted);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
 }
 
 .sd-code {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
-  white-space: pre;
+  padding: 1.25rem;
+  overflow-x: auto;
+  background: transparent;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
   line-height: 1.6;
+  color: var(--text-primary);
+  tab-size: 2;
+}
+
+.sd-code code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .sd-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .sd-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sd-title {
+    font-size: 1.25rem;
+  }
+
+  .sd-badges {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }

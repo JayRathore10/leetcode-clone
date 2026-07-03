@@ -86,8 +86,7 @@
   color: var(--accent);
 }
 
-/**/
-/* ── Nav ──────────────────────────────────────── */
+
 .hdr-nav {
   display: flex;
   align-items: center;
@@ -111,7 +110,7 @@
 .hdr-link:hover { color: var(--text-primary); background: var(--bg-subtle); text-decoration: none; }
 .hdr-link--active { color: var(--accent) !important; background: var(--accent-subtle) !important; font-weight: 600; }
 
-/* ── Right controls ───────────────────────────── */
+
 .hdr-right {
   display: flex;
   align-items: center;
@@ -120,7 +119,6 @@
   flex-shrink: 0;
 }
 
-/* Theme selector */
 .hdr-theme { position: relative; }
 
 .hdr-theme-btn {
@@ -175,7 +173,7 @@
 .hdr-theme-item:hover { background: var(--bg-subtle); color: var(--text-primary); }
 .hdr-theme-item.active { background: var(--accent-subtle); color: var(--accent); }
 
-/* User / Auth buttons */
+
 .hdr-user-btn {
   display: flex;
   align-items: center;
@@ -206,7 +204,7 @@
 }
 .hdr-cta-btn:hover { background: var(--accent-hover); box-shadow: var(--shadow-md); }
 
-/* ── Hamburger ────────────────────────────────── */
+
 .hdr-hamburger {
   display: none;
   flex-direction: column;
@@ -229,7 +227,7 @@
   transition: all 0.25s;
 }
 
-/* ── Mobile menu ──────────────────────────────── */
+
 .hdr-mobile-menu {
   overflow: hidden;
   border-top: 1px solid var(--border);
@@ -258,7 +256,7 @@
 .hdr-mobile-link--active { color: var(--accent); background: var(--accent-subtle); }
 .hdr-mobile-divider { height: 1px; background: var(--border); margin: 4px 0; }
 
-/* ── Responsive ───────────────────────────────── */
+
 @media (max-width: 768px) {
   .hdr-nav { display: none; }
   .hdr-hamburger { display: flex; }

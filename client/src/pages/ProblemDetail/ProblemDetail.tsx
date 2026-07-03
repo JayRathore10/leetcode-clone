@@ -156,8 +156,6 @@ export function ProblemDetail({ isloggedIn }: LoginProps) {
       >
         <PanelGroup direction="horizontal">
 
-          {/* ================= LEFT PANEL ================= */}
-
           <Panel
             defaultSize={45}
             minSize={25}
@@ -280,11 +278,8 @@ export function ProblemDetail({ isloggedIn }: LoginProps) {
             </div>
           </Panel>
 
-          {/* ============== RESIZE HANDLE ============== */}
 
           <PanelResizeHandle className="ws-resize-handle" />
-
-          {/* ================= RIGHT PANEL ================= */}
 
           <Panel
             defaultSize={55}

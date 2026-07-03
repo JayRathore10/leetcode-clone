@@ -1,4 +1,4 @@
-/* App-level loading state */
+
 .ap-loading-container {
   height: 100vh;
   display: flex;
@@ -27,7 +27,6 @@
 
 @keyframes ap-spin { to { transform: rotate(360deg); } }
 
-/* Code terminal */
 .terminal {
   background: #020617;
   color: #22c55e;

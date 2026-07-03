@@ -84,7 +84,6 @@ export function Home({ isloggedIn }: LoginProps) {
       <Header isloggedIn={isloggedIn!} />
 
       <main className="hm-page">
-        {/* ── Hero ─────────────────────────────── */}
         <motion.section
           className="hm-hero"
           initial="hidden"
@@ -110,8 +109,6 @@ export function Home({ isloggedIn }: LoginProps) {
             </button>
           </motion.div>
         </motion.section>
-
-        {/* ── Stats ────────────────────────────── */}
         <motion.section
           className="hm-stats"
           initial="hidden"
@@ -128,7 +125,6 @@ export function Home({ isloggedIn }: LoginProps) {
           ))}
         </motion.section>
 
-        {/* ── Features ─────────────────────────── */}
         <motion.section
           className="hm-features"
           initial="hidden"
@@ -154,7 +150,6 @@ export function Home({ isloggedIn }: LoginProps) {
           </div>
         </motion.section>
 
-        {/* ── How it works ─────────────────────── */}
         <motion.section
           className="hm-how"
           initial="hidden"
@@ -178,7 +173,6 @@ export function Home({ isloggedIn }: LoginProps) {
           </div>
         </motion.section>
 
-        {/* ── CTA ──────────────────────────────── */}
         <motion.section
           className="hm-cta"
           initial="hidden"

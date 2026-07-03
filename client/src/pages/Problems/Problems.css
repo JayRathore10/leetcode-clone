@@ -7,12 +7,12 @@
   gap: 20px;
 }
 
-/* Header */
+
 .prob-header { display: flex; justify-content: space-between; align-items: flex-start; }
 .prob-title  { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; color: var(--text-primary); }
 .prob-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
 
-/* Filters */
+
 .prob-filters {
   display: flex;
   gap: 10px;
@@ -77,7 +77,7 @@
   font-family: var(--font-sans);
 }
 
-/* Table */
+
 .prob-table {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -116,7 +116,7 @@
 .prob-row:hover .prob-name { color: var(--accent); }
 .prob-rate { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
 
-/* Difficulty badges */
+
 .prob-badge {
   display: inline-flex;
   align-items: center;
@@ -129,7 +129,7 @@
 .prob-badge--med  { background: var(--warning-bg); color: var(--warning); }
 .prob-badge--hard { background: var(--danger-bg);  color: var(--danger); }
 
-/* Skeleton loading */
+
 .prob-empty { display: flex; flex-direction: column; }
 .prob-skeleton {
   height: 50px;
@@ -140,7 +140,7 @@
 }
 @keyframes skeleton-shimmer { to { background-position: -200% 0; } }
 
-/* Empty state */
+
 .prob-empty-state {
   display: flex;
   flex-direction: column;
@@ -164,7 +164,7 @@
 }
 .prob-reset:hover { border-color: var(--accent); color: var(--accent); }
 
-/* Responsive */
+
 @media (max-width: 600px) {
   .prob-table-head,
   .prob-row { grid-template-columns: 48px 1fr 90px; }

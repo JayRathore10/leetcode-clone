@@ -1,4 +1,4 @@
-/* ── Auth page wrapper ──────────────────────────── */
+
 .auth-page {
   min-height: 100vh;
   display: flex;
@@ -14,7 +14,6 @@
   padding: 40px 20px;
 }
 
-/* ── Auth card ──────────────────────────────────── */
 .auth-card {
   width: 100%;
   max-width: 420px;
@@ -57,7 +56,6 @@
 .auth-heading { font-size: 22px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 6px; }
 .auth-sub     { font-size: 14px; color: var(--text-secondary); margin-bottom: 28px; }
 
-/* ── Form ───────────────────────────────────────── */
 .auth-form  { display: flex; flex-direction: column; gap: 16px; }
 
 .auth-field { display: flex; flex-direction: column; gap: 6px; }
@@ -83,7 +81,6 @@
 .auth-input:hover  { border-color: var(--border-strong); }
 .auth-input:focus  { border-color: var(--accent); box-shadow: var(--shadow-focus); }
 
-/* ── Error ──────────────────────────────────────── */
 .auth-error {
   display: flex;
   align-items: flex-start;
@@ -97,7 +94,6 @@
   border: 1px solid rgba(239,68,68,0.2);
 }
 
-/* ── Options row ────────────────────────────────── */
 .auth-options {
   display: flex;
   align-items: center;
@@ -107,7 +103,7 @@
 }
 .auth-options input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
 
-/* ── Submit ─────────────────────────────────────── */
+
 .auth-submit {
   width: 100%;
   padding: 11px;
@@ -125,7 +121,7 @@
 .auth-submit:hover  { background: var(--accent-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
 .auth-submit:active { transform: none; }
 
-/* ── Footer ─────────────────────────────────────── */
+
 .auth-footer {
   margin-top: 24px;
   text-align: center;
@@ -144,7 +140,7 @@
 }
 .auth-link:hover { color: var(--accent-hover); text-decoration: underline; }
 
-/* ── Responsive ─────────────────────────────────── */
+
 @media (max-width: 480px) {
   .auth-card { padding: 28px 20px; }
 }

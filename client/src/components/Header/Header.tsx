@@ -75,7 +75,6 @@ export function Header({ isloggedIn }: LoginProps) {
   return (
     <header className="hdr">
       <div className="hdr-inner">
-        {/* Logo */}
         <button className="hdr-logo" onClick={() => navigate("/home")}>
           <img
             src={logo}
@@ -88,7 +87,6 @@ export function Header({ isloggedIn }: LoginProps) {
           </span>
         </button>
 
-        {/* Desktop nav */}
         <nav className="hdr-nav" aria-label="Main navigation">
           {navLinks.map(({ to, label }) => (
             <NavLink
@@ -101,7 +99,6 @@ export function Header({ isloggedIn }: LoginProps) {
           ))}
         </nav>
 
-        {/* Right controls */}
         <div className="hdr-right">
           {/* Theme selector */}
           <div className="hdr-theme" ref={dropRef}>
@@ -149,7 +146,7 @@ export function Header({ isloggedIn }: LoginProps) {
             </AnimatePresence>
           </div>
 
-          {/* Profile / Auth button */}
+
           {isloggedIn ? (
             <button
               className="hdr-user-btn"
@@ -164,7 +161,7 @@ export function Header({ isloggedIn }: LoginProps) {
             </button>
           )}
 
-          {/* Mobile hamburger */}
+
           <button
             className="hdr-hamburger"
             onClick={() => setMenuOpen(v => !v)}
@@ -178,7 +175,6 @@ export function Header({ isloggedIn }: LoginProps) {
         </div>
       </div>
 
-      {/* Mobile nav drawer */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div

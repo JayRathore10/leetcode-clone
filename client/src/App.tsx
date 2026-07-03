@@ -287,3 +287,5 @@ function App() {
 }
 
 export default App;
+
+// Have to add logic for the dicuss section 

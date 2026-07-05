@@ -17,7 +17,6 @@ const question_validation_1 = require("../validation/question.validation");
 const question_model_1 = require("../models/question.model");
 const testCase_model_1 = require("../models/testCase.model");
 const axios_1 = __importDefault(require("axios"));
-;
 // languageMap.ts
 exports.LANGUAGE_MAP = {
     cpp: { language: "gcc", version: "10.2.0" },
@@ -105,7 +104,7 @@ const run = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
                 message: "Not Test Case found"
             });
         }
-        let result = [];
+        let results = [];
         for (let i = 0; i < visibleTestCases.length; i++) {
             const tc = visibleTestCases[i];
             // original APi call :
@@ -158,20 +157,32 @@ const run = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
             // Test Case expected != actual output 
             const actual = response.data.run.stdout.trim();
             const expected = tc.output.trim();
-            if (actual != expected) {
+            if (actual !== expected) {
+                results.push({
+                    test: i + 1,
+                    status: "Failed",
+                    expected,
+                    actual
+                });
                 return res.status(200).json({
                     success: false,
                     status: "WA",
                     failedTest: i + 1,
                     expected,
-                    actual
+                    actual,
+                    results
                 });
             }
-            result.push({ test: i + 1, status: "Passed" });
+            results.push({
+                test: i + 1,
+                status: "Passed",
+                expected,
+                actual
+            });
         }
         return res.status(200).json({
             success: true,
-            result
+            results
         });
     }
     catch (err) {
@@ -209,7 +220,7 @@ const submitCode = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 message: "Test Cases are not present"
             });
         }
-        let result = [];
+        let results = [];
         for (let i = 0; i < allTestCase.length; i++) {
             const tc = allTestCase[i];
             // original api call 
@@ -266,7 +277,7 @@ const submitCode = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                     totalTest: allTestCase.length
                 });
             }
-            result.push({ test: i + 1, status: "Passed" });
+            results.push({ test: i + 1, status: "Passed" });
         }
         return res.status(200).json({
             success: true,

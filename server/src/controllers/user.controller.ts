@@ -1,107 +1,109 @@
-import {Request , Response , NextFunction} from "express";
+import { Request, Response, NextFunction } from "express";
 import { userModel } from "../models/user.model";
 import { submissionModel } from "../models/submission.model";
 import { authRequest } from "../types/authRequest.type";
 
-export const test = (req : Request, res: Response, next : NextFunction)=>{
-  try{
+export const test = (req: Request, res: Response, next: NextFunction) => {
+  try {
     return res.status(200).json({
-      success : true  ,
-      message : "Hello" 
+      success: true,
+      message: "Hello"
     })
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const getAllUsers = async (req : Request , res : Response  , next : NextFunction)=>{
-  try{
+export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+  try {
     const users = await userModel.find();
 
-    if(users.length === 0){
+    if (users.length === 0) {
       return res.status(404).json({
-        success : false , 
-        message : "No User found"
+        success: false,
+        message: "No User found"
       });
     }
 
     return res.status(200).json({
-      success  : true   ,  
-      message : "All Users" ,
-      data : {
+      success: true,
+      message: "All Users",
+      data: {
         users
-      } 
+      }
     });
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
 
-export const getByUsername = async (req : Request, res : Response  , next : NextFunction)=>{
-  try{  
-    const {username} = req.params;
+export const getByUsername = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { username } = req.params;
 
-    if(!username) {
+    if (!username) {
       return res.status(404).json({
-        success : false ,
-        message : "Wrong route"
+        success: false,
+        message: "Wrong route"
       })
     }
 
-    const user = await userModel.findOne({username : username}).select("-password");
+    const user = await userModel.findOne({ username: username }).select("-password");
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({
-        success : false ,
-        message : "User not found"
+        success: false,
+        message: "User not found"
       })
     }
 
     return res.status(200).json({
-      success : true , 
-      message : "User Details" ,
-      user 
+      success: true,
+      message: "User Details",
+      user
     });
 
-    
-  }catch(err){
+
+  } catch (err) {
     next(err);
   }
 }
 
-export const getAllSubmission = async (req : Request  , res : Response, next : NextFunction)=>{
-  try{
+export const getAllSubmission = async (req: Request, res: Response, next: NextFunction) => {
+  try {
     const username = req.params.username;
 
-    const user = await userModel.findOne({username});
+    const user = await userModel.findOne({ username });
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({
-        success : false , 
-        message : "User not found"
+        success: false,
+        message: "User not found"
       })
     }
 
-    const submissions = await submissionModel.find({userId : user._id}).sort({createdAt : -1});
+    const submissions = await submissionModel
+      .find({ userId: user._id })
+      .populate("questionId")
+      .sort({ createdAt: -1 })
+      .lean();
 
-    if(submissions.length === 0){
+    if (submissions.length === 0) {
       return res.status(200).json({
-        success : true , 
-        message : "No Submission found" , 
-        submissions : []
+        success: true,
+        message: "No Submission found",
+        submissions: []
       })
     }
 
     return res.status(200).json({
-      success : true ,
-      message : "All Submissions" ,
-      data : {
-        submissions
-      }
+      success: true,
+      message: "All Submissions",
+      submissions
     })
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 }
@@ -128,29 +130,29 @@ export const getUserProfile = async (
   }
 };
 
-export const editProfile = async(req : authRequest , res : Response , next : NextFunction)=>{
-  try{
-    const {name} = req.body;
+export const editProfile = async (req: authRequest, res: Response, next: NextFunction) => {
+  try {
+    const { name } = req.body;
 
-    if(!req.user){
+    if (!req.user) {
       return res.status(400).json({
-        message : "Can not find Error" , 
-        success : false 
+        message: "Can not find Error",
+        success: false
       });
     }
 
-    if(name) req.user.name = name;
+    if (name) req.user.name = name;
 
-    if(req.file) req.user.profilePic = req.file.filename;
+    if (req.file) req.user.profilePic = req.file.filename;
 
     await req.user?.save();
 
     return res.status(200).json({
-      success : true , 
-      message : "Profile Updated"
+      success: true,
+      message: "Profile Updated"
     })
 
-  }catch(error){
+  } catch (error) {
     next(error);
   }
 }

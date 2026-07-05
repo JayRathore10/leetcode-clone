@@ -83,7 +83,11 @@ const getAllSubmission = (req, res, next) => __awaiter(void 0, void 0, void 0, f
                 message: "User not found"
             });
         }
-        const submissions = yield submission_model_1.submissionModel.find({ userId: user._id }).sort({ createdAt: -1 });
+        const submissions = yield submission_model_1.submissionModel
+            .find({ userId: user._id })
+            .populate("questionId")
+            .sort({ createdAt: -1 })
+            .lean();
         if (submissions.length === 0) {
             return res.status(200).json({
                 success: true,
@@ -94,9 +98,7 @@ const getAllSubmission = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         return res.status(200).json({
             success: true,
             message: "All Submissions",
-            data: {
-                submissions
-            }
+            submissions
         });
     }
     catch (err) {

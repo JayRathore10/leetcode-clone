@@ -170,7 +170,7 @@ function App() {
         <Route
           path="/"
           element={
-           (
+            (
               <Login
                 setIsloggedIn={setIsloggedIn}
                 isloggedIn={isloggedIn}
@@ -236,6 +236,15 @@ function App() {
         />
 
         <Route
+          path="/profile/:username"
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn}>
+              <Profile isloggedIn={isloggedIn} />
+            </ProtectedNavigate>
+          }
+        />
+
+        <Route
           path="/profile/edit"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
@@ -257,7 +266,7 @@ function App() {
           path="/contests"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Contests/>
+              <Contests />
             </ProtectedNavigate>
           }
         />

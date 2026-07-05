@@ -1,12 +1,15 @@
 /* Leaderboard Page */
 .leaderboard-page {
-  min-height: calc(100vh - var(--header-h));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  min-height: 100vh;
   background-color: var(--bg);
   color: var(--text-primary);
+}
+
+.leaderboard-content {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  padding-top: calc(var(--header-h) + 2rem);
 }
 
 .leaderboard-card {
@@ -175,3 +178,4 @@
   color: var(--accent);
   text-decoration: underline;
 }
+

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { env } from "../../configs/env.config";
 import "./Leaderboard.css";
+import { LoginProps } from "../../pages/Login/Login";
+import { Header } from "../Header/Header";
 
 interface LeaderboardUser {
   rank: number;
@@ -11,15 +13,14 @@ interface LeaderboardUser {
   problemsSolved: number;
 }
 
-export function Leaderboard() {
-  const navigate = useNavigate();
-
+export function Leaderboard({isloggedIn} : LoginProps) {
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
+        
         const res = await axios.get(`${env.backendUrl}/api/leaderboard`);
 
         setLeaderboard(res.data.leaderboard);
@@ -34,7 +35,10 @@ export function Leaderboard() {
   }, []);
 
   return (
-    <div className="leaderboard-page">
+  <div className="leaderboard-page">
+    <Header isloggedIn={isloggedIn} />
+
+    <main className="leaderboard-content">
       <div className="leaderboard-card">
         <h1>Leaderboard</h1>
 
@@ -68,14 +72,9 @@ export function Leaderboard() {
             </tbody>
           </table>
         )}
-
-        <button
-          className="back-home-btn"
-          onClick={() => navigate("/home")}
-        >
-          ← Back to Home
-        </button>
       </div>
-    </div>
-  );
+    </main>
+  </div>
+);
+
 }

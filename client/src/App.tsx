@@ -284,7 +284,7 @@ function App() {
           path="/leaderboard"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Leaderboard />
+              <Leaderboard isloggedIn={isloggedIn}/>
             </ProtectedNavigate>
           }
         />

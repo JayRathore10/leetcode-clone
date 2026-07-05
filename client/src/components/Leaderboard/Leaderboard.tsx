@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { env } from "../../configs/env.config";
 import "./Leaderboard.css";
@@ -21,7 +21,7 @@ export function Leaderboard() {
     const fetchLeaderboard = async () => {
       try {
         const res = await axios.get(`${env.backendUrl}/api/leaderboard`);
-        
+
         setLeaderboard(res.data.leaderboard);
       } catch (err) {
         console.error(err);
@@ -54,7 +54,14 @@ export function Leaderboard() {
               {leaderboard.map((user, index) => (
                 <tr key={user.username}>
                   <td>{user.rank ?? index + 1}</td>
-                  <td>{user.username}</td>
+                  <td>
+                    <Link
+                      to={`/profile/${user.username}`}
+                      className="leaderboard-user-link"
+                    >
+                      {user.username}
+                    </Link>
+                  </td>
                   <td>{user.problemsSolved}</td>
                 </tr>
               ))}

@@ -73,13 +73,13 @@ export function Leaderboard({ isloggedIn }: LoginProps) {
                       <Link
                         to={`/profile/${user.username}`}
                         className="leaderboard-user-link"
-                        style={{
-                          backgroundImage: user.profilePic
-                            ? `url(${user.profilePic})`
-                            : undefined,
-                        }}
                       >
-                        {user.username}
+                        <img
+                          src={`${env.backendUrl}/images/${user.profilePic}`}
+                          alt={user.username}
+                          className="leaderboard-profile-pic"
+                        />
+                        <span>{user.username}</span>
                       </Link>
                     </td>
                     <td>{user.problemsSolved}</td>

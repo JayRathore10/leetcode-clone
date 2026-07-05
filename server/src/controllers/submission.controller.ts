@@ -60,8 +60,9 @@ export const userAllSubmission = async(req : authRequest , res : Response , next
        * if there is no submission no issue user is new to the app
        */
       return res.status(200).json({
-        success : false , 
-        message : "User don't have any submissions"
+        success : true, 
+        message : "User don't have any submissions" ,
+        submissions: []
       });
     }
 

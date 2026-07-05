@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { FiEdit2 } from "react-icons/fi";
 import { Header } from "../../components/Header/Header";
 import "./Profile.css";
+import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
 
 type User = {
   username: string;
@@ -138,8 +139,7 @@ export function Profile({ isloggedIn }: LoginProps) {
         <Header isloggedIn={isloggedIn!} />
         <div className="profile-page">
           <div className="loading-state">
-            <div className="spinner"></div>
-            <p>Loading profile...</p>
+            <LoadingScreen/>
           </div>
         </div>
       </>

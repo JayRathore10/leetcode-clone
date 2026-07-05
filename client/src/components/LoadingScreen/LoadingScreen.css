@@ -24,7 +24,7 @@
 .ap-loading-text {
   margin: 0;
   font-size: 2rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text-primary);
   animation: logoFade 1.6s ease-in-out infinite;

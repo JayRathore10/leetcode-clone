@@ -1,21 +1,26 @@
 import "../../styles/auth.css";
+import "./NotFound.css";
 
 export function NotFound() {
   return (
-    <div className="login-container">
-      <h1 className="login-title">404</h1>
+    <div className="not-found-container">
+      <div className="not-found-card">
+        <h1 className="not-found-code">404</h1>
 
-      <p className="login-subtitle">
-        Oops! The page you are looking for does not exist.
-      </p>
+        <h2 className="not-found-title">Page Not Found</h2>
 
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        <button
-          className="login-button"
-          onClick={() => window.location.href = "/"}
-        >
-          Go Home
-        </button>
+        <p className="not-found-text">
+          Oops! The page you are looking for does not exist or has been moved.
+        </p>
+
+        <div className="not-found-actions">
+          <button
+            className="auth-submit"
+            onClick={() => (window.location.href = "/home")}
+          >
+            Go Home
+          </button>
+        </div>
       </div>
     </div>
   );

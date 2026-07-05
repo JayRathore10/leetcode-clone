@@ -89,13 +89,12 @@ const Leaderboard = lazy(() =>
   }))
 );
 
-const LoadingScreen = () => (
-  <div className="ap-loading-container">
-    <div className="ap-spinner"></div>
-    <div className="ap-loading-text">Loading app...</div>
-  </div>
-);
-
+const LoadingScreen = lazy(()=>
+  import("./components/LoadingScreen/LoadingScreen").then((module)=>({
+    default : module.LoadingScreen
+  }))
+)
+  
 interface ProtectedNavigateProps {
   isloggedIn: boolean;
   children: ReactNode;
@@ -298,4 +297,3 @@ function App() {
 export default App;
 
 // Have to add logic for the dicuss section 
-// Make leaderboard

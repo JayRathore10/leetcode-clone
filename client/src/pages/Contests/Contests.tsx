@@ -4,6 +4,8 @@ import "./Contests.css";
 export function Contests() {
   const navigate = useNavigate();
 
+  // have to start working on it.
+
   return (
     <div className="contests-page">
       <div className="coming-soon-card">

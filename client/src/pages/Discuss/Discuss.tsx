@@ -4,6 +4,8 @@ import "./Discuss.css";
 export function Discuss() {
   const navigate = useNavigate();
 
+  // have to make disucss section
+
   return (
     <div className="discuss-page">
       <div className="discuss-card">

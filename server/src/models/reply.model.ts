@@ -1,37 +1,42 @@
-import { Schema, model, Types, HydratedDocument } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 
-export interface IReply {
+export interface ReplyInterface extends Document {
+  _id: Types.ObjectId;
+
   discussion: Types.ObjectId;
   author: Types.ObjectId;
+
   content: string;
+
   likes: Types.ObjectId[];
+
+  // null = reply to discussion
+  // ObjectId = reply to another reply
   parentReply: Types.ObjectId | null;
+
   edited: boolean;
   reported: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export interface IReplyVirtuals {
-  likeCount: number;
-}
-
-type ReplyDocument = HydratedDocument<IReply, IReplyVirtuals>;
-
-const replySchema = new Schema<IReply, {}, {}, IReplyVirtuals>(
+const replySchema = new mongoose.Schema<ReplyInterface>(
   {
     discussion: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Discussion",
       required: true,
       index: true,
     },
+
     author: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
       index: true,
     },
+
     content: {
       type: String,
       required: [true, "Reply content is required"],
@@ -39,21 +44,26 @@ const replySchema = new Schema<IReply, {}, {}, IReplyVirtuals>(
       minlength: [2, "Reply must be at least 2 characters"],
       maxlength: [2000, "Reply cannot exceed 2000 characters"],
     },
-    likes: {
-      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
-      default: [],
-    },
-    // null = top-level reply; ObjectId = nested reply
+
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
     parentReply: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Reply",
       default: null,
       index: true,
     },
+
     edited: {
       type: Boolean,
       default: false,
     },
+
     reported: {
       type: Boolean,
       default: false,
@@ -61,20 +71,15 @@ const replySchema = new Schema<IReply, {}, {}, IReplyVirtuals>(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
   }
 );
 
-// ── Indexes ───────────────────────────────────────────────
+// Indexes
 replySchema.index({ discussion: 1, createdAt: 1 });
 replySchema.index({ parentReply: 1 });
 
-// ── Virtuals ──────────────────────────────────────────────
-replySchema.virtual("likeCount").get(function (this: ReplyDocument) {
-  return this.likes.length;
-});
+export const replyModel = mongoose.model<ReplyInterface>(
+  "Reply",
+  replySchema
+);
 
-const Reply = model<IReply>("Reply", replySchema);
-
-export default Reply;

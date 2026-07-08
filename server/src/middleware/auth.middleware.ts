@@ -28,8 +28,8 @@ export const isUserLoggedIn = async (req: authRequest, res: Response, next: Next
       });
     }
 
-
     req.user = user;
+    
     next();
 
   } catch (error) {

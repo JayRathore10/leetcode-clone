@@ -1,54 +1,44 @@
-import { Schema, model, Types, HydratedDocument, Model } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 
 export const CATEGORIES = [
   "General",
-  "Storage",
-  "API",
-  "Security",
-  "Feature Request",
-  "Bug Report",
+  "Problem",
+  "Interview",
+  "Contest",
+  "Learning",
+  "Career",
 ] as const;
 
 export type DiscussionCategory = (typeof CATEGORIES)[number];
 
-export interface IDiscussion {
+export interface DiscussionInterface extends Document {
+  _id: Types.ObjectId;
+
   title: string;
   content: string;
+
   author: Types.ObjectId;
+
   category: DiscussionCategory;
   tags: string[];
+
   likes: Types.ObjectId[];
   bookmarks: Types.ObjectId[];
+
   views: number;
   replyCount: number;
+
   pinned: boolean;
   locked: boolean;
+
   reported: boolean;
   reportedBy: Types.ObjectId[];
-  createdAt: Date;
-  updatedAt: Date;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export interface IDiscussionVirtuals {
-  likeCount: number;
-  bookmarkCount: number;
-}
-
-export interface IDiscussionModel extends Model<IDiscussion> {
-  CATEGORIES: readonly DiscussionCategory[];
-}
-
-type DiscussionDocument = HydratedDocument<
-  IDiscussion,
-  IDiscussionVirtuals
->;
-
-const discussionSchema = new Schema<
-  IDiscussion,
-  IDiscussionModel,
-  {},
-  IDiscussionVirtuals
->(
+const discussionSchema = new mongoose.Schema<DiscussionInterface>(
   {
     title: {
       type: String,
@@ -57,6 +47,7 @@ const discussionSchema = new Schema<
       minlength: [5, "Title must be at least 5 characters"],
       maxlength: [200, "Title cannot exceed 200 characters"],
     },
+
     content: {
       type: String,
       required: [true, "Content is required"],
@@ -64,21 +55,22 @@ const discussionSchema = new Schema<
       minlength: [10, "Content must be at least 10 characters"],
       maxlength: [5000, "Content cannot exceed 5000 characters"],
     },
+
     author: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
       index: true,
     },
+
     category: {
       type: String,
+      enum: CATEGORIES,
       required: [true, "Category is required"],
-      enum: {
-        values: CATEGORIES,
-        message: "Invalid category",
-      },
+      default: "General",
       index: true,
     },
+
     tags: {
       type: [String],
       default: [],
@@ -87,75 +79,71 @@ const discussionSchema = new Schema<
         message: "Maximum 5 tags allowed",
       },
     },
-    likes: {
-      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
-      default: [],
-    },
-    bookmarks: {
-      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
-      default: [],
-    },
+
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    bookmarks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
     views: {
       type: Number,
       default: 0,
       min: 0,
     },
+
     replyCount: {
       type: Number,
       default: 0,
       min: 0,
     },
+
     pinned: {
       type: Boolean,
       default: false,
-      index: true,
     },
+
     locked: {
       type: Boolean,
       default: false,
     },
+
     reported: {
       type: Boolean,
       default: false,
     },
-    reportedBy: {
-      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
-      default: [],
-    },
+
+    reportedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
   }
 );
 
-// ── Indexes ──────────────────────────────────────────────
+// Indexes
 discussionSchema.index({ createdAt: -1 });
+discussionSchema.index({ pinned: -1, createdAt: -1 });
+discussionSchema.index({ category: 1 });
 discussionSchema.index({
   title: "text",
   content: "text",
   tags: "text",
 });
-discussionSchema.index({ pinned: -1, createdAt: -1 });
 
-// ── Virtuals ─────────────────────────────────────────────
-discussionSchema.virtual("likeCount").get(function (this: DiscussionDocument) {
-  return this.likes.length;
-});
-
-discussionSchema
-  .virtual("bookmarkCount")
-  .get(function (this: DiscussionDocument) {
-    return this.bookmarks.length;
-  });
-
-// ── Statics ──────────────────────────────────────────────
-(discussionSchema.statics as any).CATEGORIES = CATEGORIES;
-
-const Discussion = model<IDiscussion, IDiscussionModel>(
+export const discussionModel = mongoose.model<DiscussionInterface>(
   "Discussion",
   discussionSchema
 );
-
-export default Discussion;

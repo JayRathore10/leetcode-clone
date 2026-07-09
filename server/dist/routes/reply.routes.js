@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.replyRouter = void 0;
+const express_1 = require("express");
+const reply_controller_1 = require("../controllers/reply.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+exports.replyRouter = (0, express_1.Router)();
+exports.replyRouter.get("/discussion/:discussionId", reply_controller_1.getRepliesByDiscussion);
+exports.replyRouter.post("/", auth_middleware_1.isUserLoggedIn, reply_controller_1.createReply);
+exports.replyRouter.put("/:replyId", auth_middleware_1.isUserLoggedIn, reply_controller_1.updateReply);
+exports.replyRouter.delete("/:replyId", auth_middleware_1.isUserLoggedIn, reply_controller_1.deleteReply);
+exports.replyRouter.post("/:replyId/like", auth_middleware_1.isUserLoggedIn, reply_controller_1.toggleLikeReply);
+exports.replyRouter.post("/:replyId/report", auth_middleware_1.isUserLoggedIn, reply_controller_1.reportReply);

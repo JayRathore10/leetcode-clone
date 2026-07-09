@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.discussionRouter = void 0;
+const express_1 = require("express");
+const discussion_controller_1 = require("../controllers/discussion.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+exports.discussionRouter = (0, express_1.Router)();
+exports.discussionRouter.get("/", discussion_controller_1.getAllDiscussions);
+exports.discussionRouter.get("/search", discussion_controller_1.searchDiscussions);
+exports.discussionRouter.get("/:discussionId", discussion_controller_1.getDiscussionById);
+exports.discussionRouter.post("/", auth_middleware_1.isUserLoggedIn, discussion_controller_1.createDiscussion);
+exports.discussionRouter.put("/:discussionId", auth_middleware_1.isUserLoggedIn, discussion_controller_1.updateDiscussion);
+exports.discussionRouter.delete("/:discussionId", auth_middleware_1.isUserLoggedIn, discussion_controller_1.deleteDiscussion);
+exports.discussionRouter.post("/:discussionId/like", auth_middleware_1.isUserLoggedIn, discussion_controller_1.toggleLikeDiscussion);
+exports.discussionRouter.post("/:discussionId/bookmark", auth_middleware_1.isUserLoggedIn, discussion_controller_1.toggleBookmarkDiscussion);
+exports.discussionRouter.post("/:discussionId/report", auth_middleware_1.isUserLoggedIn, discussion_controller_1.reportDiscussion);

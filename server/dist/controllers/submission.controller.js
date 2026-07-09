@@ -63,8 +63,9 @@ const userAllSubmission = (req, res, next) => __awaiter(void 0, void 0, void 0, 
              * if there is no submission no issue user is new to the app
              */
             return res.status(200).json({
-                success: false,
-                message: "User don't have any submissions"
+                success: true,
+                message: "User don't have any submissions",
+                submissions: []
             });
         }
         return res.status(200).json({

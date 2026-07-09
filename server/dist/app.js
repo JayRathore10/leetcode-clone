@@ -14,6 +14,8 @@ const submission_routes_1 = require("./routes/submission.routes");
 const auth_routes_1 = require("./routes/auth.routes");
 const analyze_routes_1 = require("./routes/analyze.routes");
 const leaderboard_routes_1 = require("./routes/leaderboard.routes");
+const discussion_routes_1 = require("./routes/discussion.routes");
+const reply_routes_1 = require("./routes/reply.routes");
 const env_config_1 = require("./configs/env.config");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
@@ -45,6 +47,8 @@ app.use("/api/submission", submission_routes_1.submissionRouter);
 app.use("/api/auth", auth_routes_1.authRouter);
 app.use("/api/analyze", analyze_routes_1.analyzeRouter);
 app.use("/api/leaderboard", leaderboard_routes_1.leaderboardRouter);
+app.use("/api/discussion", discussion_routes_1.discussionRouter);
+app.use("/api/reply", reply_routes_1.replyRouter);
 app.use(error_middleware_1.errorMiddleware);
 exports.default = app;
 // Add AI Code analysic and also learn to host docker 

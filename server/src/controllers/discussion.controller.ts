@@ -51,15 +51,21 @@ export const getAllDiscussions = async (
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit;
+    const category = req.query.category as string | undefined;
+
+    const filter: Record<string, unknown> = {};
+    if (category && category !== "All") {
+      filter.category = category;
+    }
 
     const discussions = await discussionModel
-      .find()
+      .find(filter)
       .populate("author", "username name profilePic")
       .sort({ pinned: -1, createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    const total = await discussionModel.countDocuments();
+    const total = await discussionModel.countDocuments(filter);
 
     return res.status(200).json({
       success: true,

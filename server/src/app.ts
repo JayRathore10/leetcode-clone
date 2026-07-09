@@ -10,6 +10,8 @@ import { submissionRouter } from "./routes/submission.routes";
 import { authRouter } from "./routes/auth.routes";
 import { analyzeRouter } from "./routes/analyze.routes";
 import { leaderboardRouter } from "./routes/leaderboard.routes";
+import { discussionRouter } from "./routes/discussion.routes";
+import { replyRouter } from "./routes/reply.routes";
 import { FRONTEND } from "./configs/env.config";
 
 const app = express();
@@ -50,6 +52,8 @@ app.use("/api/submission" , submissionRouter);
 app.use("/api/auth" , authRouter);
 app.use("/api/analyze" , analyzeRouter);
 app.use("/api/leaderboard" , leaderboardRouter);
+app.use("/api/discussion" , discussionRouter);
+app.use("/api/reply" , replyRouter);
 
 app.use(errorMiddleware);
 

@@ -144,14 +144,24 @@ export function ReplyItem({
   };
 
   const isAuthor = currentUserId === reply.author._id;
+  const avatarSrc = reply.author.profilePic
+    ? `${env.backendUrl}/images/${reply.author.profilePic}`
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      reply.author.username
+    )}&background=0077B6&color=fff&size=64`;
 
   return (
     <div className="reply-item">
       <div className="reply-thread-line">
         <img
-          src={reply.author.profilePic || "/default-avatar.png"}
+          src={avatarSrc}
           alt={reply.author.username}
           className="reply-avatar"
+          onError={(e) => {
+            e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+              reply.author.username
+            )}&background=0077B6&color=fff&size=64`;
+          }}
         />
       </div>
 
@@ -193,7 +203,7 @@ export function ReplyItem({
           >
             <FiThumbsUp /> {likesCount > 0 && likesCount}
           </button>
-          
+
           {/* Note: In a flat UI we don't necessarily nest replies deeply, but we can have a reply button */}
           <button
             className="reply-action-btn"

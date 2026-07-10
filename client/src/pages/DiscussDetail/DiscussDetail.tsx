@@ -34,7 +34,7 @@ export function DiscussDetail({ isloggedIn }: LoginProps) {
 
   const [discussion, setDiscussion] = useState<Discussion | null>(null);
   const [replies, setReplies] = useState<Reply[]>([]);
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -142,7 +142,7 @@ export function DiscussDetail({ isloggedIn }: LoginProps) {
         discussionId: discussion._id,
         content: replyContent
       }, { withCredentials: true });
-      
+
       if (res.data.success) {
         setReplyContent("");
         fetchData(); // Reload replies
@@ -176,6 +176,12 @@ export function DiscussDetail({ isloggedIn }: LoginProps) {
     );
   }
 
+  const avatarSrc = discussion.author.profilePic
+    ? `${env.backendUrl}/images/${discussion.author.profilePic}`
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      discussion.author.username
+    )}&background=0077B6&color=fff&size=64`;
+
   const isAuthor = currentUserId === discussion.author._id;
   const isLiked = currentUserId ? discussion.likes.includes(currentUserId) : false;
   const isBookmarked = currentUserId ? discussion.bookmarks.includes(currentUserId) : false;
@@ -203,7 +209,16 @@ export function DiscussDetail({ isloggedIn }: LoginProps) {
 
           <div className="disc-post-meta">
             <div className="disc-post-author">
-              <img src={discussion.author.profilePic || "/default-avatar.png"} alt={discussion.author.username} className="disc-post-avatar" />
+              <img
+                src={avatarSrc}
+                alt={discussion.author.username}
+                className="disc-post-avatar"
+                onError={(e) => {
+                  e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    discussion.author.username
+                  )}&background=0077B6&color=fff&size=64`;
+                }}
+              />
               <span className="disc-post-author-name">{discussion.author.name || discussion.author.username}</span>
               <span className="disc-post-time">• {formatTimeAgo(discussion.createdAt)}</span>
               <span className="disc-post-time">• {discussion.views} views</span>
@@ -221,7 +236,7 @@ export function DiscussDetail({ isloggedIn }: LoginProps) {
             <button className={`disc-post-btn ${isBookmarked ? "active" : ""}`} onClick={handleBookmark}>
               <FiBookmark /> Bookmark
             </button>
-            
+
             {isAuthor ? (
               <>
                 <button className="disc-post-btn disc-post-btn--danger" onClick={handleDeleteDiscussion}>
@@ -247,8 +262,8 @@ export function DiscussDetail({ isloggedIn }: LoginProps) {
               onChange={(e) => setReplyContent(e.target.value)}
             />
             <div className="disc-reply-actions">
-              <button 
-                className="disc-reply-submit" 
+              <button
+                className="disc-reply-submit"
                 onClick={handlePostReply}
                 disabled={isSubmitting || !replyContent.trim()}
               >
@@ -259,9 +274,9 @@ export function DiscussDetail({ isloggedIn }: LoginProps) {
 
           <div className="disc-replies-list">
             {replies.map(reply => (
-              <ReplyItem 
-                key={reply._id} 
-                reply={reply} 
+              <ReplyItem
+                key={reply._id}
+                reply={reply}
                 currentUserId={currentUserId}
                 onReplyAdded={fetchData}
                 onReplyDeleted={() => setReplies(prev => prev.filter(r => r._id !== reply._id))}

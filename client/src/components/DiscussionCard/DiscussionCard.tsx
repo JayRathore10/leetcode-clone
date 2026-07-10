@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiEye, FiThumbsUp, FiMessageSquare, FiMapPin } from "react-icons/fi";
 import { Discussion } from "../../configs/discussion.types";
+import { env } from "../../configs/env.config";
 import "./DiscussionCard.css";
 
 interface DiscussionCardProps {
@@ -29,8 +30,12 @@ export function DiscussionCard({ discussion, index }: DiscussionCardProps) {
   const navigate = useNavigate();
 
   const avatarSrc = discussion.author.profilePic
-    ? discussion.author.profilePic
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(discussion.author.username)}&background=0077B6&color=fff&size=64`;
+    ? `${env.backendUrl}/images/${discussion.author.profilePic}`
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      discussion.author.username
+    )}&background=0077B6&color=fff&size=64`;
+
+  console.log(discussion.author.profilePic);
 
   return (
     <motion.div

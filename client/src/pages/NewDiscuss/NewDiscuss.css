@@ -1,0 +1,155 @@
+/* ========================================
+   NEW DISCUSSION PAGE
+   ======================================== */
+
+.new-disc-page {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.new-disc-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.new-disc-title {
+  font-size: 1.625rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.new-disc-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.new-disc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.new-disc-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.new-disc-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.new-disc-input,
+.new-disc-select,
+.new-disc-textarea {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all var(--transition);
+}
+
+.new-disc-textarea {
+  resize: vertical;
+  min-height: 12rem;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.new-disc-input:hover,
+.new-disc-select:hover,
+.new-disc-textarea:hover {
+  border-color: var(--border-strong);
+}
+
+.new-disc-input:focus,
+.new-disc-select:focus,
+.new-disc-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-focus);
+}
+
+.new-disc-input::placeholder,
+.new-disc-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.new-disc-tags-help {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.new-disc-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.new-disc-cancel-btn {
+  padding: 0.625rem 1.25rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.new-disc-cancel-btn:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.new-disc-submit-btn {
+  padding: 0.625rem 1.25rem;
+  background: var(--accent);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.new-disc-submit-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.new-disc-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.new-disc-error {
+  color: var(--danger);
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: var(--danger-bg);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--danger);
+}

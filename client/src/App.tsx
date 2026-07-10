@@ -77,6 +77,18 @@ const Discuss = lazy(() =>
   }))
 );
 
+const NewDiscuss = lazy(() =>
+  import("./pages/NewDiscuss/NewDiscuss").then((module) => ({
+    default: module.NewDiscuss,
+  }))
+);
+
+const DiscussDetail = lazy(() =>
+  import("./pages/DiscussDetail/DiscussDetail").then((module) => ({
+    default: module.DiscussDetail,
+  }))
+);
+
 const NotFound = lazy(() =>
   import("./pages/NotFound/NotFound").then((module) => ({
     default: module.NotFound,
@@ -274,7 +286,25 @@ function App() {
           path="/discuss"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Discuss />
+              <Discuss isloggedIn={isloggedIn} />
+            </ProtectedNavigate>
+          }
+        />
+
+        <Route
+          path="/discuss/new"
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn}>
+              <NewDiscuss isloggedIn={isloggedIn} />
+            </ProtectedNavigate>
+          }
+        />
+
+        <Route
+          path="/discuss/:id"
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn}>
+              <DiscussDetail isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
         />

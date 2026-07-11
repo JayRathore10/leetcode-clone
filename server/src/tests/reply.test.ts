@@ -463,3 +463,84 @@ describe("POST /api/reply/:replyId/like", () => {
     expect(res.body.message).toBe("Reply not found");
   });
 });
+
+describe("POST /api/reply/:replyId/report", () => {
+  it("should report reply successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    const reply = {
+      reported: false,
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (replyModel.findById as jest.Mock).mockResolvedValue(reply);
+
+    const res = await request(app)
+      .post("/api/reply/reply123/report")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Reply reported successfully");
+  });
+
+  it("should return 400 if reply has already been reported", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    (replyModel.findById as jest.Mock).mockResolvedValue({
+      reported: true,
+    });
+
+    const res = await request(app)
+      .post("/api/reply/reply123/report")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Reply has already been reported");
+  });
+
+  it("should return 404 if reply is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    (replyModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .post("/api/reply/reply123/report")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Reply not found");
+  });
+});

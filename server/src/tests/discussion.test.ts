@@ -183,3 +183,215 @@ describe("GET /api/discussion/:discussionId", () => {
     expect(res.body.message).toBe("Discussion not found");
   });
 });
+
+describe("PUT /api/discussion/:discussionId", () => {
+  it("should update discussion successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    const discussion = {
+      _id: "discussion123",
+      title: "Old Title",
+      content: "Old Content",
+      category: "Problem",
+      tags: ["old"],
+      author: {
+        toString: () => "user123",
+      },
+      locked: false,
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(discussion);
+
+    const res = await request(app)
+      .put("/api/discussion/discussion123")
+      .set("Cookie", "token=fake_token")
+      .send({
+        title: "Updated Title",
+        content: "Updated Content",
+        category: "Contest",
+        tags: ["contest"],
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Discussion updated successfully");
+  });
+
+  it("should return 404 if discussion is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .put("/api/discussion/discussion123")
+      .set("Cookie", "token=fake_token")
+      .send({
+        title: "Updated Title",
+      });
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Discussion not found");
+  });
+
+  it("should return 403 if user is not the author", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue({
+      author: {
+        toString: () => "anotherUser",
+      },
+      locked: false,
+    });
+
+    const res = await request(app)
+      .put("/api/discussion/discussion123")
+      .set("Cookie", "token=fake_token")
+      .send({
+        title: "Updated Title",
+      });
+
+    expect(res.status).toBe(403);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe(
+      "You are not authorized to edit this discussion"
+    );
+  });
+
+  it("should return 400 if discussion is locked", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue({
+      author: {
+        toString: () => "user123",
+      },
+      locked: true,
+    });
+
+    const res = await request(app)
+      .put("/api/discussion/discussion123")
+      .set("Cookie", "token=fake_token")
+      .send({
+        title: "Updated Title",
+      });
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("This discussion is locked");
+  });
+});
+
+describe("DELETE /api/discussion/:discussionId", () => {
+  it("should delete discussion successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue({
+      author: {
+        toString: () => "user123",
+      },
+      deleteOne: jest.fn().mockResolvedValue(true),
+    });
+
+    const res = await request(app)
+      .delete("/api/discussion/discussion123")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Discussion deleted successfully");
+  });
+
+  it("should return 404 if discussion is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .delete("/api/discussion/discussion123")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Discussion not found");
+  });
+
+  it("should return 403 if user is not the author", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue({
+      author: {
+        toString: () => "anotherUser",
+      },
+    });
+
+    const res = await request(app)
+      .delete("/api/discussion/discussion123")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(403);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe(
+      "You are not authorized to delete this discussion"
+    );
+  });
+});

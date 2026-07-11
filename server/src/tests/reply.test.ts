@@ -218,3 +218,248 @@ describe("PUT /api/reply/:replyId", () => {
     expect(res.body.message).toBe("Reply updated successfully");
   });
 });
+
+describe("PUT /api/reply/:replyId", () => {
+  it("should return 400 if content is missing", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    const res = await request(app)
+      .put("/api/reply/reply123")
+      .set("Cookie", "token=fake_token")
+      .send({});
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Content is required");
+  });
+
+  it("should return 404 if reply is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (replyModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .put("/api/reply/reply123")
+      .set("Cookie", "token=fake_token")
+      .send({
+        content: "Updated",
+      });
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Reply not found");
+  });
+
+  it("should return 403 if user is not owner", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (replyModel.findById as jest.Mock).mockResolvedValue({
+      author: {
+        toString: () => "anotherUser",
+      },
+    });
+
+    const res = await request(app)
+      .put("/api/reply/reply123")
+      .set("Cookie", "token=fake_token")
+      .send({
+        content: "Updated",
+      });
+
+    expect(res.status).toBe(403);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe(
+      "You are not authorized to update this reply"
+    );
+  });
+});
+
+describe("DELETE /api/reply/:replyId", () => {
+  it("should delete reply successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (replyModel.findById as jest.Mock).mockResolvedValue({
+      author: {
+        toString: () => "user123",
+      },
+      discussion: "discussion123",
+      deleteOne: jest.fn().mockResolvedValue(true),
+    });
+
+    (discussionModel.findByIdAndUpdate as jest.Mock).mockResolvedValue({});
+
+    const res = await request(app)
+      .delete("/api/reply/reply123")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Reply deleted successfully");
+  });
+
+  it("should return 404 if reply is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (replyModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .delete("/api/reply/reply123")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Reply not found");
+  });
+
+  it("should return 403 if user is not owner", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (replyModel.findById as jest.Mock).mockResolvedValue({
+      author: {
+        toString: () => "anotherUser",
+      },
+    });
+
+    const res = await request(app)
+      .delete("/api/reply/reply123")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(403);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe(
+      "You are not authorized to delete this reply"
+    );
+  });
+});
+
+describe("POST /api/reply/:replyId/like", () => {
+  it("should like reply successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    const reply = {
+      likes: [],
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (replyModel.findById as jest.Mock).mockResolvedValue(reply);
+
+    const res = await request(app)
+      .post("/api/reply/reply123/like")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Reply liked");
+    expect(res.body.likes).toBe(1);
+  });
+
+  it("should unlike reply successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    const reply = {
+      likes: [
+        {
+          toString: () => "user123",
+        },
+      ],
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (replyModel.findById as jest.Mock).mockResolvedValue(reply);
+
+    const res = await request(app)
+      .post("/api/reply/reply123/like")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Reply unliked");
+    expect(res.body.likes).toBe(0);
+  });
+
+  it("should return 404 if reply is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (replyModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .post("/api/reply/reply123/like")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Reply not found");
+  });
+});

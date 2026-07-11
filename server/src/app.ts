@@ -13,6 +13,7 @@ import { leaderboardRouter } from "./routes/leaderboard.routes";
 import { discussionRouter } from "./routes/discussion.routes";
 import { replyRouter } from "./routes/reply.routes";
 import { FRONTEND } from "./configs/env.config";
+import { contestRouter } from "./routes/contest.routes";
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use("/api/analyze" , analyzeRouter);
 app.use("/api/leaderboard" , leaderboardRouter);
 app.use("/api/discussion" , discussionRouter);
 app.use("/api/reply" , replyRouter);
+app.use("/api/contest" , contestRouter);
 
 app.use(errorMiddleware);
 

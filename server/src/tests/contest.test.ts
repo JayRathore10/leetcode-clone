@@ -32,12 +32,10 @@ describe("POST /api/contest", () => {
       .post("/api/contest")
       .set("Cookie", "token=fake_token")
       .send({
-        title: "Weekly Contest",
-        description: "Contest Description",
-        startTime: "2030-01-01T10:00:00.000Z",
-        endTime: "2030-01-01T12:00:00.000Z",
-        isPublic: true,
-        problems: [],
+        title: "Updated Contest",
+        description: "Updated Description",
+        startTime: new Date("2030-01-02T10:00:00.000Z"),
+        endTime: new Date("2030-01-02T12:00:00.000Z"),
       });
 
     expect(res.status).toBe(201);
@@ -145,6 +143,160 @@ describe("GET /api/contest/:contestId", () => {
     });
 
     const res = await request(app).get("/api/contest/123");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Contest not found.");
+  });
+});
+
+describe("PUT /api/contest/:contestId", () => {
+  it("should update contest successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "admin@gmail.com",
+      role: "admin",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "admin@gmail.com",
+        username: "admin",
+      }),
+    });
+
+    const contest = {
+      _id: "contest123",
+      title: "Old Contest",
+      description: "Old Description",
+      startTime: new Date("2030-01-01T10:00:00.000Z"),
+      endTime: new Date("2030-01-01T12:00:00.000Z"),
+      duration: 120,
+      status: "Upcoming",
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (contestModel.findById as jest.Mock).mockResolvedValue(contest);
+
+    const res = await request(app)
+      .put("/api/contest/contest123")
+      .set("Cookie", "token=fake_token")
+       .send({
+        title: "Updated Contest",
+        description: "Updated Description",
+        startTime: new Date("2030-01-02T10:00:00.000Z"),
+        endTime: new Date("2030-01-02T12:00:00.000Z"),
+      });
+;
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Contest updated successfully.");
+  });
+
+  it("should return 404 if contest is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "admin@gmail.com",
+      role: "admin",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "admin@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .put("/api/contest/contest123")
+      .set("Cookie", "token=fake_token")
+      .send({
+        title: "Updated Contest",
+      });
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Contest not found.");
+  });
+
+  it("should return 400 if contest has already started", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "admin@gmail.com",
+      role: "admin",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "admin@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue({
+      startTime: new Date("2020-01-01T10:00:00.000Z"),
+      endTime: new Date("2020-01-01T12:00:00.000Z"),
+    });
+
+    const res = await request(app)
+      .put("/api/contest/contest123")
+      .set("Cookie", "token=fake_token")
+      .send({
+        title: "Updated Contest",
+      });
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Contest has already started.");
+  });
+});
+
+describe("DELETE /api/contest/:contestId", () => {
+  it("should delete contest successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "admin@gmail.com",
+      role: "admin",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "admin@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue({
+      deleteOne: jest.fn().mockResolvedValue(true),
+    });
+
+    const res = await request(app)
+      .delete("/api/contest/contest123")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Contest deleted successfully.");
+  });
+
+  it("should return 404 if contest is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "admin@gmail.com",
+      role: "admin",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "admin@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .delete("/api/contest/contest123")
+      .set("Cookie", "token=fake_token");
 
     expect(res.status).toBe(404);
     expect(res.body.success).toBe(false);

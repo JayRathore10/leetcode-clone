@@ -136,6 +136,10 @@ export const updateContest = async (
 
     Object.assign(contest, req.body);
 
+    // Convert to Date because req.body contains strings
+    contest.startTime = new Date(contest.startTime);
+    contest.endTime = new Date(contest.endTime);
+
     contest.duration =
       (contest.endTime.getTime() - contest.startTime.getTime()) /
       (1000 * 60);

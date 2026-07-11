@@ -303,3 +303,206 @@ describe("DELETE /api/contest/:contestId", () => {
     expect(res.body.message).toBe("Contest not found.");
   });
 });
+
+describe("POST /api/contest/:contestId/register", () => {
+  it("should register user successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    const contest = {
+      status: "Upcoming",
+      participants: [],
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (contestModel.findById as jest.Mock).mockResolvedValue(contest);
+
+    const res = await request(app)
+      .post("/api/contest/contest123/register")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Registered successfully.");
+  });
+
+  it("should return 404 if contest is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .post("/api/contest/contest123/register")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Contest not found.");
+  });
+
+  it("should return 400 if contest has ended", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue({
+      status: "Ended",
+      participants: [],
+    });
+
+    const res = await request(app)
+      .post("/api/contest/contest123/register")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Contest has already ended.");
+  });
+
+  it("should return 400 if user is already registered", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue({
+      status: "Upcoming",
+      participants: ["user123"],
+    });
+
+    const res = await request(app)
+      .post("/api/contest/contest123/register")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe(
+      "You are already registered for this contest."
+    );
+  });
+});
+
+describe("DELETE /api/contest/:contestId/unregister", () => {
+  it("should unregister successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue({
+      participants: ["user123", "user456"],
+      save: jest.fn().mockResolvedValue(true),
+    });
+
+    const res = await request(app)
+      .delete("/api/contest/contest123/unregister")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Unregistered successfully.");
+  });
+
+  it("should return 404 if contest is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    (contestModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .delete("/api/contest/contest123/unregister")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Contest not found.");
+  });
+});
+
+describe("GET /api/contest/my/registered", () => {
+  it("should return all registered contests", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    (contestModel.find as jest.Mock).mockReturnValue({
+      populate: jest.fn().mockReturnValue({
+        sort: jest.fn().mockResolvedValue([
+          {
+            title: "Weekly Contest 1",
+          },
+          {
+            title: "Weekly Contest 2",
+          },
+        ]),
+      }),
+    });
+
+    const res = await request(app)
+      .get("/api/contest/my/registered")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.contests).toBeDefined();
+    expect(res.body.contests.length).toBe(2);
+  });
+});

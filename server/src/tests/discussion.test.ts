@@ -395,3 +395,298 @@ describe("DELETE /api/discussion/:discussionId", () => {
     );
   });
 });
+
+describe("POST /api/discussion/:discussionId/like", () => {
+  it("should like discussion successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    const discussion = {
+      likes: [],
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(discussion);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/like")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Discussion liked");
+    expect(res.body.likes).toBe(1);
+  });
+
+  it("should unlike discussion successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+        email: "user@gmail.com",
+      }),
+    });
+
+    const discussion = {
+      likes: [
+        {
+          toString: () => "user123",
+        },
+      ],
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(discussion);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/like")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Discussion unliked");
+    expect(res.body.likes).toBe(0);
+  });
+
+  it("should return 404 if discussion is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/like")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Discussion not found");
+  });
+});
+
+describe("POST /api/discussion/:discussionId/bookmark", () => {
+  it("should bookmark discussion successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    const discussion = {
+      bookmarks: [],
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(discussion);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/bookmark")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Discussion bookmarked");
+    expect(res.body.bookmarks).toBe(1);
+  });
+
+  it("should remove bookmark successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    const discussion = {
+      bookmarks: [
+        {
+          toString: () => "user123",
+        },
+      ],
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(discussion);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/bookmark")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Bookmark removed");
+    expect(res.body.bookmarks).toBe(0);
+  });
+
+  it("should return 404 if discussion is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/bookmark")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Discussion not found");
+  });
+});
+
+describe("POST /api/discussion/:discussionId/report", () => {
+  it("should report discussion successfully", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    const discussion = {
+      reported: false,
+      reportedBy: [],
+      save: jest.fn().mockResolvedValue(true),
+    };
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(discussion);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/report")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Discussion reported successfully");
+  });
+
+  it("should return 400 if discussion is already reported by user", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+      role: "user",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    const discussion = {
+      reportedBy: [
+        {
+          toString: () => "user123",
+        },
+      ],
+    };
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(discussion);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/report")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe(
+      "You have already reported this discussion"
+    );
+  });
+
+  it("should return 404 if discussion is not found", async () => {
+    (jwt.verify as jest.Mock).mockReturnValue({
+      email: "user@gmail.com",
+    });
+
+    (userModel.findOne as jest.Mock).mockReturnValue({
+      select: jest.fn().mockResolvedValue({
+        _id: "user123",
+      }),
+    });
+
+    (discussionModel.findById as jest.Mock).mockResolvedValue(null);
+
+    const res = await request(app)
+      .post("/api/discussion/discussion123/report")
+      .set("Cookie", "token=fake_token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Discussion not found");
+  });
+});
+
+describe("GET /api/discussion/search", () => {
+  it("should return searched discussions", async () => {
+    const sort = jest.fn().mockResolvedValue([
+      {
+        title: "Binary Search",
+      },
+    ]);
+
+    const populate = jest.fn().mockReturnValue({
+      sort,
+    });
+
+    (discussionModel.find as jest.Mock).mockReturnValue({
+      populate,
+    });
+
+    const res = await request(app).get(
+      "/api/discussion/search?q=binary"
+    );
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.total).toBe(1);
+    expect(res.body.discussions.length).toBe(1);
+  });
+
+  it("should return 400 if search query is missing", async () => {
+    const res = await request(app).get("/api/discussion/search");
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Search query is required");
+  });
+});

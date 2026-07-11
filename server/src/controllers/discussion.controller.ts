@@ -75,7 +75,7 @@ export const getAllDiscussions = async (
       discussions,
     });
   } catch (err) {
-    next(err);
+    next(err);  
   }
 };
 

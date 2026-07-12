@@ -17,7 +17,7 @@ const app_1 = __importDefault(require("../app"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = require("../models/user.model");
 const reply_model_1 = require("../models/reply.model");
-const discussion_model_1 = require("../models/discussion.model");
+const discussion1_model_1 = require("../models/discussion1.model");
 jest.mock("../models/user.model");
 jest.mock("../models/reply.model");
 jest.mock("../models/discussion.model");
@@ -34,7 +34,7 @@ describe("POST /api/reply", () => {
                 email: "user@gmail.com",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue({
+        discussion1_model_1.discussionModel.findById.mockResolvedValue({
             locked: false,
             replyCount: 0,
             save: jest.fn().mockResolvedValue(true),
@@ -80,7 +80,7 @@ describe("POST /api/reply", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue(null);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(null);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/reply")
             .set("Cookie", "token=fake_token")
@@ -101,7 +101,7 @@ describe("POST /api/reply", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue({
+        discussion1_model_1.discussionModel.findById.mockResolvedValue({
             locked: true,
         });
         const res = yield (0, supertest_1.default)(app_1.default)
@@ -124,7 +124,7 @@ describe("POST /api/reply", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue({
+        discussion1_model_1.discussionModel.findById.mockResolvedValue({
             locked: false,
         });
         reply_model_1.replyModel.findById.mockResolvedValue(null);
@@ -272,7 +272,7 @@ describe("DELETE /api/reply/:replyId", () => {
             discussion: "discussion123",
             deleteOne: jest.fn().mockResolvedValue(true),
         });
-        discussion_model_1.discussionModel.findByIdAndUpdate.mockResolvedValue({});
+        discussion1_model_1.discussionModel.findByIdAndUpdate.mockResolvedValue({});
         const res = yield (0, supertest_1.default)(app_1.default)
             .delete("/api/reply/reply123")
             .set("Cookie", "token=fake_token");

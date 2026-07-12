@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import { discussionModel } from "../models/discussion.model";
+import { discussionModel } from "../models/discussion1.model"
 import { authRequest } from "../types/authRequest.type";
 
 export const createDiscussion = async (

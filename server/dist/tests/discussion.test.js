@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const app_1 = __importDefault(require("../app"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const discussion_model_1 = require("../models/discussion.model");
+const discussion1_model_1 = require("../models/discussion1.model");
 const user_model_1 = require("../models/user.model");
 jest.mock("../models/discussion.model");
 jest.mock("../models/user.model");
@@ -32,7 +32,7 @@ describe("POST /api/discussion", () => {
                 email: "user@gmail.com",
             }),
         });
-        discussion_model_1.discussionModel.create.mockResolvedValue({
+        discussion1_model_1.discussionModel.create.mockResolvedValue({
             title: "Binary Search",
             content: "How to solve binary search efficiently?",
             category: "Problem",
@@ -122,10 +122,10 @@ describe("GET /api/discussion", () => {
         const populate = jest.fn().mockReturnValue({
             sort,
         });
-        discussion_model_1.discussionModel.find.mockReturnValue({
+        discussion1_model_1.discussionModel.find.mockReturnValue({
             populate,
         });
-        discussion_model_1.discussionModel.countDocuments.mockResolvedValue(2);
+        discussion1_model_1.discussionModel.countDocuments.mockResolvedValue(2);
         const res = yield (0, supertest_1.default)(app_1.default).get("/api/discussion");
         expect(res.status).toBe(200);
         expect(res.body.success).toBe(true);
@@ -140,7 +140,7 @@ describe("GET /api/discussion/:discussionId", () => {
             _id: "discussion123",
             title: "Binary Search",
         });
-        discussion_model_1.discussionModel.findByIdAndUpdate.mockReturnValue({
+        discussion1_model_1.discussionModel.findByIdAndUpdate.mockReturnValue({
             populate,
         });
         const res = yield (0, supertest_1.default)(app_1.default).get("/api/discussion/discussion123");
@@ -150,7 +150,7 @@ describe("GET /api/discussion/:discussionId", () => {
     }));
     it("should return 404 if discussion is not found", () => __awaiter(void 0, void 0, void 0, function* () {
         const populate = jest.fn().mockResolvedValue(null);
-        discussion_model_1.discussionModel.findByIdAndUpdate.mockReturnValue({
+        discussion1_model_1.discussionModel.findByIdAndUpdate.mockReturnValue({
             populate,
         });
         const res = yield (0, supertest_1.default)(app_1.default).get("/api/discussion/discussion123");
@@ -183,7 +183,7 @@ describe("PUT /api/discussion/:discussionId", () => {
             locked: false,
             save: jest.fn().mockResolvedValue(true),
         };
-        discussion_model_1.discussionModel.findById.mockResolvedValue(discussion);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(discussion);
         const res = yield (0, supertest_1.default)(app_1.default)
             .put("/api/discussion/discussion123")
             .set("Cookie", "token=fake_token")
@@ -206,7 +206,7 @@ describe("PUT /api/discussion/:discussionId", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue(null);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(null);
         const res = yield (0, supertest_1.default)(app_1.default)
             .put("/api/discussion/discussion123")
             .set("Cookie", "token=fake_token")
@@ -226,7 +226,7 @@ describe("PUT /api/discussion/:discussionId", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue({
+        discussion1_model_1.discussionModel.findById.mockResolvedValue({
             author: {
                 toString: () => "anotherUser",
             },
@@ -251,7 +251,7 @@ describe("PUT /api/discussion/:discussionId", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue({
+        discussion1_model_1.discussionModel.findById.mockResolvedValue({
             author: {
                 toString: () => "user123",
             },
@@ -279,7 +279,7 @@ describe("DELETE /api/discussion/:discussionId", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue({
+        discussion1_model_1.discussionModel.findById.mockResolvedValue({
             author: {
                 toString: () => "user123",
             },
@@ -301,7 +301,7 @@ describe("DELETE /api/discussion/:discussionId", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue(null);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(null);
         const res = yield (0, supertest_1.default)(app_1.default)
             .delete("/api/discussion/discussion123")
             .set("Cookie", "token=fake_token");
@@ -318,7 +318,7 @@ describe("DELETE /api/discussion/:discussionId", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue({
+        discussion1_model_1.discussionModel.findById.mockResolvedValue({
             author: {
                 toString: () => "anotherUser",
             },
@@ -347,7 +347,7 @@ describe("POST /api/discussion/:discussionId/like", () => {
             likes: [],
             save: jest.fn().mockResolvedValue(true),
         };
-        discussion_model_1.discussionModel.findById.mockResolvedValue(discussion);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(discussion);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/like")
             .set("Cookie", "token=fake_token");
@@ -375,7 +375,7 @@ describe("POST /api/discussion/:discussionId/like", () => {
             ],
             save: jest.fn().mockResolvedValue(true),
         };
-        discussion_model_1.discussionModel.findById.mockResolvedValue(discussion);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(discussion);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/like")
             .set("Cookie", "token=fake_token");
@@ -393,7 +393,7 @@ describe("POST /api/discussion/:discussionId/like", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue(null);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(null);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/like")
             .set("Cookie", "token=fake_token");
@@ -417,7 +417,7 @@ describe("POST /api/discussion/:discussionId/bookmark", () => {
             bookmarks: [],
             save: jest.fn().mockResolvedValue(true),
         };
-        discussion_model_1.discussionModel.findById.mockResolvedValue(discussion);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(discussion);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/bookmark")
             .set("Cookie", "token=fake_token");
@@ -444,7 +444,7 @@ describe("POST /api/discussion/:discussionId/bookmark", () => {
             ],
             save: jest.fn().mockResolvedValue(true),
         };
-        discussion_model_1.discussionModel.findById.mockResolvedValue(discussion);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(discussion);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/bookmark")
             .set("Cookie", "token=fake_token");
@@ -462,7 +462,7 @@ describe("POST /api/discussion/:discussionId/bookmark", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue(null);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(null);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/bookmark")
             .set("Cookie", "token=fake_token");
@@ -487,7 +487,7 @@ describe("POST /api/discussion/:discussionId/report", () => {
             reportedBy: [],
             save: jest.fn().mockResolvedValue(true),
         };
-        discussion_model_1.discussionModel.findById.mockResolvedValue(discussion);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(discussion);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/report")
             .set("Cookie", "token=fake_token");
@@ -512,7 +512,7 @@ describe("POST /api/discussion/:discussionId/report", () => {
                 },
             ],
         };
-        discussion_model_1.discussionModel.findById.mockResolvedValue(discussion);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(discussion);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/report")
             .set("Cookie", "token=fake_token");
@@ -529,7 +529,7 @@ describe("POST /api/discussion/:discussionId/report", () => {
                 _id: "user123",
             }),
         });
-        discussion_model_1.discussionModel.findById.mockResolvedValue(null);
+        discussion1_model_1.discussionModel.findById.mockResolvedValue(null);
         const res = yield (0, supertest_1.default)(app_1.default)
             .post("/api/discussion/discussion123/report")
             .set("Cookie", "token=fake_token");
@@ -548,7 +548,7 @@ describe("GET /api/discussion/search", () => {
         const populate = jest.fn().mockReturnValue({
             sort,
         });
-        discussion_model_1.discussionModel.find.mockReturnValue({
+        discussion1_model_1.discussionModel.find.mockReturnValue({
             populate,
         });
         const res = yield (0, supertest_1.default)(app_1.default).get("/api/discussion/search?q=binary");

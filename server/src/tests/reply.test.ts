@@ -3,7 +3,7 @@ import app from "../app";
 import jwt from "jsonwebtoken";
 import { userModel } from "../models/user.model";
 import { replyModel } from "../models/reply.model";
-import { discussionModel } from "../models/discussion.model";
+import { discussionModel } from "../models/discussion1.model";
 
 jest.mock("../models/user.model");
 jest.mock("../models/reply.model");

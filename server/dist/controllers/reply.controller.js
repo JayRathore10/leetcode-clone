@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reportReply = exports.toggleLikeReply = exports.deleteReply = exports.updateReply = exports.getRepliesByDiscussion = exports.createReply = void 0;
 const reply_model_1 = require("../models/reply.model");
-const discussion_model_1 = require("../models/discussion.model");
+const discussion1_model_1 = require("../models/discussion1.model");
 const createReply = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { discussionId, content, parentReply } = req.body;
@@ -27,7 +27,7 @@ const createReply = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                 message: "Discussion Id and content are required",
             });
         }
-        const discussion = yield discussion_model_1.discussionModel.findById(discussionId);
+        const discussion = yield discussion1_model_1.discussionModel.findById(discussionId);
         if (!discussion) {
             return res.status(404).json({
                 success: false,
@@ -152,7 +152,7 @@ const deleteReply = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             });
         }
         yield reply.deleteOne();
-        yield discussion_model_1.discussionModel.findByIdAndUpdate(reply.discussion, {
+        yield discussion1_model_1.discussionModel.findByIdAndUpdate(reply.discussion, {
             $inc: { replyCount: -1 },
         });
         return res.status(200).json({

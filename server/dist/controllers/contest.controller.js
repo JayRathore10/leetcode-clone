@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMyContests = exports.unregisterContest = exports.registerContest = exports.deleteContest = exports.updateContest = exports.getContestById = exports.getAllContests = exports.createContest = void 0;
 const contest_model_1 = require("../models/contest.model");
-// Create Contest
 const createContest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, description, startTime, endTime, isPublic, problems, } = req.body;

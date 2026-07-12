@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reportDiscussion = exports.toggleBookmarkDiscussion = exports.toggleLikeDiscussion = exports.deleteDiscussion = exports.updateDiscussion = exports.searchDiscussions = exports.getDiscussionById = exports.getAllDiscussions = exports.createDiscussion = void 0;
-const discussion_model_1 = require("../models/discussion.model");
+const discussion1_model_1 = require("../models/discussion1.model");
 const createDiscussion = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, content, category, tags } = req.body;
@@ -26,7 +26,7 @@ const createDiscussion = (req, res, next) => __awaiter(void 0, void 0, void 0, f
                 message: "Unauthorized",
             });
         }
-        const discussion = yield discussion_model_1.discussionModel.create({
+        const discussion = yield discussion1_model_1.discussionModel.create({
             title,
             content,
             category,
@@ -54,13 +54,13 @@ const getAllDiscussions = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         if (category && category !== "All") {
             filter.category = category;
         }
-        const discussions = yield discussion_model_1.discussionModel
+        const discussions = yield discussion1_model_1.discussionModel
             .find(filter)
             .populate("author", "username name profilePic")
             .sort({ pinned: -1, createdAt: -1 })
             .skip(skip)
             .limit(limit);
-        const total = yield discussion_model_1.discussionModel.countDocuments(filter);
+        const total = yield discussion1_model_1.discussionModel.countDocuments(filter);
         return res.status(200).json({
             success: true,
             currentPage: page,
@@ -77,7 +77,7 @@ exports.getAllDiscussions = getAllDiscussions;
 const getDiscussionById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { discussionId } = req.params;
-        const discussion = yield discussion_model_1.discussionModel
+        const discussion = yield discussion1_model_1.discussionModel
             .findByIdAndUpdate(discussionId, { $inc: { views: 1 } }, { new: true })
             .populate("author", "username name profilePic");
         if (!discussion) {
@@ -105,7 +105,7 @@ const searchDiscussions = (req, res, next) => __awaiter(void 0, void 0, void 0, 
                 message: "Search query is required",
             });
         }
-        const discussions = yield discussion_model_1.discussionModel
+        const discussions = yield discussion1_model_1.discussionModel
             .find({
             $text: {
                 $search: search,
@@ -133,7 +133,7 @@ const updateDiscussion = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     try {
         const { discussionId } = req.params;
         const { title, content, category, tags } = req.body;
-        const discussion = yield discussion_model_1.discussionModel.findById(discussionId);
+        const discussion = yield discussion1_model_1.discussionModel.findById(discussionId);
         if (!discussion) {
             return res.status(404).json({
                 success: false,
@@ -172,7 +172,7 @@ const deleteDiscussion = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     var _a;
     try {
         const { discussionId } = req.params;
-        const discussion = yield discussion_model_1.discussionModel.findById(discussionId);
+        const discussion = yield discussion1_model_1.discussionModel.findById(discussionId);
         if (!discussion) {
             return res.status(404).json({
                 success: false,
@@ -199,7 +199,7 @@ exports.deleteDiscussion = deleteDiscussion;
 const toggleLikeDiscussion = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { discussionId } = req.params;
-        const discussion = yield discussion_model_1.discussionModel.findById(discussionId);
+        const discussion = yield discussion1_model_1.discussionModel.findById(discussionId);
         if (!discussion) {
             return res.status(404).json({
                 success: false,
@@ -238,7 +238,7 @@ const toggleBookmarkDiscussion = (req, res, next) => __awaiter(void 0, void 0, v
     var _a;
     try {
         const { discussionId } = req.params;
-        const discussion = yield discussion_model_1.discussionModel.findById(discussionId);
+        const discussion = yield discussion1_model_1.discussionModel.findById(discussionId);
         if (!discussion) {
             return res.status(404).json({
                 success: false,
@@ -277,7 +277,7 @@ const reportDiscussion = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     var _a;
     try {
         const { discussionId } = req.params;
-        const discussion = yield discussion_model_1.discussionModel.findById(discussionId);
+        const discussion = yield discussion1_model_1.discussionModel.findById(discussionId);
         if (!discussion) {
             return res.status(404).json({
                 success: false,

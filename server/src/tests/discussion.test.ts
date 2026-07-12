@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../app";
 import jwt from "jsonwebtoken";
-import { discussionModel } from "../models/discussion.model";
+import { discussionModel } from "../models/discussion1.model";
 import { userModel } from "../models/user.model";
 
 jest.mock("../models/discussion.model");

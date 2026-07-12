@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { contestModel } from "../models/contest.model";
 import { authRequest } from "../types/authRequest.type";
 
-// Create Contest
 export const createContest = async (
   req: authRequest,
   res: Response,

@@ -325,3 +325,5 @@ function App() {
 }
 
 export default App;
+
+// have to add Frontend for the contest section 

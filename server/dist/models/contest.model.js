@@ -41,12 +41,15 @@ const contestSchema = new mongoose_1.default.Schema({
         ref: "User",
         required: true,
     },
-    problems: [
-        {
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "Problem",
-        },
-    ],
+    problems: {
+        type: [
+            {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: "Question",
+            },
+        ],
+        required: true,
+    },
     participants: [
         {
             type: mongoose_1.default.Schema.Types.ObjectId,

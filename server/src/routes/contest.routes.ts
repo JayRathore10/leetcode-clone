@@ -15,10 +15,10 @@ export const contestRouter = Router();
 
 // Public Routes
 contestRouter.get("/", getAllContests);
-contestRouter.get("/:contestId", getContestById);
+contestRouter.get("/my/registered", isUserLoggedIn, getMyContests);
 
 // User Protected Routes
-contestRouter.get("/my/registered", isUserLoggedIn, getMyContests);
+contestRouter.get("/:contestId", getContestById);
 contestRouter.post("/:contestId/register", isUserLoggedIn, registerContest);
 contestRouter.delete("/:contestId/unregister", isUserLoggedIn, unregisterContest);
 

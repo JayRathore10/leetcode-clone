@@ -380,6 +380,6 @@ function App() {
 
 export default App;
 
-// have to add Frontend for the contest section 
+// Have to add contest frontend for Admin
 // Add the likes 
 // and minor fix

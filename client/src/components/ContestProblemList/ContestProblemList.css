@@ -1,0 +1,96 @@
+.contest-problem-list {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.problem-list-header {
+  display: flex;
+  padding: 1rem;
+  background-color: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.problem-row {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  align-items: center;
+}
+
+.problem-row:last-child {
+  border-bottom: none;
+}
+
+.problem-row:hover {
+  background-color: var(--hover-bg, rgba(255, 255, 255, 0.05));
+}
+
+.col-status {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+}
+
+.col-title {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.col-difficulty {
+  width: 20%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.problem-title-text {
+  color: var(--text-primary);
+  transition: color 0.2s;
+}
+
+.problem-row:hover .problem-title-text {
+  color: var(--accent);
+}
+
+.status-icon.solved {
+  color: #22c55e;
+  font-size: 1.25rem;
+}
+
+.status-dash {
+  color: var(--text-secondary);
+}
+
+.diff-badge {
+  font-size: 0.85rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.diff-easy {
+  color: #22c55e;
+}
+
+.diff-medium {
+  color: #eab308;
+}
+
+.diff-hard {
+  color: #ef4444;
+}
+
+.no-problems {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+}

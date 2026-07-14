@@ -71,6 +71,24 @@ const Contests = lazy(() =>
   }))
 );
 
+const ContestDetail = lazy(() =>
+  import("./pages/ContestDetail/ContestDetail").then((module) => ({
+    default: module.ContestDetail,
+  }))
+);
+
+const ContestLeaderboard = lazy(() =>
+  import("./pages/ContestLeaderboard/ContestLeaderboard").then((module) => ({
+    default: module.ContestLeaderboard,
+  }))
+);
+
+const ContestResults = lazy(() =>
+  import("./pages/ContestResults/ContestResults").then((module) => ({
+    default: module.ContestResults,
+  }))
+);
+
 const Discuss = lazy(() =>
   import("./pages/Discuss/Discuss").then((module) => ({
     default: module.Discuss,
@@ -278,6 +296,42 @@ function App() {
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
               <Contests />
+            </ProtectedNavigate>
+          }
+        />
+
+        <Route
+          path="/contest/:contestId"
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn}>
+              <ContestDetail />
+            </ProtectedNavigate>
+          }
+        />
+
+        <Route
+          path="/contest/:contestId/problem/:id"
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn}>
+              <ProblemDetail isloggedIn={isloggedIn} />
+            </ProtectedNavigate>
+          }
+        />
+
+        <Route
+          path="/contest/:contestId/leaderboard"
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn}>
+              <ContestLeaderboard />
+            </ProtectedNavigate>
+          }
+        />
+
+        <Route
+          path="/contest/:contestId/results"
+          element={
+            <ProtectedNavigate isloggedIn={isloggedIn}>
+              <ContestResults />
             </ProtectedNavigate>
           }
         />

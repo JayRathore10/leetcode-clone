@@ -1,51 +1,86 @@
-.contests-page {
-  min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
+.contests-page-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--text-primary);
 }
 
-.coming-soon-card {
-  background-color: #34435E;
-  padding: 48px 64px;
-  border-radius: 16px;
+.contests-header-section {
   text-align: center;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  margin-bottom: 2rem;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+  border-radius: 12px;
+  border: 1px solid var(--border);
 }
 
-.coming-soon-card h1 {
-  font-size: 28px;
-  margin-bottom: 12px;
+.contests-header-section h1 {
+  font-size: 2.5rem;
+  margin: 0 0 1rem 0;
+  background: linear-gradient(to right, #3b82f6, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.coming-soon-text {
-  font-size: 22px;
-  font-weight: 600;
-  color: #FFFFFF;
-  margin-bottom: 12px;
+.contests-header-section p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
-.coming-soon-subtext {
-  font-size: 14px;
-  color: #CBD5E1;
-  max-width: 420px;
+.contests-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
 }
 
-.back-home-btn {
-  margin-top: 20px;
-  padding: 10px 18px;
-  background-color: #34435e;
-  color: #ffffff;
-  border: solid rgb(198, 198, 243) 1px;
-  border-radius: 6px;
-  font-size: 14px;
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
 
-.back-home-btn:hover {
-  background-color: #3f5070;
-  transform: translateY(-1px);
+.tab-btn:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
 }
 
+.tab-btn.active {
+  background-color: var(--accent);
+  color: var(--text-inverse);
+}
+
+.contests-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.no-contests {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.error-message {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  text-align: center;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}

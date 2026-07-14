@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CodeEditor } from "../../components/CodeEditor/CodeEditor";
 import { Header } from "../../components/Header/Header";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { env } from "../../configs/env.config";
 import { TestCasePanel } from "../../components/TestCasePanel/TestCasePanel";
@@ -10,7 +10,7 @@ import { SubmitPanel } from "../../components/SubmitPanel/SubmitPanel";
 import { LoginProps } from "../Login/Login";
 import { MaintenanceAlert } from "../../components/MaintenanceAlert/MaintenanceAlert";
 import { motion } from "framer-motion";
-import { FiPlay, FiSend, FiChevronDown } from "react-icons/fi";
+import { FiPlay, FiSend, FiChevronDown, FiArrowLeft } from "react-icons/fi";
 
 import {
   Panel,
@@ -52,8 +52,9 @@ export function ProblemDetail({ isloggedIn }: LoginProps) {
 
   const [question, setQuestion] = useState<Question>();
 
-  const { id } = useParams<{ id: string }>();
+  const { id, contestId } = useParams<{ id: string, contestId?: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const successRate = location.state?.successRate;
   const questionNumber = location.state?.questionNumber;
@@ -162,6 +163,25 @@ export function ProblemDetail({ isloggedIn }: LoginProps) {
             className="ws-left"
           >
             <div className="ws-left-header">
+              {contestId && (
+                <button 
+                  className="ws-back-contest-btn"
+                  onClick={() => navigate(`/contest/${contestId}`)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--text-secondary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    cursor: 'pointer',
+                    padding: '0 0 1rem 0',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  <FiArrowLeft /> Back to Contest
+                </button>
+              )}
               <div className="ws-problem-meta">
                 <span className="ws-problem-num">
                   {questionNumber}.

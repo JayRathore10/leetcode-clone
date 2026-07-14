@@ -13,7 +13,6 @@ import { isUserLoggedIn } from "../middleware/auth.middleware";
 
 export const contestRouter = Router();
 
-// Public Routes
 contestRouter.get("/", getAllContests);
 contestRouter.get("/my/registered", isUserLoggedIn, getMyContests);
 

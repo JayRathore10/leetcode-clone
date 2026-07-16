@@ -9,7 +9,7 @@ import {
   unregisterContest,
   updateContest,
 } from "../controllers/contest.controller";
-import { isUserLoggedIn } from "../middleware/auth.middleware";
+import { isAdminLoggedIn, isUserLoggedIn } from '../middleware/auth.middleware';
 
 export const contestRouter = Router();
 
@@ -23,6 +23,6 @@ contestRouter.delete("/:contestId/unregister", isUserLoggedIn, unregisterContest
 
 // Admin Protected Routes
 // (Replace isUserLoggedIn with isAdmin middleware when you create one)
-contestRouter.post("/", isUserLoggedIn, createContest);
-contestRouter.put("/:contestId", isUserLoggedIn, updateContest);
-contestRouter.delete("/:contestId", isUserLoggedIn, deleteContest);
+contestRouter.post("/", isAdminLoggedIn, createContest);
+contestRouter.put("/:contestId", isAdminLoggedIn, updateContest);
+contestRouter.delete("/:contestId", isAdminLoggedIn, deleteContest);

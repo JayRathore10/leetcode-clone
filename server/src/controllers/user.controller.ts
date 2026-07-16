@@ -3,17 +3,6 @@ import { userModel } from "../models/user.model";
 import { submissionModel } from "../models/submission.model";
 import { authRequest } from "../types/authRequest.type";
 
-export const test = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    return res.status(200).json({
-      success: true,
-      message: "Hello"
-    })
-  } catch (err) {
-    next(err);
-  }
-}
-
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await userModel.find();

@@ -8,7 +8,8 @@ import { testCaseModel } from "../models/testCase.model";
 jest.mock("../models/question.model.ts");
 jest.mock("../models/testCase.model.ts");
 jest.mock("../middleware/auth.middleware", () => ({
-  isUserLoggedIn:  (req: any, res: any, next: any) => next()
+  isUserLoggedIn: (req: any, res: any, next: any) => next(),
+  isAdminLoggedIn: (req: any, res: any, next: any) => next(),
 }));
 jest.mock("axios");
 
@@ -329,7 +330,7 @@ describe("POST /api/question/run", () => {
       });
 
     expect(res.body.success).toBe(true);
-    expect(res.body.result.length).toBe(2);
+    expect(res.body.results.length).toBe(2);
   });
 
 });

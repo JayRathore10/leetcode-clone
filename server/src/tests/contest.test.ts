@@ -58,6 +58,7 @@ describe("POST /api/contest", () => {
   it("should return 401 if user is not found", async () => {
     (jwt.verify as jest.Mock).mockReturnValue({
       email: "admin@gmail.com",
+      role: "admin"
     });
 
     (userModel.findOne as jest.Mock).mockReturnValue({
@@ -73,7 +74,7 @@ describe("POST /api/contest", () => {
 
     expect(res.status).toBe(401);
     expect(res.body.success).toBe(false);
-    expect(res.body.message).toBe("User not found");
+    expect(res.body.message).toBe("User is not found");
   });
 });
 
@@ -181,13 +182,13 @@ describe("PUT /api/contest/:contestId", () => {
     const res = await request(app)
       .put("/api/contest/contest123")
       .set("Cookie", "token=fake_token")
-       .send({
+      .send({
         title: "Updated Contest",
         description: "Updated Description",
         startTime: new Date("2030-01-02T10:00:00.000Z"),
         endTime: new Date("2030-01-02T12:00:00.000Z"),
       });
-;
+    ;
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);

@@ -7,7 +7,7 @@ import { discussionModel } from "../models/discussion1.model";
 
 jest.mock("../models/user.model");
 jest.mock("../models/reply.model");
-jest.mock("../models/discussion.model");
+jest.mock("../models/discussion1.model");
 jest.mock("jsonwebtoken");
 
 describe("POST /api/reply", () => {

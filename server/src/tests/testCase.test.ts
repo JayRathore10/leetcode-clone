@@ -6,7 +6,8 @@ import { testCaseModel } from "../models/testCase.model";
 jest.mock("../models/question.model.ts");
 jest.mock("../models/testCase.model.ts");
 jest.mock("../middleware/auth.middleware", () => ({
-  isUserLoggedIn:  (req: any, res: any, next: any) => next()
+  isUserLoggedIn:  (req: any, res: any, next: any) => next() , 
+  isAdminLoggedIn: (req: any, res: any, next: any) => next(),
 }));
 jest.mock("axios");
 

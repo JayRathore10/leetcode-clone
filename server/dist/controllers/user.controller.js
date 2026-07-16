@@ -9,21 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editProfile = exports.getUserProfile = exports.getAllSubmission = exports.getByUsername = exports.getAllUsers = exports.test = void 0;
+exports.editProfile = exports.getUserProfile = exports.getAllSubmission = exports.getByUsername = exports.getAllUsers = void 0;
 const user_model_1 = require("../models/user.model");
 const submission_model_1 = require("../models/submission.model");
-const test = (req, res, next) => {
-    try {
-        return res.status(200).json({
-            success: true,
-            message: "Hello"
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-};
-exports.test = test;
 const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield user_model_1.userModel.find();

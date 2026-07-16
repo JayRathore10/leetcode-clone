@@ -13,6 +13,6 @@ exports.contestRouter.post("/:contestId/register", auth_middleware_1.isUserLogge
 exports.contestRouter.delete("/:contestId/unregister", auth_middleware_1.isUserLoggedIn, contest_controller_1.unregisterContest);
 // Admin Protected Routes
 // (Replace isUserLoggedIn with isAdmin middleware when you create one)
-exports.contestRouter.post("/", auth_middleware_1.isUserLoggedIn, contest_controller_1.createContest);
-exports.contestRouter.put("/:contestId", auth_middleware_1.isUserLoggedIn, contest_controller_1.updateContest);
-exports.contestRouter.delete("/:contestId", auth_middleware_1.isUserLoggedIn, contest_controller_1.deleteContest);
+exports.contestRouter.post("/", auth_middleware_1.isAdminLoggedIn, contest_controller_1.createContest);
+exports.contestRouter.put("/:contestId", auth_middleware_1.isAdminLoggedIn, contest_controller_1.updateContest);
+exports.contestRouter.delete("/:contestId", auth_middleware_1.isAdminLoggedIn, contest_controller_1.deleteContest);

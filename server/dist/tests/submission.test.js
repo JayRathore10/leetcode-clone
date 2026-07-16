@@ -20,7 +20,11 @@ jest.mock("../middleware/auth.middleware", () => ({
     isUserLoggedIn: (req, res, next) => {
         req.user = { _id: "user123" };
         next();
-    }
+    },
+    isAdminLoggedIn: (req, res, next) => {
+        req.user = { _id: "admin123", role: "admin" };
+        next();
+    },
 }));
 describe("POST /api/submission", () => {
     afterEach(() => {
@@ -93,8 +97,9 @@ describe("GET /api/submission", () => {
             .get("/api/submission");
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
-            success: false,
-            message: "User don't have any submissions"
+            success: true,
+            message: "User don't have any submissions",
+            submissions: []
         });
     }));
     it("should return 200 with user submissions", () => __awaiter(void 0, void 0, void 0, function* () {

@@ -19,7 +19,8 @@ const testCase_model_1 = require("../models/testCase.model");
 jest.mock("../models/question.model.ts");
 jest.mock("../models/testCase.model.ts");
 jest.mock("../middleware/auth.middleware", () => ({
-    isUserLoggedIn: (req, res, next) => next()
+    isUserLoggedIn: (req, res, next) => next(),
+    isAdminLoggedIn: (req, res, next) => next(),
 }));
 jest.mock("axios");
 const mockedAxios = axios_1.default;

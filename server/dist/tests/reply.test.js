@@ -20,7 +20,7 @@ const reply_model_1 = require("../models/reply.model");
 const discussion1_model_1 = require("../models/discussion1.model");
 jest.mock("../models/user.model");
 jest.mock("../models/reply.model");
-jest.mock("../models/discussion.model");
+jest.mock("../models/discussion1.model");
 jest.mock("jsonwebtoken");
 describe("POST /api/reply", () => {
     it("should create reply successfully", () => __awaiter(void 0, void 0, void 0, function* () {

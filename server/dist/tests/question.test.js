@@ -20,7 +20,8 @@ const testCase_model_1 = require("../models/testCase.model");
 jest.mock("../models/question.model.ts");
 jest.mock("../models/testCase.model.ts");
 jest.mock("../middleware/auth.middleware", () => ({
-    isUserLoggedIn: (req, res, next) => next()
+    isUserLoggedIn: (req, res, next) => next(),
+    isAdminLoggedIn: (req, res, next) => next(),
 }));
 jest.mock("axios");
 const mockedAxios = axios_1.default;
@@ -285,7 +286,7 @@ describe("POST /api/question/run", () => {
             code: "correct code"
         });
         expect(res.body.success).toBe(true);
-        expect(res.body.result.length).toBe(2);
+        expect(res.body.results.length).toBe(2);
     }));
 });
 describe("POST /api/question/submit", () => {

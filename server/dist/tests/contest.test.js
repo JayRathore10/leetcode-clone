@@ -63,6 +63,7 @@ describe("POST /api/contest", () => {
     it("should return 401 if user is not found", () => __awaiter(void 0, void 0, void 0, function* () {
         jsonwebtoken_1.default.verify.mockReturnValue({
             email: "admin@gmail.com",
+            role: "admin"
         });
         user_model_1.userModel.findOne.mockReturnValue({
             select: jest.fn().mockResolvedValue(null),
@@ -75,7 +76,7 @@ describe("POST /api/contest", () => {
         });
         expect(res.status).toBe(401);
         expect(res.body.success).toBe(false);
-        expect(res.body.message).toBe("User not found");
+        expect(res.body.message).toBe("User is not found");
     }));
 });
 describe("GET /api/contest", () => {

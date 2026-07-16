@@ -17,7 +17,7 @@ const app_1 = __importDefault(require("../app"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const discussion1_model_1 = require("../models/discussion1.model");
 const user_model_1 = require("../models/user.model");
-jest.mock("../models/discussion.model");
+jest.mock("../models/discussion1.model");
 jest.mock("../models/user.model");
 jest.mock("jsonwebtoken");
 describe("POST /api/discussion", () => {

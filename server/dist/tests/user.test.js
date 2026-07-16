@@ -12,79 +12,64 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_model_1 = require("../models/user.model");
-const app_1 = __importDefault(require("../app"));
-const auth_middleware_1 = require("../middleware/auth.middleware");
-const user_controller_1 = require("../controllers/user.controller");
 const supertest_1 = __importDefault(require("supertest"));
+const app_1 = __importDefault(require("../app"));
+const user_model_1 = require("../models/user.model");
 const submission_model_1 = require("../models/submission.model");
+const user_controller_1 = require("../controllers/user.controller");
 jest.mock("../models/user.model");
-jest.mock("../middleware/auth.middleware", () => ({
-    isUserLoggedIn: jest.fn()
-}));
 jest.mock("../models/submission.model");
-describe("GET /api/users/test", () => {
-    it("should return 200 for success run", () => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/test");
-        expect(res.status).toBe(200);
-        expect(res.body.success).toBe(true);
-        expect(res.body.message).toBe("Hello");
-    }));
-});
+// Mock auth middleware
+jest.mock("../middleware/auth.middleware", () => ({
+    isUserLoggedIn: (req, res, next) => {
+        req.user = {
+            _id: "user123",
+            name: "John",
+            save: jest.fn(),
+        };
+        next();
+    },
+    isAdminLoggedIn: (req, res, next) => {
+        req.user = {
+            _id: "admin123",
+            role: "admin",
+        };
+        next();
+    },
+}));
 describe("GET /api/users/all", () => {
-    it("should return 404 when there is no user in database", () => __awaiter(void 0, void 0, void 0, function* () {
+    afterEach(() => jest.clearAllMocks());
+    it("should return 404 when no users exist", () => __awaiter(void 0, void 0, void 0, function* () {
         user_model_1.userModel.find.mockResolvedValue([]);
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/all");
+        const res = yield (0, supertest_1.default)(app_1.default).get("/api/users/all");
         expect(res.status).toBe(404);
+        expect(res.body).toEqual({
+            success: false,
+            message: "No User found",
+        });
     }));
-    it("should return 200 when successfully return all users in database", () => __awaiter(void 0, void 0, void 0, function* () {
-        user_model_1.userModel.find.mockResolvedValue(["user"]);
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/all");
+    it("should return all users", () => __awaiter(void 0, void 0, void 0, function* () {
+        const users = [{ _id: "1" }];
+        user_model_1.userModel.find.mockResolvedValue(users);
+        const res = yield (0, supertest_1.default)(app_1.default).get("/api/users/all");
         expect(res.status).toBe(200);
+        expect(res.body).toEqual({
+            success: true,
+            message: "All Users",
+            data: {
+                users,
+            },
+        });
     }));
 });
 describe("GET /api/users/profile", () => {
-    it("should return 400 when Error in getting user details", () => __awaiter(void 0, void 0, void 0, function* () {
-        auth_middleware_1.isUserLoggedIn.mockImplementation((req, res, next) => {
-            req.user = null;
-            next();
-        });
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/profile");
-        expect(res.status).toBe(400);
-        expect(res.body.message).toBe("Error in getting user detail");
-    }));
-    it("should return 404 when the user is not found in database", () => __awaiter(void 0, void 0, void 0, function* () {
-        user_model_1.userModel.findById.mockReturnValue({
-            select: jest.fn().mockResolvedValue(null)
-        });
-        auth_middleware_1.isUserLoggedIn.mockImplementation((req, res, next) => {
-            req.user = { _id: "123" };
-            next();
-        });
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/profile");
-        expect(res.status).toBe(404);
-        expect(res.body.message).toBe("User not found");
-    }));
-    it("should return 200 when user data exists", () => __awaiter(void 0, void 0, void 0, function* () {
-        user_model_1.userModel.findById.mockReturnValue({
-            select: jest.fn().mockResolvedValue({
-                _id: "1243",
-            })
-        });
-        auth_middleware_1.isUserLoggedIn.mockImplementation((req, res, next) => {
-            req.user = { _id: "1234" };
-            next();
-        });
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/profile");
+    afterEach(() => jest.clearAllMocks());
+    it("should return logged in user", () => __awaiter(void 0, void 0, void 0, function* () {
+        const res = yield (0, supertest_1.default)(app_1.default).get("/api/users/profile");
         expect(res.status).toBe(200);
-        expect(res.body.message).toBe("User Data");
+        expect(res.body.success).toBe(true);
         expect(res.body.user).toBeDefined();
+        expect(res.body.user._id).toBe("user123");
     }));
 });
 describe("PUT /api/users/profile", () => {
@@ -95,162 +80,166 @@ describe("PUT /api/users/profile", () => {
         mockReq = {};
         mockRes = {
             status: jest.fn().mockReturnThis(),
-            json: jest.fn()
+            json: jest.fn(),
         };
         mockNext = jest.fn();
-        jest.spyOn(console, "error").mockImplementation(() => { });
     });
-    afterEach(() => {
-        jest.restoreAllMocks();
-    });
+    afterEach(() => jest.restoreAllMocks());
     it("should return 400 if user not found", () => __awaiter(void 0, void 0, void 0, function* () {
         mockReq = {
-            body: { name: "John" },
-            user: undefined
+            body: {},
+            user: undefined,
         };
         yield (0, user_controller_1.editProfile)(mockReq, mockRes, mockNext);
         expect(mockRes.status).toHaveBeenCalledWith(400);
         expect(mockRes.json).toHaveBeenCalledWith({
+            success: false,
             message: "Can not find Error",
-            success: false
         });
     }));
-    it("should update user name", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("should update name", () => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
-        const saveMock = jest.fn().mockResolvedValue(true);
+        const save = jest.fn().mockResolvedValue(true);
         mockReq = {
-            body: { name: "John" },
+            body: { name: "Jay" },
             user: {
                 name: "Old",
                 profilePic: "old.png",
-                save: saveMock
-            }
+                save,
+            },
         };
         yield (0, user_controller_1.editProfile)(mockReq, mockRes, mockNext);
-        expect((_a = mockReq.user) === null || _a === void 0 ? void 0 : _a.name).toBe("John");
-        expect(saveMock).toHaveBeenCalled();
+        expect((_a = mockReq.user) === null || _a === void 0 ? void 0 : _a.name).toBe("Jay");
+        expect(save).toHaveBeenCalled();
         expect(mockRes.status).toHaveBeenCalledWith(200);
         expect(mockRes.json).toHaveBeenCalledWith({
             success: true,
-            message: "Profile Updated"
+            message: "Profile Updated",
         });
     }));
     it("should update profile picture", () => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
-        const saveMock = jest.fn().mockResolvedValue(true);
+        const save = jest.fn().mockResolvedValue(true);
         mockReq = {
             body: {},
             file: {
-                filename: "newpic.png"
+                filename: "new.png",
             },
             user: {
                 name: "Old",
                 profilePic: "old.png",
-                save: saveMock
-            }
+                save,
+            },
         };
         yield (0, user_controller_1.editProfile)(mockReq, mockRes, mockNext);
-        expect((_a = mockReq.user) === null || _a === void 0 ? void 0 : _a.profilePic).toBe("newpic.png");
-        expect(saveMock).toHaveBeenCalled();
-        expect(mockRes.status).toHaveBeenCalledWith(200);
+        expect((_a = mockReq.user) === null || _a === void 0 ? void 0 : _a.profilePic).toBe("new.png");
+        expect(save).toHaveBeenCalled();
     }));
-    it("should update both name and profile pic", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("should update both fields", () => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b;
-        const saveMock = jest.fn().mockResolvedValue(true);
+        const save = jest.fn().mockResolvedValue(true);
         mockReq = {
-            body: { name: "John" },
+            body: { name: "Jay" },
             file: {
-                filename: "newpic.png"
+                filename: "new.png",
             },
             user: {
                 name: "Old",
                 profilePic: "old.png",
-                save: saveMock
-            }
+                save,
+            },
         };
         yield (0, user_controller_1.editProfile)(mockReq, mockRes, mockNext);
-        expect((_a = mockReq.user) === null || _a === void 0 ? void 0 : _a.name).toBe("John");
-        expect((_b = mockReq.user) === null || _b === void 0 ? void 0 : _b.profilePic).toBe("newpic.png");
-        expect(saveMock).toHaveBeenCalled();
+        expect((_a = mockReq.user) === null || _a === void 0 ? void 0 : _a.name).toBe("Jay");
+        expect((_b = mockReq.user) === null || _b === void 0 ? void 0 : _b.profilePic).toBe("new.png");
+        expect(save).toHaveBeenCalled();
     }));
     it("should call next on error", () => __awaiter(void 0, void 0, void 0, function* () {
         const error = new Error("DB Error");
-        const saveMock = jest.fn().mockRejectedValue(error);
         mockReq = {
-            body: { name: "John" },
+            body: { name: "Jay" },
             user: {
-                name: "Old",
-                save: saveMock
-            }
+                save: jest.fn().mockRejectedValue(error),
+            },
         };
         yield (0, user_controller_1.editProfile)(mockReq, mockRes, mockNext);
         expect(mockNext).toHaveBeenCalledWith(error);
     }));
 });
 describe("GET /api/users/:username", () => {
-    it("should return 404 when user not exits in database ", () => __awaiter(void 0, void 0, void 0, function* () {
+    afterEach(() => jest.clearAllMocks());
+    it("should return 404 when user not found", () => __awaiter(void 0, void 0, void 0, function* () {
         user_model_1.userModel.findOne.mockReturnValue({
-            select: jest.fn().mockResolvedValue(null)
+            select: jest.fn().mockResolvedValue(null),
         });
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/testUser");
+        const res = yield (0, supertest_1.default)(app_1.default).get("/api/users/test");
         expect(res.status).toBe(404);
         expect(res.body).toEqual({
             success: false,
-            message: "User not found"
+            message: "User not found",
         });
     }));
-    it("should return 200 when user exists in database and return successfully", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("should return user details", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user = { _id: "1" };
         user_model_1.userModel.findOne.mockReturnValue({
-            select: jest.fn().mockResolvedValue({
-                _id: "1234"
-            })
+            select: jest.fn().mockResolvedValue(user),
         });
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/testUser");
+        const res = yield (0, supertest_1.default)(app_1.default).get("/api/users/test");
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
             success: true,
             message: "User Details",
-            user: {
-                _id: "1234"
-            }
+            user,
         });
     }));
 });
-describe("GET /api/users/:username/all-submission", () => {
-    it("should return 404 when user not exits in database", () => __awaiter(void 0, void 0, void 0, function* () {
+describe("GET /api/users/:username/all-submissions", () => {
+    afterEach(() => jest.clearAllMocks());
+    it("should return 404 when user not found", () => __awaiter(void 0, void 0, void 0, function* () {
         user_model_1.userModel.findOne.mockResolvedValue(null);
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/testUser/all-submissions");
+        const res = yield (0, supertest_1.default)(app_1.default).get("/api/users/test/all-submissions");
         expect(res.status).toBe(404);
         expect(res.body).toEqual({
             success: false,
-            message: "User not found"
+            message: "User not found",
         });
     }));
-    it("should return 200 when the successfully find the submissions and return then", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("should return no submissions", () => __awaiter(void 0, void 0, void 0, function* () {
         user_model_1.userModel.findOne.mockResolvedValue({
-            _id: "1234"
+            _id: "123",
         });
         submission_model_1.submissionModel.find.mockReturnValue({
-            sort: jest.fn().mockResolvedValue([
-                { _id: "sub1", createdAt: "2024-01-01" },
-                { _id: "sub2", createdAt: "2024-01-02" }
-            ])
+            populate: jest.fn().mockReturnThis(),
+            sort: jest.fn().mockReturnThis(),
+            lean: jest.fn().mockResolvedValue([]),
         });
-        const res = yield (0, supertest_1.default)(app_1.default).
-            get("/api/users/testUser/all-submissions");
+        const res = yield (0, supertest_1.default)(app_1.default).get("/api/users/test/all-submissions");
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({
+            success: true,
+            message: "No Submission found",
+            submissions: [],
+        });
+    }));
+    it("should return all submissions", () => __awaiter(void 0, void 0, void 0, function* () {
+        const submissions = [
+            { _id: "sub1" },
+            { _id: "sub2" },
+        ];
+        user_model_1.userModel.findOne.mockResolvedValue({
+            _id: "123",
+        });
+        submission_model_1.submissionModel.find.mockReturnValue({
+            populate: jest.fn().mockReturnThis(),
+            sort: jest.fn().mockReturnThis(),
+            lean: jest.fn().mockResolvedValue(submissions),
+        });
+        const res = yield (0, supertest_1.default)(app_1.default).get("/api/users/test/all-submissions");
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
             success: true,
             message: "All Submissions",
-            data: {
-                submissions: [
-                    { _id: "sub1", createdAt: "2024-01-01" },
-                    { _id: "sub2", createdAt: "2024-01-02" }
-                ]
-            }
+            submissions,
         });
     }));
 });

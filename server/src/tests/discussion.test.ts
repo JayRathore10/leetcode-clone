@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { discussionModel } from "../models/discussion1.model";
 import { userModel } from "../models/user.model";
 
-jest.mock("../models/discussion.model");
+jest.mock("../models/discussion1.model");
 jest.mock("../models/user.model");
 jest.mock("jsonwebtoken");
 

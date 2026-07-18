@@ -383,6 +383,3 @@ export default App;
 // Have to add contest frontend for Admin
 // Add the likes 
 // Have to run the run the contests and admin panel complete with 
-
-// have to add admin middleware too
-// some more changes

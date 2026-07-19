@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { adminService } from "../../../services/admin.service";
 import { User } from "../../../configs/admin.types";
+import { env } from "../../../configs/env.config";
 import "./AdminUsers.css";
 
 export function AdminUsers() {
@@ -46,6 +47,7 @@ export function AdminUsers() {
       if (res.success) {
         setUsers(users.filter(u => u._id !== id));
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error deleting user:", error);
       alert(error.response?.data?.message || "Failed to delete user");
@@ -81,7 +83,7 @@ export function AdminUsers() {
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                       {user.profilePic ? (
                         <img 
-                          src={user.profilePic.startsWith("http") ? user.profilePic : `http://localhost:5000/images/${user.profilePic}`} 
+                          src={user.profilePic.startsWith("http") ? user.profilePic : `${env.backendUrl}/images/${user.profilePic}`} 
                           alt={user.username} 
                           style={{ width: "32px", height: "32px", borderRadius: "50%", objectFit: "cover" }}
                         />

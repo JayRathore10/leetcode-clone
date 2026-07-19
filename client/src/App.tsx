@@ -433,6 +433,7 @@ function App() {
 
 export default App;
 
-// Have to add contest frontend for Admin
-// Add the likes 
+// Add the likes to reply 
 // Have to run the run the contests and admin panel complete with 
+// have to add direct access to  admin 
+// and also add images to all user in admin sight

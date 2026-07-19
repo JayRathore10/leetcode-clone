@@ -76,7 +76,6 @@ const replySchema = new mongoose.Schema<ReplyInterface>(
 
 // Indexes
 replySchema.index({ discussion: 1, createdAt: 1 });
-replySchema.index({ parentReply: 1 });
 
 export const replyModel = mongoose.model<ReplyInterface>(
   "Reply",

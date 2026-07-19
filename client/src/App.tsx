@@ -156,6 +156,7 @@ const ProtectedNavigate = ({
 
 interface AdminProtectedRouteProps {
   isloggedIn: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user: any;
   children: ReactNode;
 }
@@ -168,6 +169,7 @@ const AdminProtectedRoute = ({ isloggedIn, user, children }: AdminProtectedRoute
 
 function App() {
   const [isloggedIn, setIsloggedIn] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 

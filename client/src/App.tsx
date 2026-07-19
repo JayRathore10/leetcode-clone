@@ -436,4 +436,3 @@ export default App;
 // Add the likes to reply 
 // Have to run the run the contests and admin panel complete with 
 // have to add direct access to  admin 
-// and also add images to all user in admin sight

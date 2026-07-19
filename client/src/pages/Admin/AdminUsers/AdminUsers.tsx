@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { adminService } from "../../../services/admin.service";
 import { User } from "../../../configs/admin.types";
 import { env } from "../../../configs/env.config";
+import { AnimatePresence, motion } from "framer-motion";
+import { FiChevronDown } from "react-icons/fi";
 import "./AdminUsers.css";
 
 export function AdminUsers() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openRoleDropdown, setOpenRoleDropdown] = useState<string | null>(null);
+  const roleDropdownRef = useRef<HTMLDivElement>(null);
 
   const fetchUsers = async () => {
     try {
@@ -22,6 +26,23 @@ export function AdminUsers() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        roleDropdownRef.current &&
+        !roleDropdownRef.current.contains(e.target as Node)
+      ) {
+        setOpenRoleDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -41,13 +62,13 @@ export function AdminUsers() {
 
   const handleDelete = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this user? This cannot be undone.")) return;
-    
+
     try {
       const res = await adminService.deleteUser(id);
       if (res.success) {
         setUsers(users.filter(u => u._id !== id));
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error deleting user:", error);
       alert(error.response?.data?.message || "Failed to delete user");
@@ -82,9 +103,9 @@ export function AdminUsers() {
                   <td>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                       {user.profilePic ? (
-                        <img 
-                          src={user.profilePic.startsWith("http") ? user.profilePic : `${env.backendUrl}/images/${user.profilePic}`} 
-                          alt={user.username} 
+                        <img
+                          src={user.profilePic.startsWith("http") ? user.profilePic : `${env.backendUrl}/images/${user.profilePic}`}
+                          alt={user.username}
                           style={{ width: "32px", height: "32px", borderRadius: "50%", objectFit: "cover" }}
                         />
                       ) : (
@@ -101,14 +122,60 @@ export function AdminUsers() {
                   <td>{user.email}</td>
                   <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                   <td>
-                    <select 
-                      className="admin-role-select"
-                      value={user.role || "user"}
-                      onChange={(e) => handleRoleChange(user._id, e.target.value as "user" | "admin")}
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
+                    <div className="admin-role-dropdown" ref={roleDropdownRef}>
+                      <button
+                        className="admin-role-btn"
+                        onClick={() =>
+                          setOpenRoleDropdown(
+                            openRoleDropdown === user._id ? null : user._id
+                          )
+                        }
+                      >
+                        <span>
+                          {user.role === "admin" ? "Admin" : "User"}
+                        </span>
+
+                        <FiChevronDown
+                          size={14}
+                          style={{
+                            transition: "0.2s",
+                            transform:
+                              openRoleDropdown === user._id
+                                ? "rotate(180deg)"
+                                : "rotate(0deg)",
+                          }}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {openRoleDropdown === user._id && (
+                          <motion.div
+                            className="admin-role-menu"
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 6 }}
+                            transition={{ duration: 0.15 }}
+                          >
+                            {["user", "admin"].map((role) => (
+                              <button
+                                key={role}
+                                className={`admin-role-item ${user.role === role ? "active" : ""
+                                  }`}
+                                onClick={() => {
+                                  handleRoleChange(
+                                    user._id,
+                                    role as "user" | "admin"
+                                  );
+                                  setOpenRoleDropdown(null);
+                                }}
+                              >
+                                {role === "admin" ? "Admin" : "User"}
+                              </button>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </td>
                   <td>
                     <div className="admin-actions" style={{ justifyContent: "flex-end" }}>

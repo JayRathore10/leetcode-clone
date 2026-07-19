@@ -136,7 +136,6 @@ const discussionSchema = new mongoose.Schema<DiscussionInterface>(
 // Indexes
 discussionSchema.index({ createdAt: -1 });
 discussionSchema.index({ pinned: -1, createdAt: -1 });
-discussionSchema.index({ category: 1 });
 discussionSchema.index({
   title: "text",
   content: "text",

@@ -1,12 +1,12 @@
 import {Router} from "express";
 import { addQuestion, deleteQuestion, getAllQuestions, getQuestion, run, submitCode, totalQuestion } from "../controllers/question.controller";
-import { isUserLoggedIn } from "../middleware/auth.middleware";
+import { isAdminLoggedIn, isUserLoggedIn } from "../middleware/auth.middleware";
 
 export const questionRouter = Router();
 
 // Needed to be Admin protected 
-questionRouter.delete("/delete/:questionId" , deleteQuestion);
-questionRouter.post("/add" , addQuestion); 
+questionRouter.delete("/delete/:questionId" , isAdminLoggedIn , deleteQuestion);
+questionRouter.post("/add"  , isAdminLoggedIn, addQuestion); 
 
 // not protected right now 
 questionRouter.get("/all" , getAllQuestions);

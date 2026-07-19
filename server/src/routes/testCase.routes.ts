@@ -1,5 +1,6 @@
 import {Router} from "express";
 import { addTestCase, deleteTestCase, getHiddenTestCases, getVisibleTestCase } from "../controllers/testCase.controller";
+import { isAdminLoggedIn } from "../middleware/auth.middleware";
 
 export const testCaseRouter = Router();
 
@@ -8,6 +9,6 @@ testCaseRouter.get("/visible/:questionId" , getVisibleTestCase);
 
 testCaseRouter.get("/hidden/:questionId" , getHiddenTestCases);
 
-testCaseRouter.delete("/delete/:testCaseId" , deleteTestCase);
+testCaseRouter.delete("/delete/:testCaseId" , isAdminLoggedIn , deleteTestCase);
 
-testCaseRouter.post("/add" , addTestCase);
+testCaseRouter.post("/add" , isAdminLoggedIn, addTestCase);

@@ -1,0 +1,46 @@
+.admin-discussions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Reusing the admin table styles */
+.admin-discussions .admin-table-container {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.admin-discussions .admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-discussions .admin-table th {
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--bg-subtle);
+}
+
+.admin-discussions .admin-table td {
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.admin-discussions .admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-discussions .admin-table tbody tr:hover {
+  background-color: var(--bg-muted);
+}

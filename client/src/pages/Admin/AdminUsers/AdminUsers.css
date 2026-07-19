@@ -1,0 +1,66 @@
+.admin-users {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Reusing the admin table styles */
+.admin-users .admin-table-container {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.admin-users .admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-users .admin-table th {
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--bg-subtle);
+}
+
+.admin-users .admin-table td {
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.admin-users .admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-users .admin-table tbody tr:hover {
+  background-color: var(--bg-muted);
+}
+
+.admin-role-select {
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.admin-role-select:hover {
+  border-color: var(--border-strong);
+}
+
+.admin-role-select:focus {
+  outline: none;
+  border-color: var(--brand-500);
+}

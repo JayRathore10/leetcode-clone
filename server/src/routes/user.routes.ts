@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { editProfile, getAllSubmission, getAllUsers, getByUsername, getUserProfile } from "../controllers/user.controller";
+import { editProfile, getAllSubmission, getAllUsers, getByUsername, getUserProfile, deleteUser, updateUserRole } from "../controllers/user.controller";
 import { isAdminLoggedIn, isUserLoggedIn } from "../middleware/auth.middleware";
 import { upload } from "../utils/upload.utility";
 
@@ -14,3 +14,7 @@ userRouter.put("/profile"  , isUserLoggedIn  , upload.single("profilePic") , edi
 
 userRouter.get("/:username"  , getByUsername);
 userRouter.get("/:username/all-submissions" , getAllSubmission);
+
+// Admin protected routes for user management
+userRouter.delete("/:userId", isAdminLoggedIn, deleteUser);
+userRouter.put("/:userId/role", isAdminLoggedIn, updateUserRole);

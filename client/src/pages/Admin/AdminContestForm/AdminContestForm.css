@@ -1,0 +1,9 @@
+/* Reusing admin form container styles from AdminProblemForm */
+.admin-contest-form-container {
+  max-width: 800px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin: 0 auto;
+}

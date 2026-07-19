@@ -145,3 +145,68 @@ export const editProfile = async (req: authRequest, res: Response, next: NextFun
     next(error);
   }
 }
+
+export const deleteUser = async (req: authRequest, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    if (user.role === "admin") {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot delete an admin user"
+      });
+    }
+
+    await user.deleteOne();
+
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully"
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateUserRole = async (req: authRequest, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.params;
+    const { role } = req.body;
+
+    if (!role || !["user", "admin"].includes(role)) {
+      return res.status(400).json({
+        success: false,
+        message: "Valid role is required (user or admin)"
+      });
+    }
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    user.role = role;
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "User role updated successfully",
+      user
+    });
+  } catch (error) {
+    next(error);
+  }
+};

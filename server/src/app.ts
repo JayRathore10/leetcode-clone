@@ -14,6 +14,7 @@ import { discussionRouter } from "./routes/discussion.routes";
 import { replyRouter } from "./routes/reply.routes";
 import { FRONTEND } from "./configs/env.config";
 import { contestRouter } from "./routes/contest.routes";
+import { adminRouter } from "./routes/admin.routes";
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use("/api/leaderboard" , leaderboardRouter);
 app.use("/api/discussion" , discussionRouter);
 app.use("/api/reply" , replyRouter);
 app.use("/api/contest" , contestRouter);
+app.use("/api/admin" , adminRouter);
 
 app.use(errorMiddleware);
 

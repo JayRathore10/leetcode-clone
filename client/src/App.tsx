@@ -123,7 +123,20 @@ const LoadingScreen = lazy(()=>
   import("./components/LoadingScreen/LoadingScreen").then((module)=>({
     default : module.LoadingScreen
   }))
-)
+);
+
+const AdminLayout = lazy(() => import("./components/AdminLayout/AdminLayout").then(m => ({ default: m.AdminLayout })));
+const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard/AdminDashboard").then(m => ({ default: m.AdminDashboard })));
+const AdminProblems = lazy(() => import("./pages/Admin/AdminProblems/AdminProblems").then(m => ({ default: m.AdminProblems })));
+const AdminProblemForm = lazy(() => import("./pages/Admin/AdminProblemForm/AdminProblemForm").then(m => ({ default: m.AdminProblemForm })));
+const AdminContests = lazy(() => import("./pages/Admin/AdminContests/AdminContests").then(m => ({ default: m.AdminContests })));
+const AdminContestForm = lazy(() => import("./pages/Admin/AdminContestForm/AdminContestForm").then(m => ({ default: m.AdminContestForm })));
+const AdminUsers = lazy(() => import("./pages/Admin/AdminUsers/AdminUsers").then(m => ({ default: m.AdminUsers })));
+const AdminSubmissions = lazy(() => import("./pages/Admin/AdminSubmissions/AdminSubmissions").then(m => ({ default: m.AdminSubmissions })));
+const AdminSubmissionDetail = lazy(() => import("./pages/Admin/AdminSubmissionDetail/AdminSubmissionDetail").then(m => ({ default: m.AdminSubmissionDetail })));
+const AdminDiscussions = lazy(() => import("./pages/Admin/AdminDiscussions/AdminDiscussions").then(m => ({ default: m.AdminDiscussions })));
+const AdminReports = lazy(() => import("./pages/Admin/AdminReports/AdminReports").then(m => ({ default: m.AdminReports })));
+const AdminSettings = lazy(() => import("./pages/Admin/AdminSettings/AdminSettings").then(m => ({ default: m.AdminSettings })));
   
 interface ProtectedNavigateProps {
   isloggedIn: boolean;
@@ -141,8 +154,21 @@ const ProtectedNavigate = ({
   return <>{children}</>;
 };
 
+interface AdminProtectedRouteProps {
+  isloggedIn: boolean;
+  user: any;
+  children: ReactNode;
+}
+
+const AdminProtectedRoute = ({ isloggedIn, user, children }: AdminProtectedRouteProps) => {
+  if (!isloggedIn) return <Navigate to="/" replace />;
+  if (user?.role !== "admin") return <Navigate to="/home" replace />;
+  return <>{children}</>;
+};
+
 function App() {
   const [isloggedIn, setIsloggedIn] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -177,6 +203,7 @@ function App() {
 
         if (response.status === 200) {
           setIsloggedIn(true);
+          setUser(response.data.user);
         }
       } catch (error) {
         setIsloggedIn(false);
@@ -371,6 +398,30 @@ function App() {
             </ProtectedNavigate>
           }
         />
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <AdminProtectedRoute isloggedIn={isloggedIn} user={user}>
+              <AdminLayout user={user} setIsloggedIn={setIsloggedIn} />
+            </AdminProtectedRoute>
+          }
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="problems" element={<AdminProblems />} />
+          <Route path="problems/new" element={<AdminProblemForm />} />
+          <Route path="problems/:id/edit" element={<AdminProblemForm />} />
+          <Route path="contests" element={<AdminContests />} />
+          <Route path="contests/new" element={<AdminContestForm />} />
+          <Route path="contests/:id/edit" element={<AdminContestForm />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="submissions" element={<AdminSubmissions />} />
+          <Route path="submissions/:id" element={<AdminSubmissionDetail />} />
+          <Route path="discussions" element={<AdminDiscussions />} />
+          <Route path="reports" element={<AdminReports />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>

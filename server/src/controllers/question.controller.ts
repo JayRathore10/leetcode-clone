@@ -96,6 +96,48 @@ export const deleteQuestion = async (req: Request, res: Response, next: NextFunc
   }
 }
 
+export const updateQuestion = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const questionId = req.params.questionId;
+
+    if (!questionId) {
+      return res.status(400).json({
+        success: false,
+        message: "Enter the question Id"
+      });
+    }
+
+    const { title, description, difficulty, tags, constraints, example } = req.body;
+
+    const question = await questionModel.findById(questionId);
+
+    if (!question) {
+      return res.status(404).json({
+        success: false,
+        message: "Question not found"
+      });
+    }
+
+    if (title) question.title = title;
+    if (description) question.description = description;
+    if (difficulty) question.difficulty = difficulty;
+    if (tags) question.tags = tags;
+    if (constraints) question.constraints = constraints;
+    if (example) question.example = example;
+
+    await question.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Question updated successfully",
+      question
+    });
+
+  } catch (err) {
+    next(err);
+  }
+}
+
 export const run = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { questionId, language, code } = req.body;

@@ -33,7 +33,11 @@ export function Login({ setIsloggedIn }: LoginProps) {
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         setIsloggedIn?.(true);
-        navigate("/problems");
+        if (res.data.user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/problems");
+        }
       }
     } catch {
       setError("Invalid email or password. Please try again.");

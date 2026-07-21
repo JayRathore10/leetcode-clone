@@ -58,3 +58,44 @@
 .admin-reports .admin-table tbody tr:hover {
   background-color: var(--bg-muted);
 }
+
+.admin-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.admin-icon-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.admin-icon-btn:hover {
+  background: var(--bg-muted);
+}
+
+.admin-icon-btn.delete {
+  color: var(--danger);
+}
+
+.admin-icon-btn.delete:hover {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+}
+
+.admin-icon-btn:not(.delete):hover {
+  color: #10b981;
+  border-color: #10b981;
+}

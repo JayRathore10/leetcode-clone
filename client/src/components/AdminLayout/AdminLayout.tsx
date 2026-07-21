@@ -29,6 +29,7 @@ function applyTheme(pref: ThemeType) {
   document.documentElement.setAttribute("data-theme", active);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function AdminLayout({ user }: { user: any, setIsloggedIn: any }) {
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<ThemeType>(

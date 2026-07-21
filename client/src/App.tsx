@@ -125,18 +125,77 @@ const LoadingScreen = lazy(() =>
   }))
 );
 
-const AdminLayout = lazy(() => import("./components/AdminLayout/AdminLayout").then(m => ({ default: m.AdminLayout })));
-const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard/AdminDashboard").then(m => ({ default: m.AdminDashboard })));
-const AdminProblems = lazy(() => import("./pages/Admin/AdminProblems/AdminProblems").then(m => ({ default: m.AdminProblems })));
-const AdminProblemForm = lazy(() => import("./pages/Admin/AdminProblemForm/AdminProblemForm").then(m => ({ default: m.AdminProblemForm })));
-const AdminContests = lazy(() => import("./pages/Admin/AdminContests/AdminContests").then(m => ({ default: m.AdminContests })));
-const AdminContestForm = lazy(() => import("./pages/Admin/AdminContestForm/AdminContestForm").then(m => ({ default: m.AdminContestForm })));
-const AdminUsers = lazy(() => import("./pages/Admin/AdminUsers/AdminUsers").then(m => ({ default: m.AdminUsers })));
-const AdminSubmissions = lazy(() => import("./pages/Admin/AdminSubmissions/AdminSubmissions").then(m => ({ default: m.AdminSubmissions })));
-const AdminSubmissionDetail = lazy(() => import("./pages/Admin/AdminSubmissionDetail/AdminSubmissionDetail").then(m => ({ default: m.AdminSubmissionDetail })));
-const AdminDiscussions = lazy(() => import("./pages/Admin/AdminDiscussions/AdminDiscussions").then(m => ({ default: m.AdminDiscussions })));
-const AdminReports = lazy(() => import("./pages/Admin/AdminReports/AdminReports").then(m => ({ default: m.AdminReports })));
-const AdminSettings = lazy(() => import("./pages/Admin/AdminSettings/AdminSettings").then(m => ({ default: m.AdminSettings })));
+const AdminLayout = lazy(() =>
+  import("./components/AdminLayout/AdminLayout").then((module) => ({
+    default: module.AdminLayout,
+  }))
+);
+
+const AdminDashboard = lazy(() =>
+  import("./pages/Admin/AdminDashboard/AdminDashboard").then((module) => ({
+    default: module.AdminDashboard,
+  }))
+);
+
+const AdminProblems = lazy(() =>
+  import("./pages/Admin/AdminProblems/AdminProblems").then((module) => ({
+    default: module.AdminProblems,
+  }))
+);
+
+const AdminProblemForm = lazy(() =>
+  import("./pages/Admin/AdminProblemForm/AdminProblemForm").then((module) => ({
+    default: module.AdminProblemForm,
+  }))
+);
+
+const AdminContests = lazy(() =>
+  import("./pages/Admin/AdminContests/AdminContests").then((module) => ({
+    default: module.AdminContests,
+  }))
+);
+
+const AdminContestForm = lazy(() =>
+  import("./pages/Admin/AdminContestForm/AdminContestForm").then((module) => ({
+    default: module.AdminContestForm,
+  }))
+);
+
+const AdminUsers = lazy(() =>
+  import("./pages/Admin/AdminUsers/AdminUsers").then((module) => ({
+    default: module.AdminUsers,
+  }))
+);
+
+const AdminSubmissions = lazy(() =>
+  import("./pages/Admin/AdminSubmissions/AdminSubmissions").then((module) => ({
+    default: module.AdminSubmissions,
+  }))
+);
+
+const AdminSubmissionDetail = lazy(() =>
+  import("./pages/Admin/AdminSubmissionDetail/AdminSubmissionDetail").then((module) => ({
+    default: module.AdminSubmissionDetail,
+  }))
+);
+
+const AdminDiscussions = lazy(() =>
+  import("./pages/Admin/AdminDiscussions/AdminDiscussions").then((module) => ({
+    default: module.AdminDiscussions,
+  }))
+);
+
+const AdminReports = lazy(() =>
+  import("./pages/Admin/AdminReports/AdminReports").then((module) => ({
+    default: module.AdminReports,
+  }))
+);
+
+const AdminSettings = lazy(() =>
+  import("./pages/Admin/AdminSettings/AdminSettings").then((module) => ({
+    default: module.AdminSettings,
+  }))
+);
 
 interface ProtectedNavigateProps {
   isloggedIn: boolean;

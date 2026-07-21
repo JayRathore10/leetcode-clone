@@ -119,9 +119,9 @@ const Leaderboard = lazy(() =>
   }))
 );
 
-const LoadingScreen = lazy(()=>
-  import("./components/LoadingScreen/LoadingScreen").then((module)=>({
-    default : module.LoadingScreen
+const LoadingScreen = lazy(() =>
+  import("./components/LoadingScreen/LoadingScreen").then((module) => ({
+    default: module.LoadingScreen
   }))
 );
 
@@ -137,7 +137,7 @@ const AdminSubmissionDetail = lazy(() => import("./pages/Admin/AdminSubmissionDe
 const AdminDiscussions = lazy(() => import("./pages/Admin/AdminDiscussions/AdminDiscussions").then(m => ({ default: m.AdminDiscussions })));
 const AdminReports = lazy(() => import("./pages/Admin/AdminReports/AdminReports").then(m => ({ default: m.AdminReports })));
 const AdminSettings = lazy(() => import("./pages/Admin/AdminSettings/AdminSettings").then(m => ({ default: m.AdminSettings })));
-  
+
 interface ProtectedNavigateProps {
   isloggedIn: boolean;
   children: ReactNode;
@@ -396,7 +396,7 @@ function App() {
           path="/leaderboard"
           element={
             <ProtectedNavigate isloggedIn={isloggedIn}>
-              <Leaderboard isloggedIn={isloggedIn}/>
+              <Leaderboard isloggedIn={isloggedIn} />
             </ProtectedNavigate>
           }
         />

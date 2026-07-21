@@ -4,7 +4,9 @@ import { adminService } from "../../../services/admin.service";
 import "./AdminReports.css";
 
 export function AdminReports() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [discussions, setDiscussions] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [replies, setReplies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,6 +37,7 @@ export function AdminReports() {
       if (res.success) {
         setDiscussions(discussions.filter(d => d._id !== id));
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Failed to resolve report");
     }
@@ -47,6 +50,7 @@ export function AdminReports() {
       if (res.success) {
         setDiscussions(discussions.filter(d => d._id !== id));
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Failed to delete discussion");
     }
@@ -58,6 +62,7 @@ export function AdminReports() {
       if (res.success) {
         setReplies(replies.filter(r => r._id !== id));
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Failed to resolve report");
     }
@@ -70,6 +75,7 @@ export function AdminReports() {
       if (res.success) {
         setReplies(replies.filter(r => r._id !== id));
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Failed to delete reply");
     }

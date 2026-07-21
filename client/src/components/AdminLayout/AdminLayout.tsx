@@ -13,6 +13,7 @@ import {
   FiMoon,
   FiSun,
   FiLogOut,
+  FiHome
 } from "react-icons/fi";
 import logo from "../../assets/logo.png";
 import "./AdminLayout.css";
@@ -105,6 +106,19 @@ export function AdminLayout({ user }: { user: any, setIsloggedIn: any }) {
             </NavLink>
           ))}
         </nav>
+        <div className="admin-sidebar-footer">
+          <NavLink
+            to="/home"
+            className="admin-nav-item"
+            title={collapsed ? "View Site" : undefined}
+          >
+            <div className="admin-nav-icon">
+              <FiHome />
+            </div>
+
+            {!collapsed && <span>View Site</span>}
+          </NavLink>
+        </div>
       </aside>
 
       {/* Main Area */}

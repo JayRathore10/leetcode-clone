@@ -1,0 +1,74 @@
+.admin-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.admin-settings-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all var(--transition);
+}
+
+.admin-settings-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-settings-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-settings-card-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.admin-settings-icon {
+  font-size: 24px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.admin-settings-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.admin-btn-secondary {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 10px 18px;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.admin-btn-secondary:hover {
+  background: var(--bg-muted);
+  border-color: var(--accent);
+  color: var(--accent);
+}

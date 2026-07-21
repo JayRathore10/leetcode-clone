@@ -120,7 +120,7 @@ export function AdminUsers() {
                     </div>
                   </td>
                   <td>{user.email}</td>
-                  <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <td>{new Date(user.createdAt).toLocaleDateString("en-GB")}</td>
                   <td>
                     <div className="admin-role-dropdown" ref={roleDropdownRef}>
                       <button

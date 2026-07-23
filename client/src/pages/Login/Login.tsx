@@ -9,11 +9,18 @@ import { FiAlertCircle } from "react-icons/fi";
 import logo from "../../assets/logo.png";
 
 export interface LoginProps {
-  setIsloggedIn?: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsloggedIn?: React.Dispatch<React.SetStateAction<boolean>>; 
   isloggedIn?: boolean;
 }
 
-export function Login({ setIsloggedIn }: LoginProps) {
+interface loginPropsInternal{
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   setUser: React.Dispatch<React.SetStateAction<any>>;
+    setIsloggedIn?: React.Dispatch<React.SetStateAction<boolean>>; 
+  isloggedIn?: boolean;
+}
+
+export function Login({ setIsloggedIn ,setUser }: loginPropsInternal) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,9 +40,13 @@ export function Login({ setIsloggedIn }: LoginProps) {
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         setIsloggedIn?.(true);
+        setUser(res.data.user);
+        console.log(res.data.user.role);
         if (res.data.user.role === "admin") {
+          console.log("navigate to Admin");
           navigate("/admin");
         } else {
+          console.log("Navigate to problems");
           navigate("/problems");
         }
       }

@@ -221,8 +221,12 @@ interface AdminProtectedRouteProps {
 }
 
 const AdminProtectedRoute = ({ isloggedIn, user, children }: AdminProtectedRouteProps) => {
-  if (!isloggedIn) return <Navigate to="/" replace />;
-  if (user?.role !== "admin") return <Navigate to="/home" replace />;
+  if (!isloggedIn)
+    return <Navigate to="/" replace />;
+
+  if (user?.role !== "admin")
+    return <Navigate to="/home" replace />;
+
   return <>{children}</>;
 };
 
@@ -264,6 +268,7 @@ function App() {
 
         if (response.status === 200) {
           setIsloggedIn(true);
+          console.log(response.data.user);
           setUser(response.data.user);
         }
       } catch (error) {
@@ -291,6 +296,7 @@ function App() {
               <Login
                 setIsloggedIn={setIsloggedIn}
                 isloggedIn={isloggedIn}
+                setUser={setUser}
               />
             )
           }

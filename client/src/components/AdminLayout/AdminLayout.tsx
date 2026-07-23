@@ -40,6 +40,10 @@ export function AdminLayout({ user }: { user: any, setIsloggedIn: any }) {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("Admin page mounted");
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("theme", theme);
     applyTheme(theme);
   }, [theme]);

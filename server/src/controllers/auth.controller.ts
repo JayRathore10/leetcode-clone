@@ -133,15 +133,14 @@ export const logoutUser = async (req: Request, res: Response, next: NextFunction
 
 export const me = async (req: authRequest, res: Response, next: NextFunction) => {
   try {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies.token;
 
-    if (!authHeader) {
+    if (!token) {
       return res.status(401).json({
-        message: "No Token"
+        success: false,
+        message: "No token"
       });
     }
-
-    const token = authHeader.split(" ")[1];
 
     const decoded = jwt.verify(token, JWT_SECRET as string) as userPlayLoad;
 
@@ -149,16 +148,17 @@ export const me = async (req: authRequest, res: Response, next: NextFunction) =>
 
     if (!user) {
       return res.status(401).json({
+        success: false,
         message: "User not found"
       });
     }
 
-    return res.status(200).json({
+    return res.json({
       success: true,
       user
     });
 
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
-}
+};

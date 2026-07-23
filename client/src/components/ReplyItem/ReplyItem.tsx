@@ -51,12 +51,17 @@ export function ReplyItem({
 
   const handleLike = async () => {
     if (!currentUserId) return;
+
+
     try {
       const res = await axios.post(
         `${env.backendUrl}/api/reply/${reply._id}/like`,
         {},
         { withCredentials: true }
       );
+
+      console.log(res.data);
+
       if (res.data.success) {
         setIsLiked(!isLiked);
         setLikesCount(res.data.likes);

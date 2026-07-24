@@ -13,3 +13,6 @@ exports.userRouter.get("/profile", auth_middleware_1.isUserLoggedIn, user_contro
 exports.userRouter.put("/profile", auth_middleware_1.isUserLoggedIn, upload_utility_1.upload.single("profilePic"), user_controller_1.editProfile);
 exports.userRouter.get("/:username", user_controller_1.getByUsername);
 exports.userRouter.get("/:username/all-submissions", user_controller_1.getAllSubmission);
+// Admin protected routes for user management
+exports.userRouter.delete("/:userId", auth_middleware_1.isAdminLoggedIn, user_controller_1.deleteUser);
+exports.userRouter.put("/:userId/role", auth_middleware_1.isAdminLoggedIn, user_controller_1.updateUserRole);

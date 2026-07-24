@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editProfile = exports.getUserProfile = exports.getAllSubmission = exports.getByUsername = exports.getAllUsers = void 0;
+exports.updateUserRole = exports.deleteUser = exports.editProfile = exports.getUserProfile = exports.getAllSubmission = exports.getByUsername = exports.getAllUsers = void 0;
 const user_model_1 = require("../models/user.model");
 const submission_model_1 = require("../models/submission.model");
 const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -137,3 +137,60 @@ const editProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.editProfile = editProfile;
+const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        const user = yield user_model_1.userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        if (user.role === "admin") {
+            return res.status(400).json({
+                success: false,
+                message: "Cannot delete an admin user"
+            });
+        }
+        yield user.deleteOne();
+        return res.status(200).json({
+            success: true,
+            message: "User deleted successfully"
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.deleteUser = deleteUser;
+const updateUserRole = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        const { role } = req.body;
+        if (!role || !["user", "admin"].includes(role)) {
+            return res.status(400).json({
+                success: false,
+                message: "Valid role is required (user or admin)"
+            });
+        }
+        const user = yield user_model_1.userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        user.role = role;
+        yield user.save();
+        return res.status(200).json({
+            success: true,
+            message: "User role updated successfully",
+            user
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.updateUserRole = updateUserRole;

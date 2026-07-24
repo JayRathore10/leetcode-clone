@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.totalQuestion = exports.getQuestion = exports.getAllQuestions = exports.submitCode = exports.run = exports.deleteQuestion = exports.addQuestion = exports.LANGUAGE_MAP = void 0;
+exports.totalQuestion = exports.getQuestion = exports.getAllQuestions = exports.submitCode = exports.run = exports.updateQuestion = exports.deleteQuestion = exports.addQuestion = exports.LANGUAGE_MAP = void 0;
 const question_validation_1 = require("../validation/question.validation");
 const question_model_1 = require("../models/question.model");
 const testCase_model_1 = require("../models/testCase.model");
@@ -87,6 +87,47 @@ const deleteQuestion = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.deleteQuestion = deleteQuestion;
+const updateQuestion = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const questionId = req.params.questionId;
+        if (!questionId) {
+            return res.status(400).json({
+                success: false,
+                message: "Enter the question Id"
+            });
+        }
+        const { title, description, difficulty, tags, constraints, example } = req.body;
+        const question = yield question_model_1.questionModel.findById(questionId);
+        if (!question) {
+            return res.status(404).json({
+                success: false,
+                message: "Question not found"
+            });
+        }
+        if (title)
+            question.title = title;
+        if (description)
+            question.description = description;
+        if (difficulty)
+            question.difficulty = difficulty;
+        if (tags)
+            question.tags = tags;
+        if (constraints)
+            question.constraints = constraints;
+        if (example)
+            question.example = example;
+        yield question.save();
+        return res.status(200).json({
+            success: true,
+            message: "Question updated successfully",
+            question
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+});
+exports.updateQuestion = updateQuestion;
 const run = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {

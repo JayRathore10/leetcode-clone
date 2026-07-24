@@ -6,6 +6,6 @@ exports.submissionSchema = zod_1.z.object({
     questionId: zod_1.z.string(),
     code: zod_1.z.string(),
     language: zod_1.z.string(),
-    status: zod_1.z.string(),
-    title: zod_1.z.string()
+    status: zod_1.z.enum(["Accepted", "WA", "TLE", "MLE"]),
+    title: zod_1.z.string(),
 });

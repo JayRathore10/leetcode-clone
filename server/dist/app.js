@@ -18,6 +18,7 @@ const discussion_routes_1 = require("./routes/discussion.routes");
 const reply_routes_1 = require("./routes/reply.routes");
 const env_config_1 = require("./configs/env.config");
 const contest_routes_1 = require("./routes/contest.routes");
+const admin_routes_1 = require("./routes/admin.routes");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: env_config_1.FRONTEND,
@@ -51,6 +52,7 @@ app.use("/api/leaderboard", leaderboard_routes_1.leaderboardRouter);
 app.use("/api/discussion", discussion_routes_1.discussionRouter);
 app.use("/api/reply", reply_routes_1.replyRouter);
 app.use("/api/contest", contest_routes_1.contestRouter);
+app.use("/api/admin", admin_routes_1.adminRouter);
 app.use(error_middleware_1.errorMiddleware);
 exports.default = app;
 // Add AI Code analysic and also learn to host docker 

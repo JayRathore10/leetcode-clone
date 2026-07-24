@@ -6,8 +6,8 @@ const question_controller_1 = require("../controllers/question.controller");
 const auth_middleware_1 = require("../middleware/auth.middleware");
 exports.questionRouter = (0, express_1.Router)();
 // Needed to be Admin protected 
-exports.questionRouter.delete("/delete/:questionId", question_controller_1.deleteQuestion);
-exports.questionRouter.post("/add", question_controller_1.addQuestion);
+exports.questionRouter.delete("/delete/:questionId", auth_middleware_1.isAdminLoggedIn, question_controller_1.deleteQuestion);
+exports.questionRouter.post("/add", auth_middleware_1.isAdminLoggedIn, question_controller_1.addQuestion);
 // not protected right now 
 exports.questionRouter.get("/all", question_controller_1.getAllQuestions);
 // needed to be user Protected 

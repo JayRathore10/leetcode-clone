@@ -126,27 +126,28 @@ const logoutUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 exports.logoutUser = logoutUser;
 const me = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) {
+        const token = req.cookies.token;
+        if (!token) {
             return res.status(401).json({
-                message: "No Token"
+                success: false,
+                message: "No token"
             });
         }
-        const token = authHeader.split(" ")[1];
         const decoded = jsonwebtoken_1.default.verify(token, env_config_1.JWT_SECRET);
         const user = yield user_model_1.userModel.findById(decoded.userId).select("-password");
         if (!user) {
             return res.status(401).json({
+                success: false,
                 message: "User not found"
             });
         }
-        return res.status(200).json({
+        return res.json({
             success: true,
             user
         });
     }
-    catch (error) {
-        next(error);
+    catch (err) {
+        next(err);
     }
 });
 exports.me = me;

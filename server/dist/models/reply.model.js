@@ -50,5 +50,4 @@ const replySchema = new mongoose_1.default.Schema({
 });
 // Indexes
 replySchema.index({ discussion: 1, createdAt: 1 });
-replySchema.index({ parentReply: 1 });
 exports.replyModel = mongoose_1.default.model("Reply", replySchema);

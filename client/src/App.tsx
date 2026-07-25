@@ -497,6 +497,3 @@ function App() {
 
 export default App;
 
-// Add the likes to reply 
-// minor CSS fix in admin 
-

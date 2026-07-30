@@ -88,6 +88,7 @@ export function CodeEditor({ code, setCode, language }: CodeEditorProps) {
   useEffect(() => {
     // Sync theme
     const currentTheme = document.documentElement.getAttribute("data-theme");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEditorTheme(currentTheme === "light" ? "light" : "vs-dark");
 
     const observer = new MutationObserver((mutations) => {

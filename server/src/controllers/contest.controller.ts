@@ -214,10 +214,12 @@ export const registerContest = async (
       });
     }
 
-    if (contest.status === "Ended") {
+    const now = new Date();
+
+    if (now >= contest.startTime) {
       return res.status(400).json({
         success: false,
-        message: "Contest has already ended.",
+        message: "Registration is closed.",
       });
     }
 

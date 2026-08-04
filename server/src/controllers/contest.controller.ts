@@ -2,6 +2,23 @@ import { Request, Response, NextFunction } from "express";
 import { contestModel } from "../models/contest.model";
 import { authRequest } from "../types/authRequest.type";
 
+const getContestStatus = (
+  startTime: Date,
+  endTime: Date
+): "Upcoming" | "Running" | "Ended" => {
+  const now = new Date();
+
+  if (now < startTime) {
+    return "Upcoming";
+  }
+
+  if (now <= endTime) {
+    return "Running";
+  }
+
+  return "Ended";
+};
+
 export const createContest = async (
   req: authRequest,
   res: Response,
@@ -21,17 +38,10 @@ export const createContest = async (
       (new Date(endTime).getTime() - new Date(startTime).getTime()) /
       (1000 * 60);
 
-    let status: "Upcoming" | "Running" | "Ended";
-
-    const now = new Date();
-
-    if (now < new Date(startTime)) {
-      status = "Upcoming";
-    } else if (now >= new Date(startTime) && now <= new Date(endTime)) {
-      status = "Running";
-    } else {
-      status = "Ended";
-    }
+    const status = getContestStatus(
+      new Date(startTime),
+      new Date(endTime)
+    );
 
     const contest = await contestModel.create({
       title,

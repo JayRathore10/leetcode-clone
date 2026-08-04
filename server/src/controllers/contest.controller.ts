@@ -129,7 +129,7 @@ export const getContestById = async (
       success: true,
       contest: contestWithStatus,
     });
-    
+
   } catch (error) {
     next(error);
   }
@@ -172,15 +172,11 @@ export const updateContest = async (
       (contest.endTime.getTime() - contest.startTime.getTime()) /
       (1000 * 60);
 
-    const now = new Date();
 
-    if (now < contest.startTime) {
-      contest.status = "Upcoming";
-    } else if (now >= contest.startTime && now <= contest.endTime) {
-      contest.status = "Running";
-    } else {
-      contest.status = "Ended";
-    }
+    contest.status = getContestStatus(
+      contest.startTime,
+      contest.endTime
+    );
 
     await contest.save();
 
@@ -285,6 +281,13 @@ export const unregisterContest = async (
       return res.status(404).json({
         success: false,
         message: "Contest not found.",
+      });
+    }
+
+    if (new Date() >= contest.startTime) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot unregister after the contest has started.",
       });
     }
 

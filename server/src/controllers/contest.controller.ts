@@ -78,9 +78,17 @@ export const getAllContests = async (
       .populate("createdBy", "name username profilePic")
       .sort({ startTime: -1 });
 
+    const contestsWithStatus = contests.map((contest) => ({
+      ...contest.toObject(),
+      status: getContestStatus(
+        contest.startTime,
+        contest.endTime
+      ),
+    }));
+
     return res.status(200).json({
       success: true,
-      contests,
+      contests : contestsWithStatus,
     });
   } catch (error) {
     next(error);

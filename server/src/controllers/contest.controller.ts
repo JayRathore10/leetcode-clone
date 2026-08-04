@@ -88,7 +88,7 @@ export const getAllContests = async (
 
     return res.status(200).json({
       success: true,
-      contests : contestsWithStatus,
+      contests: contestsWithStatus,
     });
   } catch (error) {
     next(error);
@@ -117,10 +117,19 @@ export const getContestById = async (
       });
     }
 
+    const contestWithStatus = {
+      ...contest.toObject(),
+      status: getContestStatus(
+        contest.startTime,
+        contest.endTime
+      ),
+    };
+
     return res.status(200).json({
       success: true,
-      contest,
+      contest: contestWithStatus,
     });
+    
   } catch (error) {
     next(error);
   }

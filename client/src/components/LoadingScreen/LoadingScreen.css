@@ -7,6 +7,21 @@
   background: var(--bg);
 }
 
+.ap-loading-message {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  opacity: 0;
+  animation: messageFadeIn 0.5s ease forwards;
+}
+
 .ap-loading-brand {
   display: flex;
   flex-direction: column;
@@ -35,12 +50,26 @@
     opacity: 0.35;
     transform: scale(0.95);
   }
+
   50% {
     opacity: 1;
     transform: scale(1);
   }
+
   100% {
     opacity: 0.35;
     transform: scale(0.95);
+  }
+}
+
+@keyframes messageFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
   }
 }

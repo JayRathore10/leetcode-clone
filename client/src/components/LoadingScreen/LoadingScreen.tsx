@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import "./LoadingScreen.css";
 
+
 export const LoadingScreen = () => {
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowMessage(true);
-    }, 2500);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
+
 
   return (
     <div className="ap-loading-container">
@@ -28,7 +30,6 @@ export const LoadingScreen = () => {
           alt="CodeChamp"
           className="ap-loading-logo"
         />
-
         <h1 className="ap-loading-text">   CodeChamp</h1>
       </div>
     </div>

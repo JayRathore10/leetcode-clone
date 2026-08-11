@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState, ReactNode } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
-
+import { LoadingScreen } from "./components/LoadingScreen/LoadingScreen";
 import { env } from "./configs/env.config";
 import "./App.css";
 
@@ -116,12 +116,6 @@ const NotFound = lazy(() =>
 const Leaderboard = lazy(() =>
   import("./components/Leaderboard/Leaderboard").then((module) => ({
     default: module.Leaderboard,
-  }))
-);
-
-const LoadingScreen = lazy(() =>
-  import("./components/LoadingScreen/LoadingScreen").then((module) => ({
-    default: module.LoadingScreen
   }))
 );
 
@@ -287,7 +281,7 @@ function App() {
   }
 
   return (
-    <Suspense fallback={<LoadingScreen />}>
+    <Suspense fallback={<LoadingScreen  />}>
       <Routes>
         <Route
           path="/"

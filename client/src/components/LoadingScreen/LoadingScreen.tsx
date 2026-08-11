@@ -13,3 +13,5 @@ export const LoadingScreen = () => (
     </div>
   </div>
 );
+
+// Have to add {its take a little time to load first time or the server is awaking its take a little time messgae if app those not load in 2-3 sec at the top}

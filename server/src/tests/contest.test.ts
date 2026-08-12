@@ -85,14 +85,30 @@ describe("GET /api/contest", () => {
         sort: jest.fn().mockResolvedValue([
           {
             title: "Contest 1",
+            startTime: new Date("2030-01-02T10:00:00.000Z"),
+            endTime: new Date("2030-01-02T12:00:00.000Z"),
+
+            toObject: jest.fn().mockReturnValue({
+              title: "Contest 1",
+              startTime: new Date("2030-01-02T10:00:00.000Z"),
+              endTime: new Date("2030-01-02T12:00:00.000Z"),
+            }),
           },
           {
             title: "Contest 2",
+            startTime: new Date("2030-01-03T10:00:00.000Z"),
+            endTime: new Date("2030-01-03T12:00:00.000Z"),
+
+            toObject: jest.fn().mockReturnValue({
+              title: "Contest 2",
+              startTime: new Date("2030-01-03T10:00:00.000Z"),
+              endTime: new Date("2030-01-03T12:00:00.000Z"),
+            }),
           },
         ]),
       }),
     });
-
+    
     const res = await request(app).get("/api/contest");
 
     expect(res.status).toBe(200);
@@ -107,6 +123,14 @@ describe("GET /api/contest/:contestId", () => {
     const populate3 = jest.fn().mockResolvedValue({
       _id: "contest123",
       title: "Weekly Contest",
+      startTime: new Date("2030-01-02T10:00:00.000Z"),
+      endTime: new Date("2030-01-02T12:00:00.000Z"),
+      toObject: jest.fn().mockReturnValue({
+        _id: "contest123",
+        title: "Weekly Contest",
+        startTime: new Date("2030-01-02T10:00:00.000Z"),
+        endTime: new Date("2030-01-02T12:00:00.000Z"),
+      }),
     });
 
     const populate2 = jest.fn().mockReturnValue({
@@ -320,7 +344,8 @@ describe("POST /api/contest/:contestId/register", () => {
     });
 
     const contest = {
-      status: "Upcoming",
+      startTime: new Date("2030-01-02T10:00:00.000Z"),
+      endTime: new Date("2030-01-02T12:00:00.000Z"),
       participants: [],
       save: jest.fn().mockResolvedValue(true),
     };
@@ -374,7 +399,8 @@ describe("POST /api/contest/:contestId/register", () => {
     });
 
     (contestModel.findById as jest.Mock).mockResolvedValue({
-      status: "Ended",
+      startTime: new Date("2020-01-01T10:00:00.000Z"),
+      endTime: new Date("2020-01-01T12:00:00.000Z"),
       participants: [],
     });
 
@@ -384,7 +410,7 @@ describe("POST /api/contest/:contestId/register", () => {
 
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
-    expect(res.body.message).toBe("Contest has already ended.");
+    expect(res.body.message).toBe("Registration is closed.");
   });
 
   it("should return 400 if user is already registered", async () => {
@@ -432,6 +458,7 @@ describe("DELETE /api/contest/:contestId/unregister", () => {
     });
 
     (contestModel.findById as jest.Mock).mockResolvedValue({
+      startTime: new Date("2030-01-02T10:00:00.000Z"),
       participants: ["user123", "user456"],
       save: jest.fn().mockResolvedValue(true),
     });

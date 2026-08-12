@@ -193,7 +193,7 @@ describe("GET /api/auth/me", () => {
       .get("/api/auth/me");
 
     expect(res.status).toBe(401);
-    expect(res.body.message).toBe("No Token");
+    expect(res.body.message).toBe("No token");
   });
 
   it("should return 401 if user is not found", async () => {
@@ -208,7 +208,7 @@ describe("GET /api/auth/me", () => {
 
     const res = await request(app)
       .get("/api/auth/me")
-      .set("Authorization", "Bearer fake_token");
+      .set("Cookie", "token=fake_token")
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBe("User not found");
@@ -230,7 +230,7 @@ describe("GET /api/auth/me", () => {
 
     const res = await request(app)
       .get("/api/auth/me")
-      .set("Authorization", "Bearer fake_token");
+      .set("Cookie", "token=fake_token")
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);

@@ -5,7 +5,6 @@ import { useState } from "react";
 import { env } from "../../configs/env.config";
 import { Header } from "../../components/Header/Header";
 import { motion } from "framer-motion";
-import { FiAlertCircle } from "react-icons/fi";
 import logo from "../../assets/logo.png";
 
 export interface LoginProps {
@@ -63,9 +62,9 @@ export function Login({ setIsloggedIn ,setUser }: loginPropsInternal) {
       <div className="auth-body">
         <motion.div
           className="auth-card"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: "easeOut" }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
         >
           <div className="auth-logo">
             <div className="auth-logo-mark">
@@ -77,11 +76,24 @@ export function Login({ setIsloggedIn ,setUser }: loginPropsInternal) {
           </div>
 
           <h1 className="auth-heading">Welcome back</h1>
-          <p className="auth-sub">Enter your credentials to access your account</p>
+          <p className="auth-sub">Sign in to continue solving problems on CodeChamp</p>
 
           {error && (
-            <div className="auth-error">
-              <FiAlertCircle size={15} style={{ flexShrink: 0, marginTop: 1 }} />
+            <div className="auth-error" role="alert" aria-live="polite">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="13" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
               {error}
             </div>
           )}
@@ -94,6 +106,7 @@ export function Login({ setIsloggedIn ,setUser }: loginPropsInternal) {
                 className="auth-input"
                 type="email"
                 placeholder="you@example.com"
+                autoComplete="email"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -107,6 +120,7 @@ export function Login({ setIsloggedIn ,setUser }: loginPropsInternal) {
                 className="auth-input"
                 type="password"
                 placeholder="Enter your password"
+                autoComplete="current-password"
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}

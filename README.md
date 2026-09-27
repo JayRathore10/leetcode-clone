@@ -17,34 +17,44 @@ You can watch the complete working demonstration below:
 ## Screenshots
 
 ### Home Page
-![Home Page](./assets/screenshots/home-page.png)
+- **Dark Mode:** ![Home Page Dark](./assets/screenshots/home-page-dark.png)
+- **Light Mode:** ![Home Page Light](./assets/screenshots/home-page-light.png)
 
 ### Login Page
-![Login](./assets/screenshots/login.png)
+- **Dark Mode:** ![Login Dark](./assets/screenshots/login-dark.png)
+- **Light Mode:** ![Login Light](./assets/screenshots/login-light.png)
 
 ### Sign Up Page
-![Sign Up](./assets/screenshots/sign-up.png)
+- **Dark Mode:** ![Sign Up Dark](./assets/screenshots/sign-up-dark.png)
+- **Light Mode:** ![Sign Up Light](./assets/screenshots/sign-up-light.png)
 
 ### Problem List
-![Problem List](./assets/screenshots/problem-list.png)
+- **Dark Mode:** ![Problem List Dark](./assets/screenshots/problem-list-dark.png)
+- **Light Mode:** ![Problem List Light](./assets/screenshots/problem-list-light.png)
 
 ### Problem Detail View 1
-![Problem Detail 1](./assets/screenshots/problem-detail1.png)
+- **Dark Mode:** ![Problem Detail 1 Dark](./assets/screenshots/problem-detail1-dark.png)
+- **Light Mode:** ![Problem Detail 1 Light](./assets/screenshots/problem-detail1-light.png)
 
 ### Problem Detail View 2
-![Problem Detail 2](./assets/screenshots/problem-detail2.png)
+- **Dark Mode:** ![Problem Detail 2 Dark](./assets/screenshots/problem-detail2-dark.png)
+- **Light Mode:** ![Problem Detail 2 Light](./assets/screenshots/problem-detail2-light.png)
 
-### Code Editor
-![Run Code](./assets/screenshots/runcode.png)
+### Discussion
+- **Dark Mode:** ![Discussion Dark](./assets/screenshots/discussion-dark.png)
+- **Light Mode:** ![Discussion Light](./assets/screenshots/discussion-light.png)
 
-### Running Code State
-![Running Code](./assets/screenshots/runningcode.png)
+### Contest
+- **Dark Mode:** ![Contest Dark](./assets/screenshots/contest-dark.png)
+- **Light Mode:** ![Contest Light](./assets/screenshots/contest-light.png)
 
-### Submitted Question
-![Submitted Question](./assets/screenshots/submitted-question.png)
+### Leaderboard
+- **Dark Mode:** ![Leaderboard Dark](./assets/screenshots/leaderboard-dark.png)
+- **Light Mode:** ![Leaderboard Light](./assets/screenshots/leaderboard-light.png)
 
 ### User Profile
-![Profile](./assets/screenshots/profile.png)
+- **Dark Mode:** ![Profile Dark](./assets/screenshots/profile-dark.png)
+- **Light Mode:** ![Profile Light](./assets/screenshots/profile-light.png)
 
 ---
 

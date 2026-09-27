@@ -5,12 +5,12 @@ A full-stack coding platform inspired by LeetCode that enables users to practice
 **Live Demo:** https://leetcode-clone-pi-flame.vercel.app/
 
 ---
-
 ## Demo Video
 
 You can watch the complete working demonstration below:
 
-[Watch Demo Video](./assets/videos/demo.mkv)
+- **Dark Mode:** [Watch Dark Mode Demo](./assets/videos/demo-dark.mp4)
+- **Light Mode:** [Watch Light Mode Demo](./assets/videos/demo-light.mp4)
 
 ---
 
